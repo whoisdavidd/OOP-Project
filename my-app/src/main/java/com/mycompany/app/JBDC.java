@@ -103,4 +103,60 @@ public class JBDC {
 // }
 }
 
+// import javax.persistence.*;
+// import java.sql.Connection;
+// import java.sql.DriverManager;
+// import java.sql.PreparedStatement;
+// import java.sql.SQLException;
+
+// public class JpaWithJdbcExample {
+
+//     public static void main(String[] args) {
+//         // JPA: Create an EntityManagerFactory
+//         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("examplePU");
+
+//         // JPA: Create an EntityManager
+//         EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+//         // JPA: Begin a transaction
+//         EntityTransaction transaction = entityManager.getTransaction();
+//         transaction.begin();
+
+//         try {
+//             // JPA: Create a new Student entity
+//             Student student = new Student();
+//             student.setName("John Doe");
+//             student.setAge(20);
+
+//             // JPA: Persist the entity to the database
+//             entityManager.persist(student);
+
+//             // JDBC: Use a separate JDBC connection to perform low-level operations
+//             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "your_username", "your_password")) {
+//                 // JDBC: Prepare a statement to execute a query
+//                 String insertQuery = "INSERT INTO student (name, age) VALUES (?, ?)";
+//                 try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+//                     // JDBC: Set parameters and execute the query
+//                     preparedStatement.setString(1, student.getName());
+//                     preparedStatement.setInt(2, student.getAge());
+//                     preparedStatement.executeUpdate();
+//                 }
+//             } catch (SQLException e) {
+//                 e.printStackTrace();
+//                 // Handle JDBC exceptions
+//             }
+
+//             // JPA: Commit the transaction
+//             transaction.commit();
+//         } catch (Exception e) {
+//             e.printStackTrace();
+//             // Handle JPA exceptions
+//             transaction.rollback();
+//         } finally {
+//             // JPA: Close the EntityManager and EntityManagerFactory
+//             entityManager.close();
+//             entityManagerFactory.close();
+//         }
+//     }
+// }
 
