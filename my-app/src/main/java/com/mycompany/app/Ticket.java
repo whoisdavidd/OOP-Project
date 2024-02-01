@@ -1,3 +1,5 @@
+package com.mycompany.app;
+
 public class Ticket {
     private String eventSelection;
     private int numberoftickets;
