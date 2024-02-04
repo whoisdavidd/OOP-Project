@@ -15,6 +15,7 @@ public class EventManager extends User {
     }
 
     // adding events method
+    // Maybe we can use eventID?
 
     public void addEvent(String eventName, String venue, String date, String time, 
     double ticketPrice, int numOfTicketsAvail){

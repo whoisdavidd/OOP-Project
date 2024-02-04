@@ -1,14 +1,15 @@
 package Events;
 
 public class Event {
+    // add in an event id?
     private String eventName;
     private String venue;
-    private String date; // In the form of DDMMYYYY
-    private String time; // In the form of 24h e.g. HHMM (2359)
+    private String date; // In the form of DDMMYYYY (Can use Date() if u want)
+    private String time; // In the form of 24h e.g. HHMM (2359) (i think shld have another function for this)
     private double ticketPrice;
     private int numOfTicketsAvail; 
 
-    // constructor
+    // constructor    
 
     public Event(String name, String venue, String date, String time, double ticketPrice, int numOfTicketsAvail){
         this.eventName = name;
