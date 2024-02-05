@@ -6,7 +6,7 @@ import Services.ReportGenerator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Min_test {
+public class ReportGeneratorTest {
     public static void main(String[] args) {
         EventManager eventManager = new EventManager("event_manager", "password");
 
