@@ -8,8 +8,7 @@ import java.util.List;
 public class ReportGenerator {
     
     public void generateTicketSalesReport(List<Event> events) {
-        // Logic to generate ticket sales report
-        for (Event event : events) {
+        for (Event event : events) { //enhanced for loop smth like for element in events python
             System.out.println("Event: " + event.getEventName());
             System.out.println("Tickets Sold: " + (event.getEventTotalTickets() - event.getEventAvailableTickets()));
             System.out.println("-----------------------------");
@@ -17,7 +16,6 @@ public class ReportGenerator {
     }
 
     public void generateRevenueReport(List<Event> events) {
-        // Logic to generate revenue report
         double totalRevenue = 0.0;
         for (Event event : events) {
             double eventRevenue = (event.getEventTotalTickets() - event.getEventAvailableTickets()) * event.getTicketPrice();
