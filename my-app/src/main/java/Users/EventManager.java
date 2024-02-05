@@ -18,9 +18,9 @@ public class EventManager extends User {
     // Maybe we can use eventID?
 
     public void addEvent(String eventName, String venue, String date, String time, 
-    double ticketPrice, int numOfTicketsAvail){
+    double ticketPrice, int numOfTickets, int numOfTicketsAvail){
         // add to database ????
-        Event e = new Event(eventName, venue, date, time, ticketPrice, numOfTicketsAvail); // creates new Event object
+        Event e = new Event(eventName, venue, date, time, ticketPrice,numOfTickets, numOfTicketsAvail); // creates new Event object
         this.eventList.add(e); // adds Event object to ArrayList of events.
     }
 

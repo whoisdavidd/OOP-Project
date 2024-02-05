@@ -7,16 +7,18 @@ public class Event {
     private String date; // In the form of DDMMYYYY (Can use Date() if u want)
     private String time; // In the form of 24h e.g. HHMM (2359) (i think shld have another function for this)
     private double ticketPrice;
-    private int numOfTicketsAvail; 
+    private int numOfTicketsTotal; //total number of tickets 
+    private int numOfTicketsAvail; //total number of available tickets (total-sold)
 
     // constructor    
 
-    public Event(String name, String venue, String date, String time, double ticketPrice, int numOfTicketsAvail){
+    public Event(String name, String venue, String date, String time, double ticketPrice, int numOfTicketsTotal, int numOfTicketsAvail){
         this.eventName = name;
         this.venue = venue;
         this.date = date;
         this.time = time;
         this.ticketPrice = ticketPrice;
+        this.numOfTicketsTotal = numOfTicketsTotal;
         this.numOfTicketsAvail = numOfTicketsAvail;
     }
     
@@ -35,8 +37,11 @@ public class Event {
     public String getEventTime(){
         return this.time;
     }
-    public double getEventPrice(){
+    public double getTicketPrice(){
         return this.ticketPrice;
+    }
+    public int getEventTotalTickets(){
+        return this.numOfTicketsTotal;
     }
     public int getEventAvailableTickets(){
         return this.numOfTicketsAvail;
@@ -59,8 +64,12 @@ public class Event {
     public void updateEventPrice(double newTicketPrice){
         this.ticketPrice = newTicketPrice;
     } 
-    
+
     public void updateEventTicketNum(int newNumOfTickets){
-        this.numOfTicketsAvail = newNumOfTickets;
+        this.numOfTicketsTotal = newNumOfTickets;
+    }
+    
+    public void updateAvailEventTicketNum(int newNumOfTicketsAvail){
+        this.numOfTicketsAvail = newNumOfTicketsAvail;
     } 
 }
