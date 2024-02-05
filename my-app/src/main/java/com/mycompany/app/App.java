@@ -1,13 +1,14 @@
 package com.mycompany.app;
 
-/**
- * Hello world!
- *
- */
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        StudentDao studentDao = new StudentDao();
+        Student student = new Student("Ram","adsa","yoruma@gmail");
+        studentDao.saveStudent(student);
+        
+
     }
 }

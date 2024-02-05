@@ -2,7 +2,7 @@ package com.mycompany.app;
 
 import java.sql.*;
 
-public class JBDC {
+public class JDBC {
     public static void main(String[] args){
         String url = "jdbc:mysql://localhost:3306/jdbc";
         String username = "root";
