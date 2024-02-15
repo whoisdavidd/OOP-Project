@@ -1,28 +1,46 @@
-package com.mycompany.app;
+package com.mycompany.app.User;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.mycompany.app.Hibernate.HibernateUtil;
+import com.mycompany.app.Hibernate.*;
+import com.mycompany.app.User.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentDao implements IStudentDao {
-    // saveStudent
-    // getAllStudents
-    // getStudentById
-    // UpdateStudent
-    // DeleteStudent
+public class UserDao implements UserInterface {
+    // Save User
+    // getAllUsers
+    // getUserID
+    // UpdateUserPassword
+    // GetAllUsers
+    // DeleteUsers
 
-    // save entity
-    public void saveStudent(Student student) {
+    // Create or Save new user
+    public void saveUser(UserEntity user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
             transaction = session.beginTransaction();
             // save student
-            session.save(student);
+            session.save(user);
+            transaction.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // UpdateUser method
+    public void UpdateUser(UserEntity user) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start the transaction
+            transaction = session.beginTransaction();
+            // save student
+            session.saveOrUpdate(user);
             transaction.commit();
 
         } catch (Exception e) {
@@ -32,32 +50,15 @@ public class StudentDao implements IStudentDao {
         }
     }
 
-    // update
-    public void updateStudent(Student student) {
+    // GetUserID method
+    public UserEntity GetUserId(long id) {
         Transaction transaction = null;
+        UserEntity user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
             transaction = session.beginTransaction();
             // save student
-            session.saveOrUpdate(student);
-            transaction.commit();
-
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-    }
-
-    // get student
-    public Student getStudentById(long id) {
-        Transaction transaction = null;
-        Student student = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // start the transaction
-            transaction = session.beginTransaction();
-            // save student
-            student = session.get(Student.class, id);
+            user = session.get(UserEntity.class, id);
             // student = session.load(Student.class,id);
             transaction.commit();
 
@@ -66,20 +67,21 @@ public class StudentDao implements IStudentDao {
                 transaction.rollback();
             }
         }
-        return student;
+        return user;
     }
 
+    // GetAllUsers method
     @SuppressWarnings("unchecked")
-    public List<Student> getAllStudents() {
+    public List<UserEntity> getAllUsers() {
         Transaction transaction = null;
-        List<Student> students = null;
+        List<UserEntity> user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
             transaction = session.beginTransaction();
             // save student
-            students = session.createQuery("from Student").list();
-            if (students == null) {
-                students = new ArrayList<>(); // or any other appropriate default value
+            user = session.createQuery("from User").list();
+            if (user == null) {
+                user = new ArrayList<>(); // or any other appropriate default value
             }
             // student = session.load(Student.class,id)
             // commit the transacction
@@ -89,19 +91,19 @@ public class StudentDao implements IStudentDao {
                 transaction.rollback();
             }
         }
-        return students;
+        return user;
     }
 
-    // get student
-    public void deleteStudent(long id) {
+    // DeleteUser
+    public void DeleteUser(long id) {
         Transaction transaction = null;
-        Student student = null;
+        UserEntity user = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
             transaction = session.beginTransaction();
             // save student
-            student = session.get(Student.class, id);
-            session.delete(student);
+            user = session.get(UserEntity.class, id);
+            session.delete(user);
             // student = session.load(Student.class,id);
             transaction.commit();
 
@@ -113,9 +115,9 @@ public class StudentDao implements IStudentDao {
     }
 
     @Override
-    public Student getStudyByID(long id) {
+    public List<UserEntity> GetAllUsers() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getStudyByID'");
+        throw new UnsupportedOperationException("Unimplemented method 'GetAllUsers'");
     }
 
 }

@@ -12,9 +12,9 @@ import javax.persistence.Table;
 // java class
 public class Student {
 
-    @Id // primary key
+    @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "Id")
     private long id;
     @Column(name = "first_Name")
     private String firstName;
