@@ -1,4 +1,4 @@
-package com.mycompany.app.Hibernate;
+package com.Hibernate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,8 +14,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import com.mycompany.app.Student;
-import com.mycompany.app.User.*;
+import com.Customer.Customer;
+import com.User.*;
 import com.mysql.cj.Session;
 
 
@@ -35,16 +35,13 @@ public class HibernateUtil{
                 settings.put(Environment.PASS, "");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQLDialect");
 
-                // Check if the table exists
-                // boolean tableExists = checkIfTableExists("User", settings);
-
                 // If the table exists, set HBM2DDL_AUTO to "update"; otherwise, set it to "create"
                 settings.put(Environment.HBM2DDL_AUTO,  "update");
 
                 settings.put(Environment.SHOW_SQL,"true");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(UserEntity.class);
-                
+                configuration.addAnnotatedClass(Customer.class);
 
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
                 SessionFactory = configuration.buildSessionFactory(serviceRegistry);

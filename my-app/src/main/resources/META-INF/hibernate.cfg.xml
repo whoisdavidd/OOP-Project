@@ -25,10 +25,11 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Mention annotated entity class -->
-        <mapping class="com.mycompany.app.JPA.main"/>
+        <mapping class="com.User.UserEntity"/>
+        <mapping class="com.Customer.Customer"/>
 
-        <!-- Hibernate mapping -->
-        <mapping class="com.mycompany.app.Student"/>
+        <!-- Root class -->
+        
 
     </session-factory>
 </hibernate-configuration>

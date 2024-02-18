@@ -1,12 +1,13 @@
-package com.mycompany.app.User;
+package com.User;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.mycompany.app.Hibernate.HibernateUtil;
-import com.mycompany.app.Hibernate.*;
-import com.mycompany.app.User.*;
+import com.Hibernate.HibernateUtil;
+import com.Hibernate.*;
+import com.User.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +20,18 @@ public class UserDao implements UserInterface {
     // DeleteUsers
 
     // Create or Save new user
+    @SuppressWarnings("null")
     public void saveUser(UserEntity user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
-            transaction = session.beginTransaction();
-            // save student
-            session.save(user);
-            transaction.commit();
-
+            Serializable userId = session.save(user);
+        if (userId != null) {
+            System.out.println("User saved with ID: " + userId);
+        } else {
+            System.out.println("Failed to save user.");
+        }
+        transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,9 +61,9 @@ public class UserDao implements UserInterface {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             // start the transaction
             transaction = session.beginTransaction();
-            // save student
+            // save user
             user = session.get(UserEntity.class, id);
-            // student = session.load(Student.class,id);
+            
             transaction.commit();
 
         } catch (Exception e) {

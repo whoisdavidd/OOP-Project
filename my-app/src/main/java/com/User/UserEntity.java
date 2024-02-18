@@ -1,14 +1,20 @@
-package com.mycompany.app.User;
+package com.User;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.*;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.InheritanceType;
+
+import com.Customer.Customer;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "user") // add table annotation
 // java class
 public class UserEntity {
@@ -21,6 +27,10 @@ public class UserEntity {
     private String Username;
     @Column(name = "Password")
     private String Password;
+
+
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
 
     public UserEntity() {
     }

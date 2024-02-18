@@ -1,4 +1,4 @@
-package com.mycompany.app.User;
+package com.User;
 
 
 import java.util.List;
