@@ -1,1 +1,1 @@
-java test/java/EventManagerTest
+java -cp test/java EventManagerTest
