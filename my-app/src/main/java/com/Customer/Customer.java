@@ -1,49 +1,56 @@
 package com.Customer;
+
 import com.User.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "customer")
-public class Customer extends UserEntity{
+public class Customer {
 
     @Id
-    @Column(name = "Id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "Username")
+    private String username;
+    @Column(name = "Password")
+    private String Password;
 
     @Column(name = "EmailAddress")
     private String emailAddress;
 
     @Column(name = "AccountBalance")
     private double accountBalance;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    
     private UserEntity user;
 
     public Customer() {
+        // Default constructor required by JPA
     }
 
-    public Customer(String emailAddress, double accountBalance, UserEntity user) {
+    public Customer(long id, String username, String password, String emailAddress, double accountBalance) {
+        this.id = id;
+        this.username = username;
+        this.Password  =password;
         this.emailAddress = emailAddress;
         this.accountBalance = accountBalance;
-        this.user = user;
     }
 
     // Getters and setters
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -61,11 +68,6 @@ public class Customer extends UserEntity{
         this.accountBalance = accountBalance;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+  
 }

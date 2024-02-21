@@ -14,11 +14,11 @@ public class App
     public static void main( String[] args )
     {
         UserDao UserDao = new UserDao();
-        UserEntity user = new UserEntity("Rams","Pssword123");
+        UserEntity user = new UserEntity("Rams","Password123");
         UserDao.saveUser(user);
-        // CustomerDao customerDao = new CustomerDao();
-        // Customer customer = new Customer("rams@example.com", 100.0, user);
-        // customerDao.UpdateCustomer(customer);
+        CustomerDao customerDao = new CustomerDao();
+        Customer customer = new Customer(user.getId(),user.getUsername(), user.getPassword(),"rams@example.com", 100.0);
+        customerDao.UpdateCustomer(customer);
 
         // Customer savedCustomer = customerDao.GetCustomerById(customer.getId());
         // if (savedCustomer != null) {
