@@ -1,0 +1,6 @@
+my-app/src/compile.sh
+my-app/src/compile.bat
+my-app/src/run.sh
+my-app/src/run.bat
+my-app/src/main/**/*.class
+my-app/target/**/*.class
