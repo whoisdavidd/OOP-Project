@@ -1,4 +1,4 @@
-package Events;
+package com.example.demo.entityFile.Events;
 
 public class TicketingOption {
     private String tierName;

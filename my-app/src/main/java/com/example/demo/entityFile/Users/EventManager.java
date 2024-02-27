@@ -1,7 +1,7 @@
-package Users;
+package com.example.demo.entityFile.Users;
 
 import java.util.ArrayList;
-import Events.Event;
+import com.example.demo.entityFile.Events.Event;
 
 public class EventManager extends User {
     // variables

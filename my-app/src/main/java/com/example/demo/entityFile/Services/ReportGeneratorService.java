@@ -1,6 +1,6 @@
-package Services;
+package com.example.demo.entityFile.Services;
 
-import Events.Event;
+import com.example.demo.entityFile.Events.Event;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;

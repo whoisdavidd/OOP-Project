@@ -1,19 +1,19 @@
-package Services;
+package com.example.demo.entityFile.Services;
 
-import Users.Customer;
-import Events.*;
+import com.example.demo.entityFile.Users.*;
+import com.example.demo.entityFile.Events.*;
+import com.example.demo.entityFile.*;
+
 
 public class BookingService {
 
     public Ticket bookTicket(Customer customer, int eventID, int numTickets) {
         // Process the booking of ticket
-        //
         return null; // Newly booked ticket
     }
 
-    public boolean cancelBooking(int ticketID) {
+    public boolean cancelBooking(Ticket ticket) {
         // Refund amount to the customer, update ticket availability, etc.
-        //verify time details
         return true; // or false
     }
 

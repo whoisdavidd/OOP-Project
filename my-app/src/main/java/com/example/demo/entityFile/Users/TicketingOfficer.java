@@ -1,4 +1,4 @@
-package Users;
+package com.example.demo.entityFile.Users;
 
 public class TicketingOfficer extends User {
 
