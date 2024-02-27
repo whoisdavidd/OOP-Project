@@ -43,6 +43,7 @@
 	</dependencies>
 
 	<build>
+	<finalName>app</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -54,13 +55,14 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<executions>
 					<execution>
-						<id>npm build the vue app</id>
+						
+						<id>npm-build-vue-app</id>
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<workingDirectory>src/myVueApp</workingDirectory>
+							<workingDirectory>src/myVueApp/oopproject</workingDirectory>
 							<executable>npm</executable>
 							<arguments>
 								<argument>run</argument>
@@ -76,7 +78,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>Copy my VueJS app into my Spring Boot target static folder</id>
+						<id>Copy my Vue.js app into my Spring Boot target static folder</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
@@ -85,7 +87,7 @@
 							<outputDirectory>target/classes/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/myVueApp/dist</directory>
+									<directory>src/myVueApp/oopproject/dist</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
