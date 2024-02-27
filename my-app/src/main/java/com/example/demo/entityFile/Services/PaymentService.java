@@ -1,6 +1,6 @@
-package Services;
+package com.example.demo.entityFile.Services;
 
-import Users.Customer;
+import com.example.demo.entityFile.Users.Customer;
 
 public class PaymentService {
     public boolean processPayment(Customer customer, double amount) {

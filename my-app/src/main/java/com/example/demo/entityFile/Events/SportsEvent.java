@@ -1,4 +1,4 @@
-package Events;
+package com.example.demo.entityFile.Events;
 import java.util.ArrayList;
 
 public class SportsEvent extends Event {

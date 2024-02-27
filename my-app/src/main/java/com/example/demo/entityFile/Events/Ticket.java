@@ -1,4 +1,5 @@
-package Events;
+package com.example.demo.entityFile.Events;
+
 
 import java.util.Date;
 

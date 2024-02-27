@@ -1,20 +1,53 @@
-package Users;
+package com.example.demo.entityFile.Users;
 
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "user")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "USERNAME")
     private String username;
+
+
+    @Column(name = "PASSWORD")
     private String password;
 
-    public User(String username, String pw){
+
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
+    public User() {
+
+    }
+    public User(String username, String password) {
+        super();
         this.username = username;
-        this.password = pw;
+        this.password = password;
+
+    }
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUsername(){ 
-        return this.username;
-    }
-
-    public String getPassword(){ // potential security risk, watch privacy and necessity 
-        return this.password;
-    }
-    
 }
