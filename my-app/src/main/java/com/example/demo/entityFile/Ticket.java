@@ -1,37 +1,46 @@
-package com.example.demo.entityFile;
+package Events;
+
+import java.util.Date;
 
 public class Ticket {
-    private String eventSelection;
-    private int numberoftickets;
-    private double Paymentdetails;
+    private static int ticketCounter = 1;
 
-    public Ticket(String eventSelection, int numberoftickets, double Paymentdetails){
-        this.eventSelection = eventSelection;
-        this.numberoftickets = numberoftickets;
-        this.Paymentdetails = Paymentdetails;
+    private int ticketID;
+    private int eventID;
+    private int customerID;
+    private Date bookingDate;
+
+    public Ticket(int eventID, int customerID) {
+        this.ticketID = ticketCounter++;
+        this.eventID = eventID;
+        this.customerID = customerID;
+        this.bookingDate = new Date(); // Current date and time when the ticket is booked
     }
 
-    public String getEventSelection() {
-        return eventSelection;
+    public Ticket(int ticketID, int eventID, int customerID, Date bookingDate){
+        this.ticketID = ticketID;
+        this.eventID = eventID;
+        this.customerID = customerID;
+        this.bookingDate = bookingDate;
     }
 
-    public void setEventSelection(String eventSelection) {
-        this.eventSelection = eventSelection;
+    // Getters and setters for the attributes
+
+    public int getTicketID() {
+        return ticketID;
     }
 
-    public int getNumberoftickets() {
-        return numberoftickets;
+    public int getEventID() {
+        return eventID;
     }
 
-    public void setNumberoftickets(int numberoftickets) {
-        this.numberoftickets = numberoftickets;
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public double getPaymentdetails() {
-        return Paymentdetails;
+    public Date getBookingDate() {
+        return bookingDate;
     }
 
-    public void setPaymentdetails(double paymentdetails) {
-        Paymentdetails = paymentdetails;
-    }
 }
+
