@@ -18,6 +18,7 @@ public class User {
     @Column(name = "PASSWORD")
     private String password;
 
+
     @OneToOne(mappedBy = "user")
     private Customer customer;
 

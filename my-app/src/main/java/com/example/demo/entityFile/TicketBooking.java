@@ -3,6 +3,7 @@ package com.example.demo.entityFile;
 import java.util.Date;
 import java.util.Random;
 
+
 public class TicketBooking extends Ticket {
     private Date bookingDate;
     private String bookingStatus;
