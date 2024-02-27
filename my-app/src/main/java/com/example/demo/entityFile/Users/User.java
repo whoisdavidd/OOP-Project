@@ -4,7 +4,19 @@ public class User {
     private String username;
     private String password;
 
+<<<<<<< Updated upstream
     public User(String username, String pw){
+=======
+
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
+
+    public User() {
+        
+    }
+    public User(String username, String password) {
+        super();
+>>>>>>> Stashed changes
         this.username = username;
         this.password = pw;
     }
