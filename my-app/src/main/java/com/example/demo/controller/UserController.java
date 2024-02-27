@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entityFile.*;
+import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.entityFile.Users.User;
 import com.example.demo.exception.*;
 import com.example.demo.repository.*;
 
@@ -22,8 +23,6 @@ import com.example.demo.repository.*;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CustomerRepository customerRepository;
 
     // get all users
     @GetMapping
@@ -31,40 +30,41 @@ public class UserController {
         return this.userRepository.findAll();
     }
 
-    // get user by id
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable(value = "id") long userId) {
-        return this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+    // get user by username
+    @GetMapping("/{username}")
+    public User getUserByUsername(@PathVariable(value = "username") String username) {
+        return this.userRepository.findById(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
     }
 
     // create user
     @PostMapping
     public User createUser(@RequestBody User user) {
-        User savedUser = this.userRepository.save(user);
-        Customer customer = new Customer();
-        customer.setId(savedUser.getId());
-        customer.setUsername(savedUser.getUsername());
-        customer.setPassword(savedUser.getPassword());
-        this.customerRepository.save(customer);
-        return savedUser;
+        boolean existingUser = this.userRepository.existsById(user.getUsername());
+        if (existingUser){
+            throw new IllegalArgumentException("The user already exists.");
+        }else{
+            User savedUser = this.userRepository.save(user);
+            return savedUser;
+        }
+        
     }
 
     // update user
-    @PutMapping("/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable("id") long userId) {
-        User existingUser = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+    @PutMapping("/{username}")
+    public User updateUser(@RequestBody User user, @PathVariable("username") String username) {
+        User existingUser = this.userRepository.findById(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         existingUser.setUsername(user.getUsername());
         existingUser.setPassword(user.getPassword());
 
         return this.userRepository.save(existingUser);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") long userId) {
-        User existingUser = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
+    @DeleteMapping("/{username}")
+    public ResponseEntity<User> deleteUser(@PathVariable("username") String username) {
+        User existingUser = this.userRepository.findById(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         this.userRepository.delete(existingUser);
         return ResponseEntity.ok().build();
     }

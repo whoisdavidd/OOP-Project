@@ -1,7 +1,7 @@
-package Users;
+package com.example.demo.entityFile.Users;
 
 import java.util.ArrayList;
-import Events.Event;
+import com.example.demo.entityFile.Events.Event;
 
 public class EventManager extends User {
     // variables
@@ -58,7 +58,7 @@ public class EventManager extends User {
     public void updateEventPrice(String eventName, double newTicketPrice){
         for (int i=0; i<this.eventList.size();i++){
             if (this.eventList.get(i).getEventName().equals(eventName)){
-                this.eventList.get(i).updateEventPrice(newTicketPrice);
+                this.eventList.get(i).updateTicketPrice(newTicketPrice);
             }
         }
     } 
@@ -66,7 +66,7 @@ public class EventManager extends User {
     public void updateEventTicketNum(String eventName, int newNumOfTickets){
         for (int i=0; i<this.eventList.size();i++){
             if (this.eventList.get(i).getEventName().equals(eventName)){
-                this.eventList.get(i).updateEventTicketNum(newNumOfTickets);
+                this.eventList.get(i).updateNumTicketsAvailable(newNumOfTickets);
             }
         }
     } 

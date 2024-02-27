@@ -11,7 +11,7 @@
     import org.springframework.web.bind.annotation.RequestMapping;
     import org.springframework.web.bind.annotation.RestController;
 
-    import com.example.demo.entityFile.*;
+    import com.example.demo.entityFile.Users.Customer;
     import com.example.demo.exception.*;
     import com.example.demo.repository.*;
 
