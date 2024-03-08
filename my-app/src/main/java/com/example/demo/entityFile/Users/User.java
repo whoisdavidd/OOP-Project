@@ -8,22 +8,30 @@ import jakarta.persistence.*;
 public class User {
 
     @Id
-    @Column(name = "USERNAME")
+    @Column(name = "username")
     private String username;
 
 
-    @Column(name = "PASSWORD")
+    @Column(name = "password")
     private String password;
 
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Customer customer;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private EventManager eventManager;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private TicketingOfficer ticketingOfficer;
 
     public User() {
 
     }
     public User(String username, String password) {
-        super();
         this.username = username;
         this.password = password;
 

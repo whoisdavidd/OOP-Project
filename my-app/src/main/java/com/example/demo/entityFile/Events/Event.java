@@ -27,6 +27,9 @@ public class Event {
     @Column(name = "numTicketsAvailable")
     private int numTicketsAvailable; 
 
+    @Column(name = "numTicketsSold")
+    private int numTicketsSold; 
+
     @Column(name = "cancellationFee")
     private double cancellationFee;
 
@@ -46,6 +49,7 @@ public class Event {
         this.eventTime = eventTime;
         this.ticketPrice = ticketPrice;
         this.numTicketsAvailable = numTicketsAvailable;
+        this.cancellationFee = 0;
 
     }
 
@@ -87,6 +91,11 @@ public class Event {
     public int getNumTicketsAvailable(){
         return this.numTicketsAvailable;
     }
+
+    public int getNumTicketsSold(){
+        return this.numTicketsSold;
+    }
+
     public double getCancellationFee(){
         return this.cancellationFee;
     }
@@ -117,6 +126,10 @@ public class Event {
     
     public void updateNumTicketsAvailable(int newNumOfTickets){
         this.numTicketsAvailable = newNumOfTickets;
+    } 
+    
+    public void updateNumTicketsSold(int newNumOfTickets){
+        this.numTicketsSold = newNumOfTickets;
     } 
 
     public void updateCancellationFee(double newCancellationFee){

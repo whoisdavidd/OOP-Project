@@ -1,27 +1,28 @@
 package com.example.demo.entityFile.Users;
 
 import java.util.ArrayList;
+
 import com.example.demo.entityFile.Events.Event;
 
-public class EventManager extends User {
+public class EventManager{
     // variables
-    ArrayList<Event> eventList = new ArrayList<>();
+    @Id
+    @Column(name = "username")
+    private String username;
+
+
+    @Column(name = "password")
+    private String password;
+
+
 
     // constructor
     
-    public EventManager(String username, String password){
-        super(username,password);
-        // get from database to populate eventList?
+    public EventManager(){
+
     }
 
-    // adding events method
-
-    public void addEvent(String eventName, String venue, String date, String time, 
-    double ticketPrice, int numOfTicketsAvail){
-        // add to database ????
-        Event e = new Event(eventName, venue, date, time, ticketPrice, numOfTicketsAvail); // creates new Event object
-        this.eventList.add(e); // adds Event object to ArrayList of events.
-    }
+    // adding events metho
 
     // getter method
 

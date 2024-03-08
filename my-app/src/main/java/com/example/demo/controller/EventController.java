@@ -37,6 +37,7 @@ public class EventController {
         existingEvent.updateEventTime(event.getEventTime());
         existingEvent.updateTicketPrice(event.getTicketPrice());
         existingEvent.updateNumTicketsAvailable(event.getNumTicketsAvailable());
+        existingEvent.updateNumTicketsSold(event.getNumTicketsSold());
         existingEvent.updateCancellationFee(event.getCancellationFee());
         return this.eventRepository.save(existingEvent);
     }
@@ -45,10 +46,33 @@ public class EventController {
         return this.eventRepository.findAll();
     }
 
-    // get user by id
+    // get event by id
     @GetMapping("/{id}")
     public Event getEventById(@PathVariable(value = "id") long eventId) {
         return this.eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+    }
+
+    @GetMapping("/sales/{id}")
+    public Event getNumTicketsSoldById(@PathVariable(value = "id") long eventId) {
+        Event e = this.eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+        
+        return e.getNumTicketsSold();
+    }
+
+    @GetMapping("/revenue/{id}")
+    public Event getRevenueById(@PathVariable(value = "id") long eventId) {
+        Event e = this.eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+        
+        return e.getNumTicketsSold() * e.getTicketPrice();
+    }
+
+    @DeleteMapping("/{id}") // might need to consider the tickets and refund idk
+    public void deleteEvent(@PathVariable(value = "id") long eventId) {
+        this.eventRepository.deleteById(eventId)
+        .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+
     }
 }
