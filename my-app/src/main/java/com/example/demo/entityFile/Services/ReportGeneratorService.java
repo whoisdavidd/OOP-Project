@@ -8,7 +8,7 @@ import java.util.List;
 public class ReportGeneratorService {
     
     public void generateTicketSalesReport(List<Event> events) {
-        for (Event event : events) { //enhanced for loop smth like for element in events python
+        for (Event event : events) { 
             System.out.println("Event: " + event.getEventName());
             System.out.println("Tickets Sold: " + (event.getEventAvailableTickets() - event.getEventAvailableTickets()));
             System.out.println("-----------------------------");
