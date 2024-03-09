@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "user")
 public class User {
 
@@ -16,31 +18,23 @@ public class User {
     private String password;
 
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Customer customer;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @PrimaryKeyJoinColumn
+    // private Customer customer;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private EventManager eventManager;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @PrimaryKeyJoinColumn
+    // private EventManager eventManager;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private TicketingOfficer ticketingOfficer;
+    // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    // @PrimaryKeyJoinColumn
+    // private TicketingOfficer ticketingOfficer;
 
     public User() {
 
     }
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-
-    }
     public String getUsername() {
         return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
     }
     public String getPassword() {
         return password;

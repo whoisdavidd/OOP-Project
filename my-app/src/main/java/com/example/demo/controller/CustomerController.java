@@ -21,38 +21,32 @@
         @Autowired //automatically inject an instance of customer repository
         private CustomerRepository customerRepository;
 
-        @PostMapping
+        @PostMapping // works
         public Customer createCustomer(@RequestBody Customer customer) {
+            customer.setAccountBalance(5000);
             Customer savedCustomer = this.customerRepository.save(customer);
             this.customerRepository.save(customer);
             return savedCustomer;
         }
-        @PutMapping("/{id}")
-        public Customer updateCustomer(@RequestBody Customer customer, @PathVariable("id") long userId) {
-            Customer existingUser = this.customerRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-            existingUser.setEmailAddress(customer.getEmailAddress());
-            existingUser.setAccount_Balance(customer.getAccount_Balance());
+        @PutMapping("/{username}") // works but can only update email and accountbalance, not username as well
+        public Customer updateCustomer(@RequestBody Customer customer, @PathVariable("username") String username) {
+            Customer existingCustomer = this.customerRepository.findById(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
+            existingCustomer.setEmailAddress(customer.getEmailAddress());
+            existingCustomer.setAccountBalance(customer.getAccountBalance());
+            existingCustomer.setPassword(customer.getPassword());
 
-            return this.customerRepository.save(existingUser);
+            return this.customerRepository.save(existingCustomer);
         }
-        @GetMapping
+        @GetMapping 
         public List<Customer> getAllCustomers() {
             return this.customerRepository.findAll();
         }
 
-        // get user by id
-        @GetMapping("/{id}")
-        public Customer getCustomerById(@PathVariable(value = "id") long userId) {
-            return this.customerRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-        }
-
-        @PostMapping("/saveCustomer")
-        public Customer saveCustomer(@RequestBody Customer customer) {
-            System.out.println("Customer save called...");
-            Customer outCustomer = customerRepository.save(customer);
-            System.out.println("Saved Customer :: " + outCustomer);
-            return outCustomer;
+        // get user by username
+        @GetMapping("/{username}")
+        public Customer getCustomerById(@PathVariable(value = "username") String username) {
+            return this.customerRepository.findById(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         }
     }

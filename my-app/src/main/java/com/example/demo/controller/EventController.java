@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +56,7 @@ public class EventController {
     }
 
     @GetMapping("/sales/{id}")
-    public Event getNumTicketsSoldById(@PathVariable(value = "id") long eventId) {
+    public int getNumTicketsSoldById(@PathVariable(value = "id") long eventId) {
         Event e = this.eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
         
@@ -62,7 +64,7 @@ public class EventController {
     }
 
     @GetMapping("/revenue/{id}")
-    public Event getRevenueById(@PathVariable(value = "id") long eventId) {
+    public double getRevenueById(@PathVariable(value = "id") long eventId) {
         Event e = this.eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
         
@@ -70,9 +72,11 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}") // might need to consider the tickets and refund idk
-    public void deleteEvent(@PathVariable(value = "id") long eventId) {
-        this.eventRepository.deleteById(eventId)
-        .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+    public ResponseEntity<Event> deleteEvent(@PathVariable(value = "id") long eventId) {
+        Event existingEvent = this.eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+        this.eventRepository.delete(existingEvent);
+        return ResponseEntity.ok().build();
 
     }
 }

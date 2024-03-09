@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entityFile.Users.Customer;
 import com.example.demo.entityFile.Users.User;
 import com.example.demo.exception.*;
 import com.example.demo.repository.*;
@@ -55,7 +54,6 @@ public class UserController {
     public User updateUser(@RequestBody User user, @PathVariable("username") String username) {
         User existingUser = this.userRepository.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        existingUser.setUsername(user.getUsername());
         existingUser.setPassword(user.getPassword());
 
         return this.userRepository.save(existingUser);

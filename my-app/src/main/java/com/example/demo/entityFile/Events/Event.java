@@ -38,34 +38,6 @@ public class Event {
     public Event(){
 
     }
-
-    public Event(String name, String eventVenue, String eventDate, 
-    String eventTime, double ticketPrice, int numTicketsAvailable){ // without cancellation fee
-        
-        // Automatically create eventID based on latest eventID?
-        this.eventName = name;
-        this.eventVenue = eventVenue;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
-        this.ticketPrice = ticketPrice;
-        this.numTicketsAvailable = numTicketsAvailable;
-        this.cancellationFee = 0;
-
-    }
-
-    public Event(String name, String eventVenue, String eventDate, 
-    String eventTime, double ticketPrice, int numTicketsAvailable, double cancellationFee){ // with cancellation fee
-
-        // Automatically create eventID based on latest eventID?
-        this.eventName = name;
-        this.eventVenue = eventVenue;
-        this.eventDate = eventDate;
-        this.eventTime = eventTime;
-        this.ticketPrice = ticketPrice;
-        this.numTicketsAvailable = numTicketsAvailable;
-        this.cancellationFee = cancellationFee;
-
-    }
     
     // getter methods
     
