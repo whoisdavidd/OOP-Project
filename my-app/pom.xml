@@ -63,7 +63,7 @@
 							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<workingDirectory>src/myVueApp/oopproject</workingDirectory>
+							<workingDirectory>src/myVueApp/test1</workingDirectory>
 							<executable>npm</executable>
 							<arguments>
 								<argument>run</argument>
@@ -89,7 +89,7 @@
 							<outputDirectory>target/classes/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/myVueApp/oopproject/dist</directory>
+									<directory>src/myVueApp/test1/dist</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
