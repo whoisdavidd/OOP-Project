@@ -13,6 +13,7 @@
     import com.example.demo.entityFile.Users.TicketingOfficer;
     import com.example.demo.exception.*;
     import com.example.demo.repository.*;
+    import jakarta.validation.*;
 
     @RestController
     @RequestMapping("/api/ticketingOfficer")
@@ -21,7 +22,7 @@
         private TicketingOfficerRepository ticketingOfficerRepository;
 
         @PostMapping //works
-        public TicketingOfficer createTicketingOfficer(@RequestBody TicketingOfficer ticketingOfficer) {
+        public TicketingOfficer createTicketingOfficer(@Valid @RequestBody TicketingOfficer ticketingOfficer) {
             TicketingOfficer savedTicketingOfficer = this.ticketingOfficerRepository.save(ticketingOfficer);
             this.ticketingOfficerRepository.save(ticketingOfficer);
             return savedTicketingOfficer;
@@ -30,7 +31,7 @@
         // no put mapping as TO has no unique variables
 
         // @PutMapping("/{username}")
-        // public TicketingOfficer updateTicketingOfficer(@RequestBody TicketingOfficer TicketingOfficer, @PathVariable("username") String username) {
+        // public TicketingOfficer updateTicketingOfficer(@Valid @RequestBody TicketingOfficer TicketingOfficer, @PathVariable("username") String username) {
         //     TicketingOfficer existingUser = this.TicketingOfficerRepository.findById(username)
         //             .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         //     return this.TicketingOfficerRepository.save(existingUser);

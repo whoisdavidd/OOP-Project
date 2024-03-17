@@ -3,17 +3,11 @@
     import java.util.List;
 
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.PutMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
-
+    import org.springframework.web.bind.annotation.*;
     import com.example.demo.entityFile.Users.Customer;
     import com.example.demo.exception.*;
     import com.example.demo.repository.*;
+    import jakarta.validation.*;
 
     @RestController
     @RequestMapping("/api/customer")
@@ -22,14 +16,14 @@
         private CustomerRepository customerRepository;
 
         @PostMapping // works
-        public Customer createCustomer(@RequestBody Customer customer) {
+        public Customer createCustomer(@Valid @RequestBody Customer customer) {
             customer.setAccountBalance(5000);
             Customer savedCustomer = this.customerRepository.save(customer);
             this.customerRepository.save(customer);
             return savedCustomer;
         }
         @PutMapping("/{username}") // works but can only update email and accountbalance, not username as well
-        public Customer updateCustomer(@RequestBody Customer customer, @PathVariable("username") String username) {
+        public Customer updateCustomer(@Valid @RequestBody Customer customer, @PathVariable("username") String username) {
             Customer existingCustomer = this.customerRepository.findById(username)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
             existingCustomer.setEmailAddress(customer.getEmailAddress());

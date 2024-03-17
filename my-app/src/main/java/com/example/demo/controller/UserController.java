@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.*;
 
 import com.example.demo.entityFile.Users.User;
 import com.example.demo.exception.*;
@@ -38,7 +39,7 @@ public class UserController {
 
     // create user
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         boolean existingUser = this.userRepository.existsById(user.getUsername());
         if (existingUser){
             throw new IllegalArgumentException("The user already exists.");
@@ -51,7 +52,7 @@ public class UserController {
 
     // update user
     @PutMapping("/{username}")
-    public User updateUser(@RequestBody User user, @PathVariable("username") String username) {
+    public User updateUser(@Valid @RequestBody User user, @PathVariable("username") String username) {
         User existingUser = this.userRepository.findById(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         existingUser.setPassword(user.getPassword());

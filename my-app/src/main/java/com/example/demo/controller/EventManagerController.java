@@ -3,12 +3,8 @@
     import java.util.List;
 
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.bind.annotation.*;
+    import jakarta.validation.*;
 
     import com.example.demo.entityFile.Users.EventManager;
     import com.example.demo.exception.*;
@@ -21,7 +17,7 @@
         private EventManagerRepository eventManagerRepository;
 
         @PostMapping //works
-        public EventManager createEventManager(@RequestBody EventManager eventManager) {
+        public EventManager createEventManager(@Valid @RequestBody EventManager eventManager) {
             EventManager savedEventManager = this.eventManagerRepository.save(eventManager);
             this.eventManagerRepository.save(eventManager);
             return savedEventManager;
@@ -30,7 +26,7 @@
         // no put mapping as EM has no unique variables
 
         // @PutMapping("/{username}")
-        // public EventManager updateEventManager(@RequestBody EventManager eventManager, @PathVariable("username") String username) {
+        // public EventManager updateEventManager(@Valid @RequestBody EventManager eventManager, @PathVariable("username") String username) {
         //     EventManager existingUser = this.eventManagerRepository.findById(username)
         //             .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         //     return this.eventManagerRepository.save(existingUser);

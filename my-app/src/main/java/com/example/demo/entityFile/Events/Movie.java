@@ -1,6 +1,13 @@
 package com.example.demo.entityFile.Events;
 import java.util.ArrayList;
 
+import com.example.demo.entityFile.Ticketing.TicketingOption;
+
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("MOVIE")
 public class Movie extends Event {
     private ArrayList<String> mainCast; // ["Taylor Swift", "John Smith"]
     private String rating; // "PG13"
@@ -16,29 +23,7 @@ public class Movie extends Event {
         ]
     */ 
 
-    public Movie(ArrayList<String> mainCast, ArrayList<TicketingOption> ticketingOptions, 
-    String rating, int duration, String eventName, String eventVenue, String eventDate, 
-    String eventTime, double ticketPrice, int numOfTicketsAvail, double cancellationFee){ // with cancellation fee
-
-        // not sure if Event provide eventID itself or need to give it.
-        super(eventName, eventVenue, eventDate, eventTime, ticketPrice, numOfTicketsAvail, cancellationFee);
-        this.mainCast = mainCast;
-        this.ticketingOptions = ticketingOptions;
-        this.rating = rating;
-        this.duration = duration;
-
-    }
-
-    public Movie(ArrayList<String> mainCast, ArrayList<TicketingOption> ticketingOptions, 
-    String rating, int duration, String eventName, String eventVenue, String eventDate, 
-    String eventTime, double ticketPrice, int numOfTicketsAvail){ // without cancellation fee
-
-        // not sure if Event provide eventID itself or need to give it.
-        super(eventName, eventVenue, eventDate, eventTime, ticketPrice, numOfTicketsAvail);
-        this.mainCast = mainCast;
-        this.ticketingOptions = ticketingOptions;
-        this.rating = rating;
-        this.duration = duration;
+    public Movie(){
 
     }
 
@@ -58,5 +43,20 @@ public class Movie extends Event {
         return this.duration;
     }
 
+    public void setMainCast(ArrayList<String> newMainCast){
+        this.mainCast = newMainCast;
+    }
+
+    public void setTicketingOptions(ArrayList<TicketingOption> newTicketingOptions){
+        this.ticketingOptions = newTicketingOptions;
+    }
+
+    public void setRating(String newRating){
+        this.rating = newRating;
+    }
+
+    public void setDuration(int newDuration){
+        this.duration = newDuration;
+    }
 
 }
