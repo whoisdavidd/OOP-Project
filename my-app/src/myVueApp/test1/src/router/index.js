@@ -5,6 +5,7 @@ import CheckoutRedirect from '../components/CheckoutRedirect.vue' // Import the 
 import StripePayment from '../components/StripePayment.vue' // Import the component
 import PaymentSuccess from '../components/PaymentSuccess.vue' // Import the new components
 import PaymentCancel from '../components/PaymentCancel.vue'
+import Login from '../components/Login.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/payment-cancel',
       name: 'cancel',
       component: PaymentCancel
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })
