@@ -1,37 +1,54 @@
 package com.example.demo.entityFile.Events;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.entityFile.Ticketing.TicketingOption;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "event_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "Event")
 public class Event {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long eventID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long eventID;
 
+    @NotNull(message = "Event must have a name!")
     @Column(name = "eventName")
     private String eventName;
 
+    @NotNull(message = "Event must have a venue!")
     @Column(name = "eventVenue")
     private String eventVenue;
 
+    @NotNull(message = "Event must have a date!")
     @Column(name = "eventDate")
     private String eventDate; // In the form of DDMMYYYY
 
+    @NotNull(message = "Event must have a time!")
     @Column(name = "eventTime")
     private String eventTime; // In the form of 24h e.g. HHMM (2359)
 
-    @Column(name = "ticketPrice")
-    private double ticketPrice;
+    @NotNull(message = "Event must have ticketing options!")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "event",  orphanRemoval = true)
+    @Column(name = "ticketingOptions")
+    private List<TicketingOption> ticketingOptions;
 
+    @NotNull(message = "Event must have a number of available tickets!")
     @Column(name = "numTicketsAvailable")
-    private int numTicketsAvailable; 
+    private Integer numTicketsAvailable; 
 
     @Column(name = "numTicketsSold")
-    private int numTicketsSold; 
+    private Integer numTicketsSold; 
 
     @Column(name = "cancellationFee")
-    private double cancellationFee;
+    private Double cancellationFee;
 
     // constructor
 
@@ -57,18 +74,18 @@ public class Event {
     public String getEventTime(){
         return this.eventTime;
     }
-    public double getTicketPrice(){
-        return this.ticketPrice;
+    public List<TicketingOption> getTicketingOptions(){
+        return this.ticketingOptions;
     }
-    public int getNumTicketsAvailable(){
+    public Integer getNumTicketsAvailable(){
         return this.numTicketsAvailable;
     }
 
-    public int getNumTicketsSold(){
+    public Integer getNumTicketsSold(){
         return this.numTicketsSold;
     }
 
-    public double getCancellationFee(){
+    public Double getCancellationFee(){
         return this.cancellationFee;
     }
 
@@ -92,19 +109,19 @@ public class Event {
         this.eventTime = newTime;
     } 
 
-    public void updateTicketPrice(double newTicketPrice){
-        this.ticketPrice = newTicketPrice;
+    public void updateTicketOptions(List<TicketingOption> newTicketingOptions){
+        this.ticketingOptions = newTicketingOptions;
     } 
     
-    public void updateNumTicketsAvailable(int newNumOfTickets){
+    public void updateNumTicketsAvailable(Integer newNumOfTickets){
         this.numTicketsAvailable = newNumOfTickets;
     } 
     
-    public void updateNumTicketsSold(int newNumOfTickets){
+    public void updateNumTicketsSold(Integer newNumOfTickets){
         this.numTicketsSold = newNumOfTickets;
     } 
 
-    public void updateCancellationFee(double newCancellationFee){
+    public void updateCancellationFee(Double newCancellationFee){
         this.cancellationFee = newCancellationFee;
     }
 }
