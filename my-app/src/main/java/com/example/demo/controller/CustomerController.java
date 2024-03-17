@@ -1,46 +1,60 @@
-    package com.example.demo.controller;
 
-    import java.util.List;
+package com.example.demo.controller;
 
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.*;
-    import com.example.demo.entityFile.Users.Customer;
-    import com.example.demo.exception.*;
-    import com.example.demo.repository.*;
-    import jakarta.validation.*;
+import java.util.List;
 
-    @RestController
-    @RequestMapping("/api/customer")
-    public class CustomerController {
-        @Autowired //automatically inject an instance of customer repository
-        private CustomerRepository customerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-        @PostMapping // works
-        public Customer createCustomer(@Valid @RequestBody Customer customer) {
-            customer.setAccountBalance(5000);
-            Customer savedCustomer = this.customerRepository.save(customer);
-            this.customerRepository.save(customer);
-            return savedCustomer;
+import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.services.UserService;
+
+import com.example.demo.repository.*;
+
+@RestController
+@RequestMapping("/api/customer")
+public class CustomerController {
+    @Autowired //automatically inject an instance of customer repository
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping // works
+    public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
+        if (!userService.isUsernameValid(customer.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken or is invalid");
         }
-        @PutMapping("/{username}") // works but can only update email and accountbalance, not username as well
-        public Customer updateCustomer(@Valid @RequestBody Customer customer, @PathVariable("username") String username) {
-            Customer existingCustomer = this.customerRepository.findById(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-            existingCustomer.setEmailAddress(customer.getEmailAddress());
-            existingCustomer.setAccountBalance(customer.getAccountBalance());
-            existingCustomer.setPassword(customer.getPassword());
-
-            return this.customerRepository.save(existingCustomer);
-        }
-        @GetMapping 
-        public List<Customer> getAllCustomers() {
-            return this.customerRepository.findAll();
-        }
-
-        // get user by username
-        @GetMapping("/{username}")
-        public Customer getCustomerById(@PathVariable(value = "username") String username) {
-            return this.customerRepository.findById(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        }
+        customer.setAccountBalance(5000);
+        Customer savedCustomer = this.customerRepository.save(customer);
+        return ResponseEntity.ok(savedCustomer);
     }
+    @PutMapping("/{username}") 
+    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable("username") String username) {
+        if (!this.customerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        Customer existingUser = this.customerRepository.findById(username).get();
+        existingUser.setEmailAddress(customer.getEmailAddress());
+        existingUser.setAccountBalance(customer.getAccountBalance());
+        existingUser.setPassword(customer.getPassword());
+        this.customerRepository.save(existingUser);
+        return ResponseEntity.ok(existingUser);
+    }
+    @GetMapping 
+    public List<Customer> getAllCustomers() {
+        return this.customerRepository.findAll();
+    }
+
+    // get user by username
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getCustomerById(@PathVariable(value = "username") String username) {
+        if (!this.customerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        Customer existingUser = this.customerRepository.findById(username).get();
+        return ResponseEntity.ok(existingUser);
+    }
+}

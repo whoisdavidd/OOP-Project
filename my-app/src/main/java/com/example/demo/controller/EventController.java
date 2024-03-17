@@ -11,12 +11,14 @@ import com.example.demo.entityFile.Events.Event;
 import com.example.demo.entityFile.Ticketing.TicketingOption;
 import com.example.demo.exception.*;
 import com.example.demo.repository.EventRepository;
+import com.example.demo.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
     @Autowired //automatically inject an instance of event repo
     private EventRepository eventRepository;
+    private UserRepository userRepository;
 
     @PostMapping
     public Event createEvent(@Valid @RequestBody Event event) {

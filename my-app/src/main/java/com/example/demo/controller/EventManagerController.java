@@ -1,46 +1,54 @@
-    package com.example.demo.controller;
+package com.example.demo.controller;
 
-    import java.util.List;
+import java.util.List;
 
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.*;
-    import jakarta.validation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
-    import com.example.demo.entityFile.Users.EventManager;
-    import com.example.demo.exception.*;
-    import com.example.demo.repository.*;
+import com.example.demo.entityFile.Users.EventManager;
+import com.example.demo.repository.*;
+import com.example.demo.services.UserService;
 
-    @RestController
-    @RequestMapping("/api/eventManager")
-    public class EventManagerController {
-        @Autowired //automatically inject an instance of customer repository
-        private EventManagerRepository eventManagerRepository;
+@RestController
+@RequestMapping("/api/eventManager")
+public class EventManagerController {
+    @Autowired //automatically inject an instance of customer repository
+    private EventManagerRepository eventManagerRepository;
+    private UserService userService;
 
-        @PostMapping //works
-        public EventManager createEventManager(@Valid @RequestBody EventManager eventManager) {
-            EventManager savedEventManager = this.eventManagerRepository.save(eventManager);
-            this.eventManagerRepository.save(eventManager);
-            return savedEventManager;
+    @PostMapping //works
+    public ResponseEntity<?> createEventManager(@RequestBody EventManager eventManager) {
+        if (!userService.isUsernameValid(eventManager.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken or is invalid");
         }
-
-        // no put mapping as EM has no unique variables
-
-        // @PutMapping("/{username}")
-        // public EventManager updateEventManager(@Valid @RequestBody EventManager eventManager, @PathVariable("username") String username) {
-        //     EventManager existingUser = this.eventManagerRepository.findById(username)
-        //             .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        //     return this.eventManagerRepository.save(existingUser);
-        // }
-
-        @GetMapping //works
-        public List<EventManager> getAllEventManagers() {
-            return this.eventManagerRepository.findAll();
-        }
-
-        // get user by username
-        @GetMapping("/{username}") //works
-        public EventManager getEventManagerById(@PathVariable(value = "username") String username) {
-            return this.eventManagerRepository.findById(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        }
+        EventManager savedEventManager = this.eventManagerRepository.save(eventManager);
+        return ResponseEntity.ok(savedEventManager);
     }
+
+    @PutMapping("/{username}") // works
+    public ResponseEntity<?> updateEventManager(@RequestBody EventManager eventManager, @PathVariable("username") String username) {
+        if (!this.eventManagerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        EventManager existingUser = this.eventManagerRepository.findById(username).get();
+        existingUser.setPassword(eventManager.getPassword());
+        this.eventManagerRepository.save(existingUser);
+        return ResponseEntity.ok(existingUser);
+    }
+
+    @GetMapping //works
+    public List<EventManager> getAllEventManagers() {
+        return this.eventManagerRepository.findAll();
+    }
+
+    // get user by username
+    @GetMapping("/{username}") //works
+    public ResponseEntity<?> getEventManagerById(@PathVariable(value = "username") String username) {
+        if (!this.eventManagerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        EventManager existingUser = this.eventManagerRepository.findById(username).get();
+        return ResponseEntity.ok(existingUser);
+    }
+}
