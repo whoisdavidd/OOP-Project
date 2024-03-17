@@ -1,50 +1,57 @@
-    package com.example.demo.controller;
+package com.example.demo.controller;
 
-    import java.util.List;
+import java.util.List;
 
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
-    import com.example.demo.entityFile.Users.TicketingOfficer;
-    import com.example.demo.exception.*;
-    import com.example.demo.repository.*;
+import com.example.demo.entityFile.Users.TicketingOfficer;
+import com.example.demo.repository.*;
+import com.example.demo.services.UserService;
 
-    @RestController
-    @RequestMapping("/api/ticketingOfficer")
-    public class TicketingOfficerController {
-        @Autowired //automatically inject an instance of customer repository
-        private TicketingOfficerRepository ticketingOfficerRepository;
 
-        @PostMapping //works
-        public TicketingOfficer createTicketingOfficer(@RequestBody TicketingOfficer ticketingOfficer) {
-            TicketingOfficer savedTicketingOfficer = this.ticketingOfficerRepository.save(ticketingOfficer);
-            this.ticketingOfficerRepository.save(ticketingOfficer);
-            return savedTicketingOfficer;
+@RestController
+@RequestMapping("/api/ticketingOfficer")
+public class TicketingOfficerController {
+    @Autowired //automatically inject an instance of customer repository
+    private TicketingOfficerRepository ticketingOfficerRepository;
+    
+    @Autowired
+    private UserService userService;
+
+    @PostMapping //works
+    public ResponseEntity<?> createTicketingOfficer(@RequestBody TicketingOfficer TicketingOfficer) {
+        if (!userService.isUsernameValid(TicketingOfficer.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken or is invalid");
         }
-
-        // no put mapping as TO has no unique variables
-
-        // @PutMapping("/{username}")
-        // public TicketingOfficer updateTicketingOfficer(@RequestBody TicketingOfficer TicketingOfficer, @PathVariable("username") String username) {
-        //     TicketingOfficer existingUser = this.TicketingOfficerRepository.findById(username)
-        //             .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        //     return this.TicketingOfficerRepository.save(existingUser);
-        // }
-
-        @GetMapping //works
-        public List<TicketingOfficer> getAllTicketingOfficers() {
-            return this.ticketingOfficerRepository.findAll();
-        }
-
-        // get user by username
-        @GetMapping("/{username}") //works
-        public TicketingOfficer getTicketingOfficerById(@PathVariable(value = "username") String username) {
-            return this.ticketingOfficerRepository.findById(username)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-        }
+        TicketingOfficer savedTicketingOfficer = this.ticketingOfficerRepository.save(TicketingOfficer);
+        return ResponseEntity.ok(savedTicketingOfficer);
     }
+
+    @PutMapping("/{username}") // works
+    public ResponseEntity<?> updateTicketingOfficer(@RequestBody TicketingOfficer TicketingOfficer, @PathVariable("username") String username) {
+        if (!this.ticketingOfficerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        TicketingOfficer existingUser = this.ticketingOfficerRepository.findById(username).get();
+        existingUser.setPassword(TicketingOfficer.getPassword());
+        this.ticketingOfficerRepository.save(existingUser);
+        return ResponseEntity.ok(existingUser);
+    }
+
+    @GetMapping //works
+    public List<TicketingOfficer> getAllTicketingOfficers() {
+        return this.ticketingOfficerRepository.findAll();
+    }
+
+    // get user by username
+    @GetMapping("/{username}") //works
+    public ResponseEntity<?> getTicketingOfficerById(@PathVariable(value = "username") String username) {
+        if (!this.ticketingOfficerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        TicketingOfficer existingUser = this.ticketingOfficerRepository.findById(username).get();
+        return ResponseEntity.ok(existingUser);
+    }
+}
