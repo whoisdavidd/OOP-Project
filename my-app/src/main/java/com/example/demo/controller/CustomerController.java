@@ -23,7 +23,7 @@
 
         @PostMapping // works
         public Customer createCustomer(@RequestBody Customer customer) {
-            customer.setAccountBalance(5000);
+            customer.setAccountBalance(1000);
             Customer savedCustomer = this.customerRepository.save(customer);
             this.customerRepository.save(customer);
             return savedCustomer;

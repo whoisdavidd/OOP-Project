@@ -16,7 +16,7 @@ public class Event {
     private String eventVenue;
 
     @Column(name = "eventDate")
-    private String eventDate; // In the form of DDMMYYYY
+    private String eventDate; // In the form of DDMMYYYY can we store as datetime? easier do calculation
 
     @Column(name = "eventTime")
     private String eventTime; // In the form of 24h e.g. HHMM (2359)

@@ -47,4 +47,5 @@
             return this.ticketingOfficerRepository.findById(username)
                     .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
         }
+
     }
