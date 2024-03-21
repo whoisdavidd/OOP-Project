@@ -1,49 +1,36 @@
 package com.example.demo.entityFile.Events;
-import java.util.ArrayList;
+import java.util.List;
 
-import com.example.demo.entityFile.Ticketing.TicketingOption;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("SPORTS_EVENT")
 public class SportsEvent extends Event {
-    private ArrayList<String> participants; // ["Liverpool", "Manchester United"]
-    private ArrayList<TicketingOption> ticketingOptions; 
-        /* 
-        [
-            { // Object named TicketingOption
-            "tierName" : "Cat 1", // String for tierName
-            "tierPrice" : 500.0, // double for tierPrice
-            "tierQty" : 20 // int for tierQty
-            }
-        ]
-    */ 
+    
+    @Column(name= "participants")
+    @ElementCollection
+    private List<String> participants; // ["Liverpool", "Manchester United"]
+
+    @Column(name= "sport")
     private String sport;
 
     public SportsEvent(){
 
     }
 
-    public ArrayList<String> getParticipants(){
+    public List<String> getParticipants(){
         return this.participants;
-    }
-
-    public ArrayList<TicketingOption> getTicketingOptions(){
-        return this.ticketingOptions;
     }
 
     public String getSport(){
         return this.sport;
     }
 
-    public void setParticipants(ArrayList<String> newParticipants){
+    public void setParticipants(List<String> newParticipants){
         this.participants = newParticipants;
-    }
-
-    public void setTicketingOptions(ArrayList<TicketingOption> newTicketingOptions){
-        this.ticketingOptions = newTicketingOptions;
     }
 
     public void setSport(String newSport){

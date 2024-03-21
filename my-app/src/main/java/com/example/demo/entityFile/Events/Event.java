@@ -1,7 +1,5 @@
 package com.example.demo.entityFile.Events;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.entityFile.Ticketing.TicketingOption;
@@ -40,13 +38,6 @@ public class Event {
     @Column(name = "ticketingOptions")
     private List<TicketingOption> ticketingOptions;
 
-    @NotNull(message = "Event must have a number of available tickets!")
-    @Column(name = "numTicketsAvailable")
-    private Integer numTicketsAvailable; 
-
-    @Column(name = "numTicketsSold")
-    private Integer numTicketsSold; 
-
     @Column(name = "cancellationFee")
     private Double cancellationFee;
 
@@ -64,7 +55,6 @@ public class Event {
     public String getEventName(){
         return this.eventName;
     }
-    
     public String getEventVenue(){
         return this.eventVenue;
     }
@@ -77,51 +67,35 @@ public class Event {
     public List<TicketingOption> getTicketingOptions(){
         return this.ticketingOptions;
     }
-    public Integer getNumTicketsAvailable(){
-        return this.numTicketsAvailable;
-    }
-
-    public Integer getNumTicketsSold(){
-        return this.numTicketsSold;
-    }
 
     public Double getCancellationFee(){
         return this.cancellationFee;
     }
 
-    // setter/update methods
+    // dont see the need for set event id
 
-    // dont see the need for update event id
-
-    public void updateEventName(String newName){
+    public void setEventName(String newName){
         this.eventName = newName;
     } 
 
-    public void updateEventVenue(String newVenue){
+    public void setEventVenue(String newVenue){
         this.eventVenue = newVenue;
     } 
 
-    public void updateEventDate(String newDate){
+    public void setEventDate(String newDate){
         this.eventDate = newDate;
     } 
     
-    public void updateEventTime(String newTime){
+    public void setEventTime(String newTime){
         this.eventTime = newTime;
     } 
 
-    public void updateTicketOptions(List<TicketingOption> newTicketingOptions){
-        this.ticketingOptions = newTicketingOptions;
-    } 
-    
-    public void updateNumTicketsAvailable(Integer newNumOfTickets){
-        this.numTicketsAvailable = newNumOfTickets;
-    } 
-    
-    public void updateNumTicketsSold(Integer newNumOfTickets){
-        this.numTicketsSold = newNumOfTickets;
-    } 
+    // set via ticketingoptionscontroller
+    // public void setTicketingOptions(List<TicketingOption> newTicketingOptions){
+    //     this.ticketingOptions = newTicketingOptions;
+    // } 
 
-    public void updateCancellationFee(Double newCancellationFee){
+    public void setCancellationFee(Double newCancellationFee){
         this.cancellationFee = newCancellationFee;
     }
 }

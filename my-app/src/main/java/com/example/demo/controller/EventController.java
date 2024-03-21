@@ -3,46 +3,19 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import jakarta.validation.*;
-
 import com.example.demo.entityFile.Events.Event;
 import com.example.demo.entityFile.Ticketing.TicketingOption;
-import com.example.demo.exception.*;
 import com.example.demo.repository.EventRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.requestBodies.SellTicketsBody;
 
 @RestController
 @RequestMapping("/api/event")
 public class EventController {
     @Autowired //automatically inject an instance of event repo
     private EventRepository eventRepository;
-    private UserRepository userRepository;
 
-    @PostMapping
-    public Event createEvent(@Valid @RequestBody Event event) {
-         for (TicketingOption ticketingOption : event.getTicketingOptions()) {
-            ticketingOption.setEvent(event);
-        }
-        Event savedEvent = this.eventRepository.save(event);
-        this.eventRepository.save(event);
-        return savedEvent;
-    }
-    @PutMapping("/{id}")
-    public Event updateEvent(@Valid @RequestBody Event event, @PathVariable("id") long eventId) {
-        Event existingEvent = this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
-        existingEvent.updateEventName(event.getEventName());
-        existingEvent.updateEventVenue(event.getEventVenue());
-        existingEvent.updateEventDate(event.getEventDate());
-        existingEvent.updateEventTime(event.getEventTime());
-        // existingEvent.updateTicketPrice(event.getTicketPrice());
-        existingEvent.updateNumTicketsAvailable(event.getNumTicketsAvailable());
-        existingEvent.updateNumTicketsSold(event.getNumTicketsSold());
-        existingEvent.updateCancellationFee(event.getCancellationFee());
-        return this.eventRepository.save(existingEvent);
-    }
     @GetMapping
     public List<Event> getAllEvents() {
         return this.eventRepository.findAll();
@@ -50,33 +23,74 @@ public class EventController {
 
     // get event by id
     @GetMapping("/{id}")
-    public Event getEventById(@PathVariable(value = "id") long eventId) {
-        return this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+    public ResponseEntity<?> getEventByID(@PathVariable(value = "id") long eventID) {
+        if (!this.eventRepository.findById(eventID).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event not found");
+        }
+        Event existingEvent = this.eventRepository.findById(eventID).get();
+        return ResponseEntity.ok(existingEvent);
     }
 
     @GetMapping("/sales/{id}")
-    public Integer getNumTicketsSoldById(@PathVariable(value = "id") long eventId) {
-        Event e = this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
-        
-        return e.getNumTicketsSold();
+    public ResponseEntity<?> getNumTicketsSoldByID(@PathVariable(value = "id") long eventID) {
+        if (!this.eventRepository.findById(eventID).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event not found");
+        }
+        Event existingEvent = this.eventRepository.findById(eventID).get();
+        List<TicketingOption> ticketingOptionsList = existingEvent.getTicketingOptions();
+        String response = "";
+        int totalTicketsSold = 0;
+        for (TicketingOption to : ticketingOptionsList){
+            totalTicketsSold += to.getNumTicketsSold();
+            response = response + to.getTierName() + ":" + to.getNumTicketsSold() +"\n";
+        }
+        response = response + "Total: " + totalTicketsSold;
+        return ResponseEntity.ok(response);
     }
 
-    // @GetMapping("/revenue/{id}")
-    // public double getRevenueById(@PathVariable(value = "id") long eventId) {
-    //     Event e = this.eventRepository.findById(eventId)
-    //             .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
-        
-    //     return e.getNumTicketsSold() * e.getTicketPrice();
-    // }
+    @GetMapping("/revenue/{id}")
+    public ResponseEntity<?> getRevenueByID(@PathVariable(value = "id") long eventID) {
+        if (!this.eventRepository.findById(eventID).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event not found");
+        }
+        Event existingEvent = this.eventRepository.findById(eventID).get();
+        List<TicketingOption> ticketingOptionsList = existingEvent.getTicketingOptions();
+        String response = "";
+        int totalRevenue = 0;
+        for (TicketingOption to : ticketingOptionsList){
+            totalRevenue += to.getTierRevenue();
+            response = response + to.getTierName() + ":" + to.getTierRevenue() +"\n";
+        }
+        response = response + "Total: " + totalRevenue;
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/sell/{id}") // works
+    public ResponseEntity<?> sellTickets(@RequestBody List<SellTicketsBody> request, @PathVariable(value="id") long eventID) {
+        if (!this.eventRepository.findById(eventID).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event not found");
+        }
+        Event existingEvent = this.eventRepository.findById(eventID).get();
+        List<TicketingOption> ticketingOptions = existingEvent.getTicketingOptions();
+        for (SellTicketsBody tb : request){
+            for (TicketingOption to : ticketingOptions){
+                if (tb.getTierName().equals(to.getTierName())){
+                    to.sellTickets(tb.getTierQty());
+                }
+            }
+        }
+        this.eventRepository.save(existingEvent);
+        return ResponseEntity.ok(existingEvent);
+    }
 
     @DeleteMapping("/{id}") // might need to consider the tickets and refund idk
-    public ResponseEntity<Event> deleteEvent(@PathVariable(value = "id") long eventId) {
-        Event existingEvent = this.eventRepository.findById(eventId)
-                .orElseThrow(() -> new ResourceNotFoundException("Event not found with id :" + eventId));
+    public ResponseEntity<?> deleteEvent(@PathVariable(value = "id") long eventID) {
+        if (!this.eventRepository.findById(eventID).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Event not found");
+        }
+        Event existingEvent = this.eventRepository.findById(eventID).get();
         this.eventRepository.delete(existingEvent);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Event has been deleted");
 
     }
 }

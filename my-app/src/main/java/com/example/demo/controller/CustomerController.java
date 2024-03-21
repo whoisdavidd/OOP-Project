@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class CustomerController {
         if (!userService.isUsernameValid(customer.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken or is invalid");
         }
-        customer.setAccountBalance(5000);
+        customer.setAccountBalance(1000);
         Customer savedCustomer = this.customerRepository.save(customer);
         return ResponseEntity.ok(savedCustomer);
     }
@@ -37,9 +38,10 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
         }
         Customer existingUser = this.customerRepository.findById(username).get();
-        existingUser.setEmailAddress(customer.getEmailAddress());
-        existingUser.setAccountBalance(customer.getAccountBalance());
-        existingUser.setPassword(customer.getPassword());
+        // existingUser.setEmailAddress(customer.getEmailAddress());
+        // existingUser.setAccountBalance(customer.getAccountBalance());
+        // existingUser.setPassword(customer.getPassword());
+        BeanUtils.copyProperties(customer, existingUser, "username");
         this.customerRepository.save(existingUser);
         return ResponseEntity.ok(existingUser);
     }

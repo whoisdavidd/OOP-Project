@@ -1,38 +1,31 @@
 package com.example.demo.entityFile.Events;
-import java.util.ArrayList;
+import java.util.List;
 
-import com.example.demo.entityFile.Ticketing.TicketingOption;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("MOVIE")
 public class Movie extends Event {
-    private ArrayList<String> mainCast; // ["Taylor Swift", "John Smith"]
+
+    @Column(name= "mainCast")
+    @ElementCollection
+    private List<String> mainCast; // ["Taylor Swift", "John Smith"]
+    
+    @Column(name= "rating")
     private String rating; // "PG13"
+    
+    @Column(name= "duration")
     private int duration; // in minutes, to nearest minute e.g. 180
-    private ArrayList<TicketingOption> ticketingOptions; 
-    /* 
-        [
-            { // Object named TicketingOption
-            "tierName" : "Cat 1", // String for tierName
-            "tierPrice" : 500.0, // double for tierPrice
-            "tierQty" : 20 // int for tierQty
-            }
-        ]
-    */ 
 
     public Movie(){
 
     }
 
-    public ArrayList<String> getMainCast(){
+    public List<String> getMainCast(){
         return this.mainCast;
-    }
-
-    public ArrayList<TicketingOption> getTicketingOptions(){
-        return this.ticketingOptions;
     }
 
     public String getRating(){
@@ -43,12 +36,8 @@ public class Movie extends Event {
         return this.duration;
     }
 
-    public void setMainCast(ArrayList<String> newMainCast){
+    public void setMainCast(List<String> newMainCast){
         this.mainCast = newMainCast;
-    }
-
-    public void setTicketingOptions(ArrayList<TicketingOption> newTicketingOptions){
-        this.ticketingOptions = newTicketingOptions;
     }
 
     public void setRating(String newRating){

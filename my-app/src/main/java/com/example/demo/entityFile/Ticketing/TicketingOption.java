@@ -27,6 +27,12 @@ public class TicketingOption {
     @NotNull(message = "Tier must have a quantity!")
     @Column(name = "tierQuantity")
     private Integer tierQuantity;
+    
+    @Column(name = "numTicketsSold")
+    private Integer numTicketsSold;
+
+    @Column(name = "tierRevenue")
+    private Double tierRevenue;
 
     public TicketingOption(){
 
@@ -44,7 +50,35 @@ public class TicketingOption {
         return this.tierQuantity;
     }
 
+    public int getNumTicketsSold(){
+        return this.numTicketsSold;
+    }
+
+    public Event getEvent(){
+        return this.event;
+    }
+
+    public double getTierRevenue(){
+        return this.tierRevenue; 
+    }
+
     public void setEvent(Event newEvent){
         this.event = newEvent;
     }
+
+    public void setTierPrice(double newTierPrice){
+        this.tierPrice = newTierPrice;
+    }
+
+    public void sellTickets(int numOfTickets){
+        this.tierRevenue += (this.tierPrice * numOfTickets);
+        this.numTicketsSold += numOfTickets;
+    }
+
+    // use with caution, shouldn't set tier quantity randomly
+    public void setTierQuantity(int newTierQuantity){
+        this.tierQuantity = newTierQuantity;
+    }
+
+    
 }

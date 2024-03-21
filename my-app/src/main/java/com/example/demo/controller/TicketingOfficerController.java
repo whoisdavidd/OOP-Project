@@ -4,17 +4,12 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.*;
 
 import com.example.demo.entityFile.Users.TicketingOfficer;
-import com.example.demo.exception.*;
 import com.example.demo.repository.*;
-import jakarta.validation.*;
+import com.example.demo.services.UserService;
 
 @RestController
 @RequestMapping("/api/ticketingOfficer")
