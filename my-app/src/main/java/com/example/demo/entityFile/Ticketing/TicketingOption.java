@@ -1,8 +1,12 @@
 package com.example.demo.entityFile.Ticketing;
 
 import jakarta.persistence.*;
+
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import com.example.demo.entityFile.Events.Event;
 import jakarta.validation.constraints.*;
+import com.fasterxml.jackson.annotation.*;
 
 @Entity
 @Table(name = "TicketingOption")
@@ -17,6 +21,7 @@ public class TicketingOption {
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @NotNull(message = "Ticketing option must be associated with an event!")
+    @JsonIgnore
     @JoinColumn(name = "eventID")
     private Event event;
 
@@ -35,7 +40,8 @@ public class TicketingOption {
     private Double tierRevenue;
 
     public TicketingOption(){
-
+        this.numTicketsSold = 0;
+        this.tierRevenue = 0.0;
     }
 
     public String getTierName(){

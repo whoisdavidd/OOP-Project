@@ -38,10 +38,10 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
         }
         Customer existingUser = this.customerRepository.findById(username).get();
-        // existingUser.setEmailAddress(customer.getEmailAddress());
-        // existingUser.setAccountBalance(customer.getAccountBalance());
-        // existingUser.setPassword(customer.getPassword());
-        BeanUtils.copyProperties(customer, existingUser, "username");
+        existingUser.setEmailAddress(customer.getEmailAddress());
+        existingUser.setAccountBalance(customer.getAccountBalance());
+        existingUser.setPassword(customer.getPassword());
+        // BeanUtils.copyProperties(customer, existingUser, "username");
         this.customerRepository.save(existingUser);
         return ResponseEntity.ok(existingUser);
     }
