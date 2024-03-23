@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ import com.example.demo.repository.*;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -70,4 +74,22 @@ public class UserController {
         this.userRepository.delete(existingUser);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        // Handle login logic here, e.g., check username and password against database
+        Optional<User> existingUserOptional = userRepository.findByUsername(user.getUsername());
+
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            if (user.getPassword().equals(existingUser.getPassword())) {
+                // Login successful
+                return ResponseEntity.ok().body("Login successful");
+            }
+        }
+
+        // Username not found or password does not match
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+    }
+
 }
