@@ -84,6 +84,11 @@ public class TicketingOption {
         this.numTicketsSold += numOfTickets;
     }
 
+    public void refundTicket(double refundAmount){
+        this.tierRevenue -= refundAmount;
+        this.numTicketsSold --;
+    }
+
     // use with caution, shouldn't set tier quantity randomly
     public void setTierQuantity(int newTierQuantity){
         this.tierQuantity = newTierQuantity;

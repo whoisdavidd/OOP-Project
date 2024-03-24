@@ -46,8 +46,11 @@ public class TicketController {
                 currentOption = ticketingOption;
                 break;
             }
-            throw new ResourceNotFoundException("Ticketing option not found");
         }
+        if (currentOption == null) {
+            throw new ResourceNotFoundException("Ticketing option not found:" + ticketingOptionID);
+        }
+
         if (currentOption.getTierQuantity() - currentOption.getNumTicketsSold() < numTickets) {
             throw new IllegalArgumentException("Not enough tickets available");
         }
@@ -79,7 +82,7 @@ public class TicketController {
         eventRepository.save(event);
 
         for (int i = 0; i < numTickets; i++) {
-            Ticket ticket = new Ticket(event, customer, currentOption.getTierPrice());
+            Ticket ticket = new Ticket(event, customer, currentOption.getTierPrice(), currentOption);
             ticketRepository.save(ticket);
             tickets.add(ticket);
         }
@@ -111,12 +114,18 @@ public class TicketController {
         //Update values
         Event event = ticket.getEvent();
         //Need option to unsell ticket?
-        
-        event.updateNumTicketsAvailable(event.getNumTicketsAvailable() + 1);
-        event.updateNumTicketsSold(event.getNumTicketsSold() - 1);
+        List<TicketingOption> ticketingOptions = event.getTicketingOptions();
+        TicketingOption currentOption = null;
+        for (TicketingOption ticketingOption : ticketingOptions) {
+            if (ticketingOption.getTicketingOptionID() == ticket.getTicketingOption().getTicketingOptionID()) {
+                currentOption = ticketingOption;
+                break;
+            }
+        }
+
+        currentOption.refundTicket(ticket.getPrice() - ticket.getEvent().getCancellationFee());
         eventRepository.save(event);
-
-
+        ticketingOptionRepository.save(currentOption);
         ticketRepository.delete(ticket);
         return "Ticket deleted successfully " + ticketID;
     }

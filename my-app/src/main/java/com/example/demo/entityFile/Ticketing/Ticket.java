@@ -36,6 +36,10 @@ public class Ticket {
 
     private double price;
 
+    @ManyToOne
+    @JoinColumn(name="ticketingOptionId")
+    private TicketingOption ticketingOption;
+
     @PrePersist
     protected void onCreate() {
         bookingDate = new Date();
@@ -44,10 +48,11 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Event event, Customer customer, double price) {
+    public Ticket(Event event, Customer customer, double price, TicketingOption ticketingOption) {
         this.event = event;
         this.customer = customer;
         this.price = price;
+        this.ticketingOption = ticketingOption;
     }
 
 
@@ -79,6 +84,10 @@ public class Ticket {
 
     public double getPrice() {
         return price;
+    }
+
+    public TicketingOption getTicketingOption() {
+        return ticketingOption;
     }
 
 }
