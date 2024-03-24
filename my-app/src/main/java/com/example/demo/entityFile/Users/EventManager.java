@@ -6,16 +6,7 @@ import jakarta.persistence.*;
 @DiscriminatorValue("EVENT_MANAGER")
 public class EventManager extends User{
     // variables
-    @Id
-    @Column(name = "username")
-    private String username;
-
-
-    @Column(name = "password")
-    private String password;
-
-
-
+    
     // constructor
     
     public EventManager(){
