@@ -2,7 +2,6 @@ package com.example.demo.entityFile.Ticketing;
 
 import jakarta.persistence.*;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import com.example.demo.entityFile.Events.Event;
 import jakarta.validation.constraints.*;
@@ -46,6 +45,10 @@ public class TicketingOption {
 
     public String getTierName(){
         return this.tierName;
+    }
+
+    public Long getTicketingOptionID(){
+        return this.ticketingOptionID;
     }
 
     public double getTierPrice(){

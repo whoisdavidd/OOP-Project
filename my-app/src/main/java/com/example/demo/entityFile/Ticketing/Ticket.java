@@ -3,6 +3,7 @@ package com.example.demo.entityFile.Ticketing;
 import java.util.Date;
 
 import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.entityFile.Events.Event;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,8 @@ public class Ticket {
     @Temporal(TemporalType.TIMESTAMP)
     private Date bookingDate;
 
+    private double price;
+
     @PrePersist
     protected void onCreate() {
         bookingDate = new Date();
@@ -41,9 +44,10 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Event event, Customer customer) {
+    public Ticket(Event event, Customer customer, double price) {
         this.event = event;
         this.customer = customer;
+        this.price = price;
     }
 
 
@@ -71,6 +75,10 @@ public class Ticket {
 
     public Date getBookingDate() {
         return bookingDate;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
 }
