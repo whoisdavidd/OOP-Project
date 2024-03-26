@@ -1,8 +1,7 @@
 package com.example.demo.entityFile.Services;
 
 import com.example.demo.entityFile.Users.*;
-import com.example.demo.entityFile.Events.*;
-import com.example.demo.entityFile.*;
+import com.example.demo.entityFile.Ticketing.*;
 
 
 public class BookingService {

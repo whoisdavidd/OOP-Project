@@ -2,8 +2,6 @@ package com.example.demo.entityFile.Ticketing;
 
 import jakarta.persistence.*;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 import com.example.demo.entityFile.Events.Event;
 import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.*;
