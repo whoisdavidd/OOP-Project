@@ -1,59 +1,62 @@
-    package com.example.demo.controller;
 
-    import java.util.List;
+package com.example.demo.controller;
 
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.PutMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
 
-    import com.example.demo.entityFile.*;
-    import com.example.demo.entityFile.Users.Customer;
-    import com.example.demo.exception.*;
-    import com.example.demo.repository.*;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-    @RestController
-    @RequestMapping("/api/customer")
-    public class CustomerController {
-        @Autowired //automatically inject an instance of customer repository
-        private CustomerRepository customerRepository;
+import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.services.UserService;
 
-        @PostMapping
-        public Customer createCustomer(@RequestBody Customer customer) {
-            Customer savedCustomer = this.customerRepository.save(customer);
-            this.customerRepository.save(customer);
-            return savedCustomer;
+import com.example.demo.repository.*;
+
+@RestController
+@RequestMapping("/api/customer")
+public class CustomerController {
+    @Autowired //automatically inject an instance of customer repository
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping // works
+    public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
+        if (!userService.isUsernameValid(customer.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already taken or is invalid");
         }
-        @PutMapping("/{id}")
-        public Customer updateCustomer(@RequestBody Customer customer, @PathVariable("id") long userId) {
-            Customer existingUser = this.customerRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-            existingUser.setEmailAddress(customer.getEmailAddress());
-            existingUser.setAccount_Balance(customer.getAccount_Balance());
-
-            return this.customerRepository.save(existingUser);
-        }
-        @GetMapping
-        public List<Customer> getAllCustomers() {
-            return this.customerRepository.findAll();
-        }
-
-        // get user by id
-        @GetMapping("/{id}")
-        public Customer getCustomerById(@PathVariable(value = "id") long userId) {
-            return this.customerRepository.findById(userId)
-                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id :" + userId));
-        }
-
-        @PostMapping("/saveCustomer")
-        public Customer saveCustomer(@RequestBody Customer customer) {
-            System.out.println("Customer save called...");
-            Customer outCustomer = customerRepository.save(customer);
-            System.out.println("Saved Customer :: " + outCustomer);
-            return outCustomer;
-        }
+        customer.setAccountBalance(1000);
+        Customer savedCustomer = this.customerRepository.save(customer);
+        return ResponseEntity.ok(savedCustomer);
     }
+    @PutMapping("/{username}") 
+    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer, @PathVariable("username") String username) {
+        if (!this.customerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        Customer existingUser = this.customerRepository.findById(username).get();
+        existingUser.setEmailAddress(customer.getEmailAddress());
+        existingUser.setAccountBalance(customer.getAccountBalance());
+        existingUser.setPassword(customer.getPassword());
+        // BeanUtils.copyProperties(customer, existingUser, "username");
+        this.customerRepository.save(existingUser);
+        return ResponseEntity.ok(existingUser);
+    }
+    @GetMapping 
+    public List<Customer> getAllCustomers() {
+        return this.customerRepository.findAll();
+    }
+
+    // get user by username
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getCustomerById(@PathVariable(value = "username") String username) {
+        if (!this.customerRepository.findById(username).isPresent()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
+        }
+        Customer existingUser = this.customerRepository.findById(username).get();
+        return ResponseEntity.ok(existingUser);
+    }
+}

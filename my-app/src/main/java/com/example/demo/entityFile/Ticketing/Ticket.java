@@ -1,4 +1,9 @@
+<<<<<<<< HEAD:my-app/src/main/java/com/example/demo/entityFile/Events/Ticket.java
+package com.example.demo.entityFile.Events;
+
+========
 package com.example.demo.entityFile.Ticketing;
+>>>>>>>> yr_branch:my-app/src/main/java/com/example/demo/entityFile/Ticketing/Ticket.java
 
 import java.util.Date;
 

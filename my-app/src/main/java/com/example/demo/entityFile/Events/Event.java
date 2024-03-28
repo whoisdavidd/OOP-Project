@@ -1,97 +1,101 @@
 package com.example.demo.entityFile.Events;
 
+import java.util.List;
+
+import com.example.demo.entityFile.Ticketing.TicketingOption;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "event_type", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "Event")
 public class Event {
-    private int eventID;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long eventID;
+
+    @NotNull(message = "Event must have a name!")
+    @Column(name = "eventName")
     private String eventName;
-    private String venue;
-    private String date; // In the form of DDMMYYYY
-    private String time; // In the form of 24h e.g. HHMM (2359)
-    private double ticketPrice;
-    private int numOfTicketsAvail; 
-    private double cancellationFee;
+
+    @NotNull(message = "Event must have a venue!")
+    @Column(name = "eventVenue")
+    private String eventVenue;
+
+    @NotNull(message = "Event must have a date!")
+    @Column(name = "eventDate")
+    private String eventDate; // In the form of DDMMYYYY
+
+    @NotNull(message = "Event must have a time!")
+    @Column(name = "eventTime")
+    private String eventTime; // In the form of 24h e.g. HHMM (2359)
+
+    @NotNull(message = "Event must have ticketing options!")
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "event",  orphanRemoval = true)
+    @Column(name = "ticketingOptions")
+    private List<TicketingOption> ticketingOptions;
+
+    @Column(name = "cancellationFee")
+    private Double cancellationFee;
 
     // constructor
 
-    public Event(String name, String venue, String date, 
-    String time, double ticketPrice, int numOfTicketsAvail){ // without cancellation fee
-        
-        // Automatically create eventID based on latest eventID?
-        this.eventName = name;
-        this.venue = venue;
-        this.date = date;
-        this.time = time;
-        this.ticketPrice = ticketPrice;
-        this.numOfTicketsAvail = numOfTicketsAvail;
-
-    }
-
-    public Event(String name, String venue, String date, 
-    String time, double ticketPrice, int numOfTicketsAvail, double cancellationFee){ // with cancellation fee
-
-        // Automatically create eventID based on latest eventID?
-        this.eventName = name;
-        this.venue = venue;
-        this.date = date;
-        this.time = time;
-        this.ticketPrice = ticketPrice;
-        this.numOfTicketsAvail = numOfTicketsAvail;
-        this.cancellationFee = cancellationFee;
+    public Event(){
 
     }
     
     // getter methods
     
-    public int getEventID(){
+    public long getEventID(){
         return this.eventID;
     }
     public String getEventName(){
         return this.eventName;
     }
-    
     public String getEventVenue(){
-        return this.venue;
+        return this.eventVenue;
     }
     public String getEventDate(){
-        return this.date;
+        return this.eventDate;
     }
     public String getEventTime(){
-        return this.time;
+        return this.eventTime;
     }
-    public double getEventPrice(){
-        return this.ticketPrice;
+    public List<TicketingOption> getTicketingOptions(){
+        return this.ticketingOptions;
     }
-    public int getEventAvailableTickets(){
-        return this.numOfTicketsAvail;
-    }
-    public double getCancellationFee(){
+
+    public Double getCancellationFee(){
         return this.cancellationFee;
     }
 
-    // setter/update methods
+    // dont see the need for set event id
 
-    // dont see the need for update event id
-
-    public void updateEventVenue(String newVenue){
-        this.venue = newVenue;
+    public void setEventName(String newName){
+        this.eventName = newName;
     } 
 
-    public void updateEventDate(String newDate){
-        this.date = newDate;
-    } 
-    
-    public void updateEventTime(String newTime){
-        this.time = newTime;
+    public void setEventVenue(String newVenue){
+        this.eventVenue = newVenue;
     } 
 
-    public void updateEventPrice(double newTicketPrice){
-        this.ticketPrice = newTicketPrice;
+    public void setEventDate(String newDate){
+        this.eventDate = newDate;
     } 
     
-    public void updateEventTicketNum(int newNumOfTickets){
-        this.numOfTicketsAvail = newNumOfTickets;
+    public void setEventTime(String newTime){
+        this.eventTime = newTime;
     } 
 
-    public void updateCancellationFee(double newCancellationFee){
+    // set via ticketingoptionscontroller
+    // public void setTicketingOptions(List<TicketingOption> newTicketingOptions){
+    //     this.ticketingOptions = newTicketingOptions;
+    // } 
+
+    public void setCancellationFee(Double newCancellationFee){
         this.cancellationFee = newCancellationFee;
     }
 }
