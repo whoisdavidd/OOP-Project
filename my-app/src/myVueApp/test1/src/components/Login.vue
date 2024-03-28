@@ -2,13 +2,14 @@
   <div class="UserLogin">
     <div class="container" style="margin-top: 56px">
       <div class="row">
-        <div class="col-6"></div>
+        <div class="col-3"></div>
         <div class="col-6">
-          <h2>Login</h2>
+          <h2 class="text-center">Login</h2>
         </div>
+        <div class="col-3"></div>
       </div>
       <div class="row">
-        <div class="col-6"></div>
+        <div class="col-3"></div>
         <div class="col-6">
           <form @submit.prevent="loginUser">
 
@@ -30,6 +31,7 @@
             </div>
           </form>
         </div>
+        <div class="col-3"></div>
         <!-- <div class="col"></div>      -->
       </div>
     </div>

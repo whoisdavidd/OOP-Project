@@ -1,6 +1,6 @@
 <template>
   <div class="App">
-    <div class="header" :class="{ 'translucent-navbar': isNavbarTranslucent }">
+    <div class="header">
       <!-- <nav> -->
       <!-- Add your navigation links here -->
       <!-- <router-link to="/">Home</router-link> -->
@@ -10,7 +10,7 @@
 
       <!-- nav bar -->
       <nav
-        class="navbar navbar-expand-lg mx-5 my-2 fixed-top z-3 position-fixed"
+        class="navbar navbar-expand-lg mx-5 py-2 fixed-top z-3 position-fixed"
       >
         <div class="container-fluid">
           <router-link
@@ -31,19 +31,25 @@
             <div class="navbar-nav mx-auto my-3">
               <ul class="navbar-nav">
                 <li class="nav-item px-5">
-                  <router-link to="/" style="text-decoration: none" class="fs-4"
+                  <router-link
+                    to="/"
+                    style="text-decoration: none; color: teal;"
+                    class="fs-4"
                     >Home</router-link
                   >
                 </li>
                 <li class="nav-item px-5">
-                  <router-link to="#" style="text-decoration: none" class="fs-4"
+                  <router-link
+                    to="/events"
+                    style="text-decoration: none;  color: teal;"
+                    class="fs-4"
                     >Events</router-link
                   >
                 </li>
                 <li class="nav-item px-5">
                   <router-link
                     to="/login"
-                    style="text-decoration: none"
+                    style="text-decoration: none;  color: teal;"
                     class="fs-4"
                     >Login</router-link
                   >
@@ -64,9 +70,10 @@
     <!-- footer -->
     <footer class="footer mt-auto py-3">
       <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h6>Contact Information</h6>
+        <div class="row" style="color: white">
+          <div class="col-md-1"></div>
+          <div class="col-md-5">
+            <h4>Contact Information</h4>
             <p class="">Address: 123 Main Street, City, Country</p>
             <p>Phone: +1-234-567-890</p>
             <p>Email: info@example.com</p>
@@ -80,18 +87,19 @@
               <li>LinkedIn</li>
             </ul>
           </div> -->
-          <div class="col-md-6">
-            <h6>Quick Links</h6>
+          <div class="col-md-5">
+            <h4>Quick Links</h4>
             <ul>
               <li>Home</li>
               <li>Events</li>
               <li>Contact Us</li>
             </ul>
           </div>
+          <div class="col-md-1"></div>
         </div>
       </div>
       <div class="text-center text-primary">
-        <p>&copy; 2022 Your Company Name. All Rights Reserved.</p>
+        <p style="color: teal">&copy; 2022 Your Company Name. All Rights Reserved.</p>
       </div>
     </footer>
   </div>
@@ -100,60 +108,21 @@
 <script>
 export default {
   name: "App",
-  data() {
-    return {
-      isNavbarTranslucent: false,
-    };
-  },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  beforeUnmount() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-  methods: {
-    handleScroll() {
-      this.isNavbarTranslucent = window.scrollY > 0;
-    },
-  },
+  data() {},
 };
 </script>
 
 <style>
-html,
-header,
-body {
-  background-image: linear-gradient(
-    to right,
-    rgb(147, 147, 223),
-    rgb(172, 135, 190) 30%,
-    white 100%
-  );
-}
 
-header {
-  background-image: linear-gradient(
-    to right,
-    rgb(147, 147, 223),
-    rgb(172, 135, 190) 30%,
-    white 100%
-  );
-  background-color: rgba(255, 255, 255, 0.8); /* Opacity set to 0.8 */
+nav {
+  background: white;
+  top: 0
 }
 
 footer {
   position: relative;
   bottom: 0;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.translucent-navbar {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.8
-  ); /* Adjust the alpha value as needed */
+  background-color: rgba(4, 4, 4);
 }
 </style>

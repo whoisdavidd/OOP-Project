@@ -7,6 +7,7 @@ import PaymentSuccess from '../components/PaymentSuccess.vue' // Import the new 
 import PaymentCancel from '../components/PaymentCancel.vue'
 import Login from '../components/Login.vue'
 import homepage from '../components/HomePage.vue'
+import Events from '../components/Events.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/homepage',
       name: 'HomePage',
       component: homepage
+    },
+    {
+      path: '/events',
+      name: 'Events',
+      component: Events
     }
   ]
 })
