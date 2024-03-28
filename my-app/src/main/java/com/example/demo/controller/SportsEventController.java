@@ -10,6 +10,7 @@ import com.example.demo.repository.*;
 
 @RestController
 @RequestMapping("/api/SportsEvent")
+@CrossOrigin(origins = "http://localhost:3000") 
 public class SportsEventController {
     @Autowired //automatically inject an instance of customer repository
     private SportsEventRepository sportsEventRepository;
