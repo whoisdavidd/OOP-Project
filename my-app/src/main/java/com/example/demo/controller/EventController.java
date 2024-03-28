@@ -12,7 +12,7 @@ import com.example.demo.requestBodies.SellTicketsBody;
 
 @RestController
 @RequestMapping("/api/event")
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "http://localhost:8081") 
 public class EventController {
     @Autowired //automatically inject an instance of event repo
     private EventRepository eventRepository;

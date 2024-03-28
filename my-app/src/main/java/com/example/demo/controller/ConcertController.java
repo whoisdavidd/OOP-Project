@@ -11,7 +11,7 @@ import com.example.demo.repository.*;
 
 @RestController
 @RequestMapping("/api/concert")
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "http://localhost:8081") 
 public class ConcertController {
     @Autowired //automatically inject an instance of customer repository
     private ConcertRepository concertRepository;
