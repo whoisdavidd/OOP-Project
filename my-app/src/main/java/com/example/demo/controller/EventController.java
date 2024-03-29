@@ -57,7 +57,7 @@ public class EventController {
         Event existingEvent = this.eventRepository.findById(eventID).get();
         List<TicketingOption> ticketingOptionsList = existingEvent.getTicketingOptions();
         String response = "";
-        int totalRevenue = 0;
+        double totalRevenue = 0;
         for (TicketingOption to : ticketingOptionsList){
             totalRevenue += to.getTierRevenue();
             response = response + to.getTierName() + ":" + to.getTierRevenue() +"\n";

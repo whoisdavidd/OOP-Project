@@ -1,6 +1,8 @@
 package com.example.demo.entityFile.Services;
 
 import com.example.demo.entityFile.Events.Event;
+import com.example.demo.entityFile.Ticketing.TicketingOption;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -10,7 +12,13 @@ public class ReportGeneratorService {
     public void generateTicketSalesReport(List<Event> events) {
         for (Event event : events) { 
             System.out.println("Event: " + event.getEventName());
-            System.out.println("Tickets Sold: " + (event.getEventAvailableTickets() - event.getEventAvailableTickets()));
+            List<TicketingOption> ticketingOptionsList = event.getTicketingOptions();
+            int totalTicketsSold = 0;
+            for (TicketingOption to : ticketingOptionsList){
+                totalTicketsSold += to.getNumTicketsSold();
+            }
+            String ticketsSold = String.valueOf(totalTicketsSold);
+            System.out.println("Tickets Sold: " + ticketsSold);
             System.out.println("-----------------------------");
         }
     }
@@ -18,7 +26,11 @@ public class ReportGeneratorService {
     public void generateRevenueReport(List<Event> events) {
         double totalRevenue = 0.0;
         for (Event event : events) {
-            double eventRevenue = (event.getEventAvailableTickets() - event.getEventAvailableTickets()) * event.getEventPrice();
+            List<TicketingOption> ticketingOptionsList = event.getTicketingOptions();
+            double eventRevenue = 0.0;
+            for (TicketingOption to : ticketingOptionsList){
+                eventRevenue += to.getTierRevenue();
+            }
             totalRevenue += eventRevenue;
             System.out.println("Event: " + event.getEventName());
             System.out.println("Revenue: $" + eventRevenue);
@@ -35,14 +47,21 @@ public class ReportGeneratorService {
 
             // Writing data
             for (Event event : events) {
-                int ticketsSold = event.getEventAvailableTickets() - event.getEventAvailableTickets();
-                double revenue = ticketsSold * event.getEventPrice();
+                List<TicketingOption> ticketingOptionsList = event.getTicketingOptions();
+                int ticketsSold = 0;
+                for (TicketingOption to : ticketingOptionsList){
+                    ticketsSold += to.getNumTicketsSold();
+                }
+                double eventRevenue = 0.0;
+                for (TicketingOption to : ticketingOptionsList){
+                    eventRevenue += to.getTierRevenue();
+                }
 
                 writer.append(event.getEventName());
                 writer.append(",");
                 writer.append(String.valueOf(ticketsSold));
                 writer.append(",");
-                writer.append(String.valueOf(revenue));
+                writer.append(String.valueOf(eventRevenue));
                 writer.append("\n");
             }
 

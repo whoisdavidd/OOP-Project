@@ -1,4 +1,4 @@
-// package com.example.demo.entityFile.Events;
+// package com.example.demo.entityFile.Ticketing;
 
 // import java.util.Date;
 // import java.util.Random;

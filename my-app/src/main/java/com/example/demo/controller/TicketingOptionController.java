@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 
-import com.example.demo.entityFile.Events.Concert;
-import com.example.demo.entityFile.Events.Event;
 import com.example.demo.entityFile.Ticketing.TicketingOption;
 import com.example.demo.repository.*;
 

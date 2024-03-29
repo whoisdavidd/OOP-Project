@@ -1,33 +1,60 @@
-<<<<<<<< HEAD:my-app/src/main/java/com/example/demo/entityFile/Events/Ticket.java
-package com.example.demo.entityFile.Events;
-
-========
 package com.example.demo.entityFile.Ticketing;
->>>>>>>> yr_branch:my-app/src/main/java/com/example/demo/entityFile/Ticketing/Ticket.java
 
 import java.util.Date;
 
-public class Ticket {
-    private static int ticketCounter = 1;
+import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.entityFile.Events.Event;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+@Entity
+@Table(name = "Ticket")
+public class Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ticketID;
-    private int eventID;
-    private int customerID;
+    
+    @ManyToOne
+    @JoinColumn(name="eventID")
+    private Event event;
+
+    @ManyToOne
+    @JoinColumn(name="username")
+    private Customer customer;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date bookingDate;
 
-    public Ticket(int eventID, int customerID) {
-        this.ticketID = ticketCounter++;
-        this.eventID = eventID;
-        this.customerID = customerID;
-        this.bookingDate = new Date(); // Current date and time when the ticket is booked
+    private double price;
+
+    @ManyToOne
+    @JoinColumn(name="ticketingOptionId")
+    private TicketingOption ticketingOption;
+
+    @PrePersist
+    protected void onCreate() {
+        bookingDate = new Date();
     }
 
-    public Ticket(int ticketID, int eventID, int customerID, Date bookingDate){
-        this.ticketID = ticketID;
-        this.eventID = eventID;
-        this.customerID = customerID;
-        this.bookingDate = bookingDate;
+    public Ticket() {
     }
+
+    public Ticket(Event event, Customer customer, double price, TicketingOption ticketingOption) {
+        this.event = event;
+        this.customer = customer;
+        this.price = price;
+        this.ticketingOption = ticketingOption;
+    }
+
 
     // Getters and setters for the attributes
 
@@ -35,16 +62,32 @@ public class Ticket {
         return ticketID;
     }
 
-    public int getEventID() {
-        return eventID;
+    public Event getEvent() {
+        return event;
     }
 
-    public int getCustomerID() {
-        return customerID;
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public long getEventID() {
+        return this.event.getEventID();
+    }
+
+    public String getCustomerUsername() {
+        return this.customer.getUsername();
     }
 
     public Date getBookingDate() {
         return bookingDate;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public TicketingOption getTicketingOption() {
+        return ticketingOption;
     }
 
 }
