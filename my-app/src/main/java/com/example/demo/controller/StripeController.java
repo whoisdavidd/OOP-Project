@@ -122,7 +122,7 @@ public class StripeController {
        
                 
             
-                System.out.println("Customer email: " + customerEmail);
+              
                 // TODO: Handle successful checkout,
                 // save order, send confirmation email
                 break;
