@@ -27,7 +27,7 @@ public class Event {
 
     @NotNull(message = "Event must have a date!")
     @Column(name = "eventDate")
-    private String eventDate; // In the form of DDMMYYYY
+    private String eventDate; // In the form of DDMMYYYY can we store as datetime? easier do calculation
 
     @NotNull(message = "Event must have a time!")
     @Column(name = "eventTime")
