@@ -10,7 +10,7 @@ import com.example.demo.repository.*;
 
 @RestController
 @RequestMapping("/api/movie")
-@CrossOrigin(origins = "http://localhost:3000") 
+@CrossOrigin(origins = "http://localhost:8081") 
 public class MovieController {
     @Autowired //automatically inject an instance of customer repository
     private MovieRepository movieRepository;
