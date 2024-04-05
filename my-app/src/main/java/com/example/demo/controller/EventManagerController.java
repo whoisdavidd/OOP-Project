@@ -15,6 +15,8 @@ import com.example.demo.services.UserService;
 public class EventManagerController {
     @Autowired //automatically inject an instance of customer repository
     private EventManagerRepository eventManagerRepository;
+
+    @Autowired
     private UserService userService;
 
     @PostMapping //works
