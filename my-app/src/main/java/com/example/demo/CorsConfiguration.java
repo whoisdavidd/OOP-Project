@@ -17,6 +17,11 @@ public class CorsConfiguration {
                         .allowedOrigins("http://localhost:8081") // Corrected URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowCredentials(true);
+                        
+                registry.addMapping("/ticket/**")
+                        .allowedOrigins("http://localhost:8081") // Corrected URL
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowCredentials(true);
             }
         };
     }
