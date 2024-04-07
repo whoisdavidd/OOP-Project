@@ -12,16 +12,29 @@
         <div class="col-3"></div>
         <div class="col-6">
           <form @submit.prevent="loginUser">
-
             <div class="form-group">
-              <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" name="email" v-model="loginForm.username"
-                placeholder="Enter a valid email address" required="true" />
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                v-model="loginForm.username"
+                placeholder="Enter a valid username"
+                required="true"
+              />
             </div>
             <div class="form-group">
               <label for="pwd">Password</label>
-              <input type="password" class="form-control" id="pwd" v-model="loginForm.password" name="password"
-                placeholder="Enter password" required="true" />
+              <input
+                type="password"
+                class="form-control"
+                id="pwd"
+                v-model="loginForm.password"
+                name="password"
+                placeholder="Enter password"
+                required="true"
+              />
             </div>
 
             <div class="text-left mt-3">
@@ -43,37 +56,43 @@
         <!-- <div class="col"></div>      -->
       </div>
     </div>
-    <div>
-
-    </div>
+    <div></div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "UserLogin",
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
-      }
+        username: "",
+        password: "",
+      },
     };
   },
   methods: {
     async loginUser() {
       try {
-        const response = await axios.post('http://localhost:8080/api/user/login', {
-          username: this.loginForm.username, // Replace with actual data from form
-          password: this.loginForm.password  // Replace with actual data from form
-        });
-        console.log('Login successful', response.data);
-        this.$router.push('/homepage'); // Navigate to the homepage
+        const response = await axios.post(
+          "http://localhost:8080/api/user/login",
+          {
+            username: this.loginForm.username, // Replace with actual data from form
+            password: this.loginForm.password, // Replace with actual data from form
+          }
+        );
+        sessionStorage.setItem("user", this.loginForm.username);
 
+        console.log("Login successful", response.data);
+        alert("Login successful.");
+        this.$router.push({
+          path: "/profile",
+        }); // Navigate to the homepage
       } catch (error) {
-        console.error('Login failed', error);
+        console.error("Login failed", error);
+        alert("Login failed. Try again.");
       }
     },
     navigateToRegister() {

@@ -1,13 +1,6 @@
 <template>
   <div class="App">
     <div class="header">
-      <!-- <nav> -->
-      <!-- Add your navigation links here -->
-      <!-- <router-link to="/">Home</router-link> -->
-      <!-- Other navigation links -->
-      <!-- </nav> -->
-      <!-- <router-view /> -->
-
       <!-- nav bar -->
       <nav
         class="navbar navbar-expand-lg mx-5 py-2 fixed-top position-fixed" style="z-index:1000"
@@ -33,7 +26,7 @@
                 <li class="nav-item px-5">
                   <router-link
                     to="/"
-                    style="text-decoration: none; color: teal;"
+                    style="text-decoration: none; color: teal"
                     class="fs-4"
                     >Home</router-link
                   >
@@ -41,18 +34,32 @@
                 <li class="nav-item px-5">
                   <router-link
                     to="/events"
-                    style="text-decoration: none;  color: teal;"
+                    style="text-decoration: none; color: teal"
                     class="fs-4"
                     >Events</router-link
                   >
                 </li>
                 <li class="nav-item px-5">
+                  <!-- <router-link
+                  :to="user() ? '/profile' : '/login'"
+                    style="text-decoration: none; color: teal"
+                    class="fs-4"
+                    v-if="user()"
+                    >{{user() ? 'Profile' : "Login"}}</router-link
+                  > -->
                   <router-link
                     to="/login"
-                    style="text-decoration: none;  color: teal;"
+                    style="text-decoration: none; color: teal"
                     class="fs-4"
                     >Login</router-link
                   >
+                  <!-- <router-link
+                    to="/login"
+                    style="text-decoration: none; color: teal"
+                    class="fs-4"
+                    v-else
+                    >Login</router-link
+                  > -->
                 </li>
               </ul>
             </div>
@@ -62,8 +69,8 @@
     </div>
     <!-- page content -->
     <div
-      class="content"
-      style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto"
+      class="content overflow-hidden"
+      style="margin-top: 56px; margin-bottom: 100px"
     >
       <router-view></router-view>
     </div>
@@ -99,7 +106,9 @@
         </div>
       </div>
       <div class="text-center text-primary">
-        <p style="color: teal">&copy; 2022 Your Company Name. All Rights Reserved.</p>
+        <p style="color: teal">
+          &copy; 2022 Your Company Name. All Rights Reserved.
+        </p>
       </div>
     </footer>
   </div>
@@ -108,15 +117,26 @@
 <script>
 export default {
   name: "App",
-  data() {},
+  // computed: {
+  //   user() {
+  //     return sessionStorage.getItem("user") !== null;
+  //   },
+  // },
+  // created() {
+  //   window.addEventListener("storage", () => {
+  //     // if (sessionStorage.getItem("user") === null) {
+  //       // this.$router.push("/login");
+  //       this.$forceUpdate();
+  //     // }
+  //   });
+  // },
 };
 </script>
 
 <style>
-
 nav {
   background: white;
-  top: 0
+  top: 0;
 }
 
 footer {
