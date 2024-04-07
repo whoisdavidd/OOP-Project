@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.entityFile.Events.SportsEvent;
+import com.example.demo.entityFile.Ticketing.TicketingOption;
 import com.example.demo.repository.*;
 
 @RestController
@@ -16,8 +17,12 @@ public class SportsEventController {
     private SportsEventRepository sportsEventRepository;
 
     @PostMapping // works
-    public ResponseEntity<?> createSportsEvent(@RequestBody SportsEvent SportsEvent) {
-        SportsEvent savedSportsEvent = this.sportsEventRepository.save(SportsEvent);
+    public ResponseEntity<?> createSportsEvent(@RequestBody SportsEvent sportsEvent) {
+        List<TicketingOption> ticketingOptionsList = sportsEvent.getTicketingOptions();
+        for (TicketingOption to : ticketingOptionsList){
+            to.setEvent(sportsEvent);
+        }
+        SportsEvent savedSportsEvent = this.sportsEventRepository.save(sportsEvent);
         return ResponseEntity.ok(savedSportsEvent);
     }
     @PutMapping("/{eventID}") 

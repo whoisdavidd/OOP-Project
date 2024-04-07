@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import com.example.demo.entityFile.Events.Movie;
+import com.example.demo.entityFile.Ticketing.TicketingOption;
 import com.example.demo.repository.*;
 
 @RestController
@@ -17,6 +18,10 @@ public class MovieController {
 
     @PostMapping // works
     public ResponseEntity<?> createMovie(@RequestBody Movie movie) {
+        List<TicketingOption> ticketingOptionsList = movie.getTicketingOptions();
+        for (TicketingOption to : ticketingOptionsList){
+            to.setEvent(movie);
+        }
         Movie savedMovie = this.movieRepository.save(movie);
         return ResponseEntity.ok(savedMovie);
     }
