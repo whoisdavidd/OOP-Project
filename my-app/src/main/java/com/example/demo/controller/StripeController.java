@@ -41,7 +41,7 @@ public class StripeController {
                     .build();
 
             Session session = Session.create(params);
-
+            
             return ResponseEntity.ok(session.getId());
         } catch (Exception e) {
             e.printStackTrace();
