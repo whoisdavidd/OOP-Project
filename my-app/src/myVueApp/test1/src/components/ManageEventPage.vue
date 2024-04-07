@@ -142,9 +142,124 @@
             </h2>
             <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionEvents">
             <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                <div class="d-flex flex-wrap justify-content-evenly align-items-stretch">
+                    <div v-for="event in events" :key="event.eventID">
+                        <div class="card mt-3 pb-5 ps-1" style="width: 18rem; height:90%">
+                            <div class="card-body">
+                                <h6 class="card-title text-decoration-underline">
+                                    Event ID {{event.eventID}} - {{ event.eventName }}
+                                </h6>
+                                <p class="card-text">
+                                    <strong>What:</strong> <span v-if="event.eventType == 'SPORTS_EVENT'">Sports Event</span>
+                                    <span v-else>{{ event.eventType.slice(0,1) + event.eventType.slice(1,).toLowerCase() }}</span><br>
+                                    <strong>When:</strong> {{ event.eventDate.slice(0,2)}} {{ months[event.eventDate.slice(2,4)] }} {{ event.eventDate.slice(4,8)}}, {{ event.eventTime }}H <br>
+                                    <strong>Where:</strong> {{ event.eventVenue }} <br>
+                                    <span v-if="event.cancellationFee > 0"> <strong>Cancellation Fee:</strong> {{ event.cancellationFee }} <br></span>
+                                    <strong>Ticketing Options:</strong>
+                                    <ul class="mb-0">
+                                        <li v-for="to in event.ticketingOptions" :key="to.tierName"> {{ to.tierName }} - ${{ to.tierPrice }} - {{ to.tierQuantity }} tickets</li>
+                                    </ul>
+                                    <span v-if="event.eventType == 'CONCERT'"> <strong>Performers:</strong> 
+                                        <ul class="mb-0">
+                                            <li v-for="performer in event.performers" :key="performer"> {{ performer }} </li>
+                                        </ul><br>
+                                    </span> 
+                                    <span v-if="event.eventType == 'MOVIE'"> <strong>Main Cast:</strong> 
+                                        <ul class="mb-0">
+                                            <li v-for="mainCast in event.mainCast" :key="mainCast"> {{ mainCast }} </li>
+                                        </ul>
+                                        <strong>Rating:</strong> {{ event.rating }} <br>
+                                        <strong>Duration:</strong> {{ event.duration }} minutes
+                                    </span>
+                                    <span v-if="event.eventType == 'SPORTS_EVENT'"> <strong>Participants:</strong> 
+                                        <ul class="mb-0">
+                                            <li v-for="participants in event.participants" :key="participants"> {{ participants }} </li>
+                                        </ul>
+                                        <strong>Sport:</strong> {{ event.sport }} <br>
+                                    </span>
+                                    <button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </div>
+            <div class="modal fade" data-bs-backdrop="static" id="editEventModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Edit event</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="editEventModalBody">
+                                <div>
+                                    Event ID: {{ selectedEvent.eventID }}
+                                </div>
+                                <div>
+                                    Event Name: <input type="text" name="newEventName" class="form-control" v-model.lazy="selectedEvent.eventName">
+                                </div>
+                                <div>
+                                    Event Venue: <input type="text" name="newEventVenue" class="form-control" v-model.lazy="selectedEvent.eventVenue">
+                                </div>
+                                <div>
+                                    Event Date (DDMMYYYY):  <input type="text" name="newEventDate" class="form-control" v-model.lazy="selectedEvent.eventDate">
+                                </div>
+                                <div>
+                                    Event Time (24H): <input type="text" name="newEventTime" class="form-control" v-model.lazy="selectedEvent.eventTime">
+                                </div>
+                                <div>
+                                    Cancellation Fee ($): <input type="number" name="newCancellationFee" class="form-control" v-model.lazy="selectedEvent.cancellationFee">
+                                </div>
+                                <div>
+                                    Ticketing Options: <button class="btn btn-dark" @click="selectedEvent.ticketingOptions.push({'tierName' : '', 'tierPrice' : 0, 'tierQuantity' : 0})"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add</button>  
+                                    <ul class="mt-2">
+                                        <li v-for="(to,index) in selectedEvent.ticketingOptions" :key="to.tierName">
+                                            <input type="text" :name="'newTier'+ (index+1) + 'Name'" v-model.lazy="to.tierName"  class="form-control">
+                                            <input type="number" :name="'newTier'+ (index+1) + 'Price'" v-model.lazy="to.tierPrice" class="form-control">
+                                            <input type="number" :name="'newTier'+ (index+1) + 'Quantity'" v-model.lazy="to.tierQuantity" class="form-control">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="selectedEvent.eventType == 'CONCERT'">
+                                    Performers: <button class="btn btn-dark" @click="selectedEvent.performers.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <ul>
+                                        <li v-for="(performer,index) in selectedEvent.performers" :key="performer">
+                                            <input type="text" :name="'newPerformer'+ (index+1) + 'Name'" v-model.lazy="performer.performerName" class="form-control">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="selectedEvent.eventType == 'MOVIE'">
+                                    Main Cast: <button class="btn btn-dark" @click="selectedEvent.mainCast.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <ul>
+                                        <li v-for="mainCast in selectedEvent.mainCast" :key="mainCast">
+                                            <input type="text" :name="'newCast'+ (index+1) + 'Name'" v-model.lazy="mainCast.castMemberName" class="form-control">
+                                        </li>
+                                    </ul>
+                                    <div>
+                                        Rating: <input type="number" name="newCancellationFee" class="form-control" v-model.lazy="selectedEvent.cancellationFee">
+                                    </div>
+                                    <input type="text" name="newRating" class="form-control" v-model.lazy="selectedEvent.rating">
+                                    <input type="number" name="newDuration" class="form-control" v-model.lazy="selectedEvent.duration">
+                                </div>
+                                <div v-if="selectedEvent.eventType == 'SPORTS_EVENT'">
+                                    Participants: <button class="btn btn-dark" @click="selectedEvent.participants.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <ul>
+                                        <li v-for="participant in selectedEvent.participants" :key="participant">
+                                            <input type="text" :name="'newParticipant'+ (index+1) + 'Name'" v-model.lazy="participant.participantName" class="form-control">
+                                        </li>
+                                    </ul>
+                                    <input type="text" name="newSport" class="form-control" v-model.lazy="selectedEvent.sport">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-success" @click="console.log(selectedEvent)">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
 </div>
     </div>
@@ -172,11 +287,27 @@ export default {
             duration: 0,
             participants: [{"participantName" : ""}],
             sport: "",
-            addEventErrors: []
+            addEventErrors: [],
+            events: [],
+            months: {
+                "01": "January",
+                "02": "February",
+                "03": "March",
+                "04": "April",
+                "05": "May",
+                "06": "June",
+                "07": "July",
+                "08": "August",
+                "09": "September",
+                "10": "October",
+                "11": "November",
+                "12": "December"
+            },
+            selectedEvent: {},
         }
     },
     mounted(){
-        this.eventDateAndTime = new Date();
+        this.getEvents();
     },
     methods: {
         addTicketingOption(){
@@ -351,6 +482,45 @@ export default {
                     this.addEventErrors.push("Sport missing")
                 }
             }
+        },
+        getEvents(){
+            let ref = this
+            axios.get('http://localhost:8080/api/event')
+            .then(function(response){
+                ref.events = response.data
+                console.log(ref.events)
+            })
+            .catch(function (error) {
+                console.log(error)
+            });
+        },
+        selectEvent(event){
+            this.selectedEvent = event
+            if (event.eventType == 'CONCERT'){
+                let performers = []
+                for (let p of event.performers){
+                    performers.push({"performerName" : p})
+                }
+                this.selectedEvent.performers = performers
+            }else if (event.eventType == 'MOVIE'){
+                let mainCast = []
+                for (let p of event.mainCast){
+                    this.mainCast.push({"castMemberName" : p})
+                }
+                this.selectedEvent.mainCast = mainCast
+            } else{
+                let participants = []
+                for (let p of event.participants){
+                    this.participants.push({"participantName" : p})
+                }
+                this.selectedEvent.participants = participants
+            }
+            if (!bootstrap.Modal.getInstance('#editEventModal')){
+                var modal = new bootstrap.Modal('#editEventModal');
+            }else{
+                var modal = bootstrap.Modal.getInstance('#editEventModal')
+            }
+            modal.show()
         }
     }
 }

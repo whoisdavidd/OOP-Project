@@ -43,6 +43,9 @@ public class Event {
     @Column(name = "cancellationFee")
     private Double cancellationFee;
 
+    @Column(name = "event_type", insertable =  false, updatable = false)
+    protected String eventType;
+
     // constructor
 
     public Event(){
@@ -72,6 +75,10 @@ public class Event {
 
     public Double getCancellationFee(){
         return this.cancellationFee;
+    }
+
+    public String getEventType(){
+        return this.eventType;
     }
 
     // dont see the need for set event id
