@@ -70,6 +70,7 @@ export default {
           password: this.loginForm.password  // Replace with actual data from form
         });
         console.log('Login successful', response.data);
+        sessionStorage.setItem('username', this.loginForm.username);
         this.$router.push('/homepage'); // Navigate to the homepage
 
       } catch (error) {
