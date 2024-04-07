@@ -25,6 +25,8 @@ export default {
                 price: this.event.price,
                 buyerId: this.userId,
                 email: this.userEmail,
+                ticketingOptionId: this.ticketingOptionId,
+                
             };
 
             // Make a POST request to your Spring Boot server via ngrok
