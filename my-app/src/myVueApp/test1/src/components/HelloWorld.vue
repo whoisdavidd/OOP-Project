@@ -1,21 +1,13 @@
 <template>
   <div class="hello">
-    <head>
-      <!-- bootstrap link -->
-      <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-        crossorigin="anonymous"
-      />
-    </head>
     <div>
       <div class="container-fluid">
-        <div class="d-flex p-5 ms-5 row m-5">
+        <div class="d-flex p-5 ms-5 row mx-5">
           <!-- content -->
+          <div class="col-md-6"></div>
           <div class="p-2 mt-5 col-md-6">
-            <h5 style="color: teal">INTRODUCING TICKET MISTER</h5>
-            <h1 style="color: mediumturquoise">Buy your tickets now.</h1>
+            <h5>INTRODUCING TICKET MISTER</h5>
+            <h1 style="color: palegoldenrod">Buy your tickets now.</h1>
             <p>
               Ticket Mister is your one-stop destination for all your event and
               concert ticket needs. Whether you're looking to attend a music
@@ -41,12 +33,6 @@
               </div>
             </form>
           </div>
-
-          <!-- pic -->
-          <div class="mx-auto col-md-6 d-flex justify-content-center">
-            <img src="../img/images.png" width="400px" height="470px"/>
-          </div>
-          
         </div>
       </div>
     </div>
@@ -65,8 +51,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container-fluid {
+  background-image: url("../img/background.jpg"); /* Path to your background image */
+  background-size: cover;
+  background-position: center;
+  color: white; /* Set text color to white for better readability */
+  padding: 20px; /* Add padding to the container */
+}
+
 input,
-button, img {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+button,
+img {
+  box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.6), 0 6px 20px 0 rgba(255, 255, 255, 0.19);
 }
 </style>
