@@ -11,6 +11,7 @@ import Events from '../components/Events.vue'
 import CustomerHomepage from '@/components/CustomerHomepage.vue'
 import RegistrationPage from '@/components/Registration.vue'
 import VerifyTicket from '@/components/VerifyTicket.vue'
+import BookingPage from '@/components/BookingPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -65,6 +66,11 @@ const router = createRouter({
       path: '/RegistrationPage',
       name: 'RegistrationPage',
       component: RegistrationPage
+    },
+    {
+      path: '/BookingPage',
+      name: 'BookingPage',
+      component: BookingPage
     }
     ,
     {

@@ -9,25 +9,29 @@
       <div v-if="currentTab === 'all'">
         <h2>All Events</h2>
         <ul>
-          <li v-for="event in events" :key="event.id">{{ event.name }}</li>
+          <li v-for="event in events" :key="event.id">{{ event.eventName }}</li>
         </ul>
       </div>
       <div v-else-if="currentTab === 'concerts'">
         <h2>Concerts</h2>
         <ul>
-          <li v-for="concert in concerts" :key="concert.id">{{ concert.name }}</li>
+          <li v-for="concert in concerts" :key="concert.id">
+            <img :src="concert.imageUrl" alt="Event Image" class="event-image">
+            <div>{{concert.eventName }}</div>
+            <button @click="viewEventDetails(concert.eventID)">View Details</button>
+          </li>
         </ul>
       </div>
       <div v-else-if="currentTab === 'movies'">
         <h2>Movies</h2>
         <ul>
-          <li v-for="movie in movies" :key="movie.id">{{ movie.name }}</li>
+          <li v-for="movie in movies" :key="movie.id">{{ movie.eventName }}</li>
         </ul>
       </div>
       <div v-else-if="currentTab === 'sportsEvents'">
         <h2>Sports Events</h2>
         <ul>
-          <li v-for="sportsEvent in sportsEvents" :key="sportsEvent.id">{{ sportsEvent.name }}</li>
+          <li v-for="sportsEvent in sportsEvents" :key="sportsEvent.id">{{ sportsEvent.eventName }}</li>
         </ul>
       </div>
     </div>
@@ -58,12 +62,13 @@ export default {
       try {
         const response = await axios.get('http://localhost:8080/api/event');
         console.log(response.data)
-        this.events = this.events.concat(response.data);
+        this.events = response.data;
         
       } catch (error) {
         console.error('Error fetching events:', error);
       }
     },
+
    async getAllConcerts() {
     try {
         const response = await axios.get('http://localhost:8080/api/concert');
@@ -88,6 +93,11 @@ export default {
         console.error('Error fetching sports events', error);
     }
    },
+   viewEventDetails(eventId) {
+    // Logic to view event details
+    // For example, navigating to an event detail component or opening a modal
+    console.log('View details for event', eventId);
+    },
   }
 };
 </script>
