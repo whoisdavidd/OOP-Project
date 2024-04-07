@@ -10,7 +10,7 @@
 
       <!-- nav bar -->
       <nav
-        class="navbar navbar-expand-lg mx-5 py-2 fixed-top z-3 position-fixed"
+        class="navbar navbar-expand-lg mx-5 py-2 fixed-top position-fixed" style="z-index:1000"
       >
         <div class="container-fluid">
           <router-link

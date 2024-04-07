@@ -26,10 +26,18 @@
 
             <div class="text-left mt-3">
               <button type="submit" class="btn btn-light rounded-pill btn-outline-dark">
-                Submit
+                Login
               </button>
             </div>
           </form>
+          <div class="mt-4 d-flex align-items-center">
+            <span>Don't have an account? </span>
+            <button @click="navigateToRegister" class="btn btn-light rounded-pill btn-outline-dark ml-2">
+              Register
+            </button>
+          </div>
+
+
         </div>
         <div class="col-3"></div>
         <!-- <div class="col"></div>      -->
@@ -67,6 +75,9 @@ export default {
       } catch (error) {
         console.error('Login failed', error);
       }
+    },
+    navigateToRegister() {
+      this.$router.push('/RegistrationPage'); // Make sure the path matches your router configuration
     }
   }
 };

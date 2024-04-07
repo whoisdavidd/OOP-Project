@@ -17,6 +17,8 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "user_type", insertable =  false, updatable = false)
+    protected String userType;
 
     // @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     // @PrimaryKeyJoinColumn
@@ -36,9 +38,16 @@ public class User {
     public String getUsername() {
         return username;
     }
+    
     public String getPassword() {
         return password;
     }
+
+    public String getUserType(){
+        return userType;
+    }
+
+
     public void setPassword(String password) {
         this.password = password;
     }

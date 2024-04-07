@@ -11,11 +11,7 @@ import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +41,7 @@ public class StripeController {
                     .build();
 
             Session session = Session.create(params);
-
+            
             return ResponseEntity.ok(session.getId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +122,7 @@ public class StripeController {
        
                 
             
-                System.out.println("Customer email: " + customerEmail);
+              
                 // TODO: Handle successful checkout,
                 // save order, send confirmation email
                 break;

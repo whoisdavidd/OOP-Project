@@ -8,6 +8,10 @@ import PaymentCancel from '../components/PaymentCancel.vue'
 import Login from '../components/Login.vue'
 import homepage from '../components/HomePage.vue'
 import Events from '../components/Events.vue'
+import CustomerHomepage from '@/components/CustomerHomepage.vue'
+import RegistrationPage from '@/components/Registration.vue'
+import VerifyTicket from '@/components/VerifyTicket.vue'
+import ManageEventPage from '@/components/ManageEventPage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -52,7 +56,29 @@ const router = createRouter({
       path: '/events',
       name: 'Events',
       component: Events
+    },
+    {
+      path: '/CustomerHomepage',
+      name: 'CustomerHomepage',
+      component: CustomerHomepage
+    },
+    {
+      path: '/RegistrationPage',
+      name: 'RegistrationPage',
+      component: RegistrationPage
+    },
+    {
+      path: '/ManageEvents',
+      name: 'ManageEventPage',
+      component: ManageEventPage
     }
+    ,
+    {
+      path: '/VerifyTicket',
+      name: 'VerifyTicket',
+      component: VerifyTicket
+    }
+    
   ]
 })
 

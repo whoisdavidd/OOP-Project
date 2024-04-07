@@ -58,7 +58,7 @@ export default {
       try {
         const response = await axios.get('http://localhost:8080/api/event');
         console.log(response.data)
-        this.events = response.data;
+        this.events = this.events.concat(response.data);
         
       } catch (error) {
         console.error('Error fetching events:', error);
