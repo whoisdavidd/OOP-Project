@@ -18,7 +18,7 @@ public class TicketingOption {
     @Column(name = "tierName")
     private String tierName;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull(message = "Ticketing option must be associated with an event!")
     @JsonIgnore
     @JoinColumn(name = "eventID")

@@ -106,11 +106,11 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5">Adding event result</h1>
+                                <h1 class="modal-title fs-5">Adding/editing event result</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body" id="addEventSuccessModalBody">
-                                The event was successfully added.
+                                The event was successfully added/edited.
                             </div>
                         </div>
                     </div>
@@ -119,12 +119,12 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5">Adding event result</h1>
+                            <h1 class="modal-title fs-5">Adding/editing event result</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="addEventFailureModalBody">
                             <div>
-                                The event was not added.
+                                The event was not added/edited.
                             </div>
                             <div v-for="(error,index) in addEventErrors" :key="error">
                                 Error {{index+1}} :  {{ error }}
@@ -145,7 +145,7 @@
                 <div class="d-flex flex-wrap justify-content-evenly align-items-stretch">
                     <div v-for="event in events" :key="event.eventID">
                         <div class="card mt-3 pb-5 ps-1" style="width: 18rem; height:90%">
-                            <div class="card-body">
+                            <div class="card-body" style="height:100%">
                                 <h6 class="card-title text-decoration-underline">
                                     Event ID {{event.eventID}} - {{ event.eventName }}
                                 </h6>
@@ -177,85 +177,117 @@
                                         </ul>
                                         <strong>Sport:</strong> {{ event.sport }} <br>
                                     </span>
-                                    <button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button>
                                 </p>
+                                <div><button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
-            <div class="modal fade" data-bs-backdrop="static" id="editEventModal" tabindex="-1" aria-hidden="true">
+            <div class="modal modal-lg fade" data-bs-backdrop="static" id="editEventModal" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Edit event</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" id="editEventModalBody">
+                            <div class="modal-body" id="editEventModalBody" v-if="Object.keys(selectedEvent).length > 0">
                                 <div>
-                                    Event ID: {{ selectedEvent.eventID }}
+                                    <strong>Event ID:</strong> {{ selectedEvent.eventID }}
                                 </div>
-                                <div>
-                                    Event Name: <input type="text" name="newEventName" class="form-control" v-model.lazy="selectedEvent.eventName">
+                                <div class="mt-2">
+                                    <strong>Event Name:</strong> <span v-if="selectedEvent.eventName == ''" class="text-danger">Missing event name</span>
+                                    <input type="text" name="newEventName" class="form-control w-75" v-model.lazy="selectedEvent.eventName"> 
                                 </div>
-                                <div>
-                                    Event Venue: <input type="text" name="newEventVenue" class="form-control" v-model.lazy="selectedEvent.eventVenue">
+                                <div class="mt-2">
+                                    <strong>Event Venue:</strong>  <span v-if="selectedEvent.eventVenue == ''" class="text-danger">Missing event venue</span>
+                                    <input type="text" name="newEventVenue" class="form-control w-75" v-model.lazy="selectedEvent.eventVenue">
                                 </div>
-                                <div>
-                                    Event Date (DDMMYYYY):  <input type="text" name="newEventDate" class="form-control" v-model.lazy="selectedEvent.eventDate">
+                                <div class="mt-2"> 
+                                    <strong>Event Date (DDMMYYYY): </strong>  <span v-if="!validateEventDate()" class="text-danger">Missing/invalid event date</span>
+                                    <input type="text" name="newEventDate" class="form-control w-75" v-model.lazy="selectedEvent.eventDate">
                                 </div>
-                                <div>
-                                    Event Time (24H): <input type="text" name="newEventTime" class="form-control" v-model.lazy="selectedEvent.eventTime">
+                                <div class="mt-2">
+                                    <strong>Event Time (24H): </strong>  <span v-if="!validateEventTime()" class="text-danger">Missing/invalid event time</span>
+                                    <input type="text" name="newEventTime" class="form-control w-75" v-model.lazy="selectedEvent.eventTime">
                                 </div>
-                                <div>
-                                    Cancellation Fee ($): <input type="number" name="newCancellationFee" class="form-control" v-model.lazy="selectedEvent.cancellationFee">
+                                <div class="mt-2">
+                                    <strong>Cancellation Fee ($): </strong> <input type="number" name="newCancellationFee" class="form-control w-75" v-model.lazy="selectedEvent.cancellationFee">
                                 </div>
-                                <div>
-                                    Ticketing Options: <button class="btn btn-dark" @click="selectedEvent.ticketingOptions.push({'tierName' : '', 'tierPrice' : 0, 'tierQuantity' : 0})"
+                                <hr style="border-width:3px; color:blue">
+                                <div class="mt-2">
+                                    <strong>Ticketing Options: </strong><button class="btn btn-dark" @click="selectedEvent.ticketingOptions.push({'tierName' : '', 'tierPrice' : 0, 'tierQuantity' : 0})"
                                     style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add</button>  
-                                    <ul class="mt-2">
-                                        <li v-for="(to,index) in selectedEvent.ticketingOptions" :key="to.tierName">
-                                            <input type="text" :name="'newTier'+ (index+1) + 'Name'" v-model.lazy="to.tierName"  class="form-control">
-                                            <input type="number" :name="'newTier'+ (index+1) + 'Price'" v-model.lazy="to.tierPrice" class="form-control">
-                                            <input type="number" :name="'newTier'+ (index+1) + 'Quantity'" v-model.lazy="to.tierQuantity" class="form-control">
-                                        </li>
-                                    </ul>
+                                    <div class="mt-2" v-for="(to,index) in selectedEvent.ticketingOptions" :key="to.tierName"> 
+                                        <span class="d-block">Tier {{index+1}} Name: <span v-if="to.tierName == ''" class="text-danger">Missing tier name</span> </span>
+                                        <input type="text" :name="'newTier'+ (index+1) + 'Name'" v-model.lazy="to.tierName"  class="form-control w-50 me-2 d-inline-block">
+                                        <a @click="selectedEvent.ticketingOptions.splice(index,1);untouchedTicketingOptions--">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill d-inline-block" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                            </svg>
+                                        </a>
+                                        <span class="d-block">Tier {{index+1}} Price:</span> <input type="number" :name="'newTier'+ (index+1) + 'Price'" v-model.lazy="to.tierPrice" class="form-control w-50">
+                                        Tier {{index+1}} Quantity: <input type="number" :name="'newTier'+ (index+1) + 'Quantity'" v-model.lazy="to.tierQuantity" class="form-control w-50">
+                                    </div>
+                                    
+                                    <hr style="border-width:3px; color:blue">
                                 </div>
                                 <div v-if="selectedEvent.eventType == 'CONCERT'">
-                                    Performers: <button class="btn btn-dark" @click="selectedEvent.performers.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
-                                    <ul>
-                                        <li v-for="(performer,index) in selectedEvent.performers" :key="performer">
-                                            <input type="text" :name="'newPerformer'+ (index+1) + 'Name'" v-model.lazy="performer.performerName" class="form-control">
-                                        </li>
-                                    </ul>
+                                    <strong>Performers: </strong> <button class="btn btn-dark" @click="selectedEvent.performers.push({'performerName' : ''})" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <div class="mt-2" v-for="(performer,index) in selectedEvent.performers" :key="performer.performerName">
+                                        Performer {{ index+1 }}: <span v-if="performer.performerName == ''" class="text-danger">Missing performer name</span>
+                                        <input type="text" :name="'newPerformer'+ (index+1) + 'Name'" v-model.lazy="performer.performerName" class="form-control w-50 d-inline-block me-2"> 
+                                        <a @click="selectedEvent.performers.splice(index,1)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill d-inline-block" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <hr style="border-width:3px; color:blue">
                                 </div>
                                 <div v-if="selectedEvent.eventType == 'MOVIE'">
-                                    Main Cast: <button class="btn btn-dark" @click="selectedEvent.mainCast.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
-                                    <ul>
-                                        <li v-for="mainCast in selectedEvent.mainCast" :key="mainCast">
-                                            <input type="text" :name="'newCast'+ (index+1) + 'Name'" v-model.lazy="mainCast.castMemberName" class="form-control">
-                                        </li>
-                                    </ul>
-                                    <div>
-                                        Rating: <input type="number" name="newCancellationFee" class="form-control" v-model.lazy="selectedEvent.cancellationFee">
+                                    <strong>Main Cast: </strong> <button class="btn btn-dark" @click="selectedEvent.mainCast.push({'castMemberName' : ''})" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <div class="mt-2" v-for="(mainCast,index) in selectedEvent.mainCast" :key="mainCast.castMemberName">
+                                        <div class="d-block">Cast Member {{ index+1 }}: <span v-if="mainCast.castMemberName == ''" class="text-danger">Missing cast member name</span></div>
+                                        <input type="text" :name="'newCast'+ (index+1) + 'Name'" v-model.lazy="mainCast.castMemberName" class="form-control w-50 d-inline-block me-2">
+                                        <a @click="selectedEvent.mainCast.splice(index,1)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill d-inline-block" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                            </svg>
+                                    </a> 
                                     </div>
-                                    <input type="text" name="newRating" class="form-control" v-model.lazy="selectedEvent.rating">
-                                    <input type="number" name="newDuration" class="form-control" v-model.lazy="selectedEvent.duration">
+                                    <hr style="border-width:3px; color:blue">
+                                    <div class="mt-2">
+                                        <strong>Rating:</strong> <span v-if="selectedEvent.rating == ''" class="text-danger">Missing rating</span>
+                                        <input type="text" name="newRating" class="form-control w-75" v-model.lazy="selectedEvent.rating">
+                                    </div>
+                                    <div class="mt-2">
+                                        <strong>Duration:</strong> <input type="number" name="newDuration" class="form-control w-75" v-model.lazy="selectedEvent.duration">
+                                    </div>     
                                 </div>
                                 <div v-if="selectedEvent.eventType == 'SPORTS_EVENT'">
-                                    Participants: <button class="btn btn-dark" @click="selectedEvent.participants.push('')" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
-                                    <ul>
-                                        <li v-for="participant in selectedEvent.participants" :key="participant">
-                                            <input type="text" :name="'newParticipant'+ (index+1) + 'Name'" v-model.lazy="participant.participantName" class="form-control">
-                                        </li>
-                                    </ul>
-                                    <input type="text" name="newSport" class="form-control" v-model.lazy="selectedEvent.sport">
+                                    <strong>Participants: </strong> <button class="btn btn-dark" @click="selectedEvent.participants.push({'participantName' : ''})" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"> Add </button>
+                                    <div v-for="(participant, index) in selectedEvent.participants" :key="participant.participantName">
+                                        <div class="d-block">Participant {{ index+1 }}:  <span v-if="participant.participantName == ''" class="text-danger">Missing participant name</span></div>
+                                        <input type="text" :name="'newParticipant'+ (index+1) + 'Name'" v-model.lazy="participant.participantName" class="form-control w-50 d-inline-block me-2">
+                                        <a @click="selectedEvent.participants.splice(index,1)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x-square-fill d-inline-block" viewBox="0 0 16 16">
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708"/>
+                                            </svg>
+                                    </a>
+                                    </div>
+                                    
+                                    <hr style="border-width:3px; color:blue">
+                                    <div class="mt-2">
+                                        <strong>Sport:</strong> <span v-if="selectedEvent.sport == ''" class="text-danger">Missing sport</span>
+                                         <input type="text" name="newSport" class="form-control w-75" v-model.lazy="selectedEvent.sport">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer" v-if="Object.keys(selectedEvent).length > 0">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-success" @click="console.log(selectedEvent)">Save changes</button>
+                                <button type="button" class="btn btn-success" :disabled="!validateEventChanges()" @click="makeChanges()" data-bs-dismiss="modal">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -304,6 +336,8 @@ export default {
                 "12": "December"
             },
             selectedEvent: {},
+            originalEvent: {},
+            untouchedTicketingOptions: 0,
         }
     },
     mounted(){
@@ -377,7 +411,6 @@ export default {
                         rating: this.rating,
                         duration: this.duration
                     }
-                    console.log(json)
                 }else{
                     url = 'http://localhost:8080/api/SportsEvent'
                     let participants = []
@@ -495,7 +528,9 @@ export default {
             });
         },
         selectEvent(event){
-            this.selectedEvent = event
+            this.originalEvent = event;
+            this.selectedEvent = JSON.parse(JSON.stringify(event))
+            this.untouchedTicketingOptions = this.selectedEvent.ticketingOptions.length;
             if (event.eventType == 'CONCERT'){
                 let performers = []
                 for (let p of event.performers){
@@ -505,13 +540,13 @@ export default {
             }else if (event.eventType == 'MOVIE'){
                 let mainCast = []
                 for (let p of event.mainCast){
-                    this.mainCast.push({"castMemberName" : p})
+                    mainCast.push({"castMemberName" : p})
                 }
                 this.selectedEvent.mainCast = mainCast
             } else{
                 let participants = []
                 for (let p of event.participants){
-                    this.participants.push({"participantName" : p})
+                    participants.push({"participantName" : p})
                 }
                 this.selectedEvent.participants = participants
             }
@@ -521,7 +556,192 @@ export default {
                 var modal = bootstrap.Modal.getInstance('#editEventModal')
             }
             modal.show()
-        }
+        },
+        validateEventDate(){
+            let eventDate = this.selectedEvent.eventDate
+            if (eventDate.length == 8){
+                let day = eventDate.slice(0,2)
+                let month = eventDate.slice(2,4)
+                let year = eventDate.slice(4,8)
+                let todayDay = new Date().getDate()
+                let todayMonth = new Date().getMonth()
+                let todayYear = new Date().getFullYear()
+                if (parseInt(day) > 0 && parseInt(day) < 32 && parseInt(month) > 0 && parseInt(month) < 13 && parseInt(year) > 2023){
+                    if (parseInt(year) >= todayYear && parseInt(month) >= todayMonth && parseInt(day) >= todayDay){
+                        return true
+                    }
+                }
+            }
+            return false
+        },
+        validateEventTime(){
+            let eventTime = this.selectedEvent.eventTime
+            if (eventTime.length == 4){
+                let hour = eventTime.slice(0,2)
+                let minute = eventTime.slice(2,4)
+                if (parseInt(hour) >= 0 && parseInt(hour) < 24 && parseInt(minute) >= 0 && parseInt(minute) < 60){
+                    return true
+                }
+            }
+            return false
+        },
+        validateEventChanges(){
+            if (this.selectedEvent.eventName == ""){
+                return false
+            }
+            if (this.selectedEvent.eventVenue == ""){
+                return false
+            }
+            if (!this.validateEventDate()){
+                return false
+            }
+            if (!this.validateEventTime()){
+                return false
+            }
+            for (let i=0; i<this.selectedEvent.ticketingOptions.length;i++){
+                if (this.selectedEvent.ticketingOptions[i].tierName == ""){
+                    return false
+                }
+            }
+            if (this.selectedEvent.eventType == 'CONCERT'){
+                for (let i=0; i<this.selectedEvent.performers.length;i++){
+                    if (this.selectedEvent.performers[i].performerName == ""){
+                        return false
+                    }
+                }
+            }
+            else if (this.selectedEvent.eventType =='MOVIE'){
+                for (let i=0; i<this.selectedEvent.mainCast.length;i++){
+                    if (this.selectedEvent.mainCast[i].castMemberName == ""){
+                        return false
+                    }
+                }
+                if (this.selectedEvent.rating == ""){
+                    return false
+                }
+                if (this.selectedEvent.duration == ""){
+                    return false
+                }
+            }
+            else if (this.selectedEvent.eventType =='SPORTS_EVENT'){
+                for (let i=0; i<this.selectedEvent.participants.length;i++){
+                    if (this.selectedEvent.participants[i].participantName == ""){
+                        return false
+                    }
+                }
+                if (this.selectedEvent.sport == ""){
+                    return false
+                }
+            }
+            return true
+        },
+        makeChanges(){
+            if (!bootstrap.Modal.getInstance('#addEventSuccessModal')){
+                var modal1 = new bootstrap.Modal('#addEventSuccessModal');    
+            }else{
+                modal1 = bootstrap.Modal.getInstance('#addEventSuccessModal')
+            }
+            if (!bootstrap.Modal.getInstance('#addEventFailureModal')){
+                var modal2 = new bootstrap.Modal('#addEventFailureModal');    
+            }else{
+                modal2 = bootstrap.Modal.getInstance('#addEventFailureModal')
+            }
+            let url = ""
+            let json = {}
+            let eventID = this.selectedEvent.eventID;
+            if (this.selectedEvent.eventType == 'CONCERT'){
+                url = 'http://localhost:8080/api/concert/' + eventID
+                let performers = []
+                for (let p of this.selectedEvent.performers){
+                    performers.push(p.performerName)
+                }
+                json = {
+                    eventName: this.selectedEvent.eventName,
+                    eventVenue: this.selectedEvent.eventVenue,
+                    eventDate: this.selectedEvent.eventDate,
+                    eventTime: this.selectedEvent.eventTime,
+                    cancellationFee: this.selectedEvent.cancellationFee,
+                    performers : performers
+                }
+            }else if (this.selectedEvent.eventType == 'MOVIE'){
+                url = 'http://localhost:8080/api/movie/' + eventID
+                let mainCast = []
+                for (let p of this.selectedEvent.mainCast){
+                    mainCast.push(p.castMemberName)
+                }
+                json = {
+                    eventName: this.selectedEvent.eventName,
+                    eventVenue: this.selectedEvent.eventVenue,
+                    eventDate: this.selectedEvent.eventDate,
+                    eventTime: this.selectedEvent.eventTime,
+                    cancellationFee: this.selectedEvent.cancellationFee,
+                    mainCast : mainCast,
+                    rating: this.selectedEvent.rating,
+                    duration: this.selectedEvent.duration
+                }
+            }else{
+                url = 'http://localhost:8080/api/SportsEvent/' + eventID
+                let participants = []
+                for (let p of this.selectedEvent.participants){
+                    participants.push(p.participantName)
+                }
+                json = {
+                    eventName: this.selectedEvent.eventName,
+                    eventVenue: this.selectedEvent.eventVenue,
+                    eventDate: this.selectedEvent.eventDate,
+                    eventTime: this.selectedEvent.eventTime,
+                    cancellationFee: this.selectedEvent.cancellationFee,
+                    participants : participants,
+                    sport: this.selectedEvent.sport
+                }
+            }
+            this.addEventErrors = []
+            let oldTicketingOptions = this.originalEvent.ticketingOptions
+            let newTicketingOptions = this.selectedEvent.ticketingOptions
+            for (let i=0;i<this.untouchedTicketingOptions;i++){
+                if (oldTicketingOptions[i].tierName != newTicketingOptions[i].tierName || oldTicketingOptions[i].tierPrice != newTicketingOptions[i].tierPrice || oldTicketingOptions[i].tierQuantity != newTicketingOptions[i].tierQuantity){
+                    axios.put('http://localhost:8080/api/ticketingOption/' + oldTicketingOptions[i].ticketingOptionID, newTicketingOptions[i])
+                    .then( (response) =>{
+                        console.log("Ticketing option" + parseFloat(i+1) + "updated")
+                    })
+                    .catch( (error) => {
+                        console.log("Ticketing option" + parseFloat(i+1) + "update failed")
+                    })
+                }
+            }
+            for (let i=this.untouchedTicketingOptions;i<oldTicketingOptions.length;i++){
+                console.log(oldTicketingOptions[i].ticketingOptionID)
+                axios.delete('http://localhost:8080/api/ticketingOption/' + oldTicketingOptions[i].ticketingOptionID)
+                .then( (response) =>{
+                    console.log("Ticketing option" + parseFloat(i+1) + "deleted")
+                })
+                .catch( (error) => {
+                    console.log(error)
+                    console.log("Ticketing option" + parseFloat(i+1) + "deletion failed")
+                })
+            }
+            for (let i=this.untouchedTicketingOptions;i<newTicketingOptions.length;i++){
+                axios.post('http://localhost:8080/api/ticketingOption/' + this.selectedEvent.eventID, newTicketingOptions[i])
+                .then( (response) =>{
+                    console.log("Ticketing option" + parseFloat(i+1) + "added")
+                })
+                .catch( (error) => {
+                    console.log("Ticketing option" + parseFloat(i+1) + "addition failed")
+                })
+            }
+            let ref = this
+            axios.put(url, json)
+            .then(function(){
+                modal1.show()
+                ref.selectedEvent = {}
+            })
+            .catch(function (){
+                this.addEventErrors = []
+                let body = document.getElementById('addEventFailureModalBody')
+                body.innerText = "The editing of event has failed unexpectedly:" + error.response.data.message
+                modal2.show()
+            });
+        },
     }
 }
 </script>

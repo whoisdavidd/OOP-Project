@@ -58,7 +58,7 @@ public class TicketingOptionController {
 
     @DeleteMapping("/{toID}") // might need to consider the tickets and refund idk
     public ResponseEntity<?> deleteEvent(@PathVariable(value = "toID") long toID) {
-        if (!this.eventRepository.findById(toID).isPresent()){
+        if (!this.ticketingOptionRepository.findById(toID).isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticketing option not found");
         }
         TicketingOption existingTicketingOption = this.ticketingOptionRepository.findById(toID).get();
