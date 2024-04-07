@@ -1,6 +1,6 @@
 <template>
   <div class="UserLogin">
-    <div class="container" style="margin-top: 56px">
+    <div class="container-fluid px-5" style="margin-top: 30px">
       <div class="row">
         <div class="col-3"></div>
         <div class="col-6">
@@ -38,19 +38,23 @@
             </div>
 
             <div class="text-left mt-3">
-              <button type="submit" class="btn btn-light rounded-pill btn-outline-dark">
+              <button
+                type="submit"
+                class="btn btn-light rounded-pill btn-outline-dark"
+              >
                 Login
               </button>
             </div>
           </form>
           <div class="mt-4 d-flex align-items-center">
             <span>Don't have an account? </span>
-            <button @click="navigateToRegister" class="btn btn-light rounded-pill btn-outline-dark ml-2">
+            <button
+              @click="navigateToRegister"
+              class="btn btn-light rounded-pill btn-outline-dark ml-2"
+            >
               Register
             </button>
           </div>
-
-
         </div>
         <div class="col-3"></div>
         <!-- <div class="col"></div>      -->
@@ -96,8 +100,18 @@ export default {
       }
     },
     navigateToRegister() {
-      this.$router.push('/RegistrationPage'); // Make sure the path matches your router configuration
-    }
-  }
+      this.$router.push("/RegistrationPage"); // Make sure the path matches your router configuration
+    },
+  },
 };
 </script>
+
+<style scoped>
+.container-fluid {
+  background-image: url("../img/background.jpg"); /* Path to your background image */
+  background-size: cover;
+  background-position: center;
+  color: white; /* Set text color to white for better readability */
+  padding: 30px; /* Add padding to the container */
+}
+</style>

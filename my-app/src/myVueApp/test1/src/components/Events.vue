@@ -1,6 +1,7 @@
 <template>
   <div style="margin-top: 56px">
     <h2 class="text-center p-3">Events</h2>
+    <!-- filter -->
     <div class="dropdown">
       <button
         class="btn dropdown-toggle"
@@ -51,12 +52,7 @@
         </li>
       </ul>
     </div>
-    <!-- <div class="tabs">
-        <button @click="currentTab = 'all'">All</button>
-        <button @click="currentTab = 'concerts'">Concerts</button>
-        <button @click="currentTab = 'movies'">Movies</button>
-        <button @click="currentTab = 'sportsEvents'">Sports Events</button>
-      </div> -->
+
     <div>
       <div class="row">
         <div
@@ -163,7 +159,7 @@ export default {
         this.$router.push("/login");
       } else {
         try {
-          this.$router.push({path: "/booking-page", params: {
+          this.$router.push({path: "/BookingPage", params: {
             eventId: bookEvent.eventId
           } });
         } catch (err) {
