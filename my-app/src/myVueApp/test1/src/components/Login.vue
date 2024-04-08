@@ -14,9 +14,9 @@
           <form @submit.prevent="loginUser">
 
             <div class="form-group">
-              <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" name="email" v-model="loginForm.username"
-                placeholder="Enter a valid email address" required="true" />
+              <label for="email">Username</label>
+              <input type="username" class="form-control" id="email" name="email" v-model="loginForm.username"
+                placeholder="Enter username" required="true" />
             </div>
             <div class="form-group">
               <label for="pwd">Password</label>
@@ -32,7 +32,7 @@
           </form>
           <div class="mt-4 d-flex align-items-center">
             <span>Don't have an account? </span>
-            <button @click="navigateToRegister" class="btn btn-light rounded-pill btn-outline-dark ml-2">
+            <button @click="navigateRegistrationPage" class="btn btn-light rounded-pill btn-outline-dark ml-2">
               Register
             </button>
           </div>
@@ -71,13 +71,19 @@ export default {
         });
         console.log('Login successful', response.data);
         sessionStorage.setItem('username', this.loginForm.username);
-        this.$router.push('/homepage'); // Navigate to the homepage
+        sessionStorage.setItem("userType", response.data.userType);
+        const userType = response.data.userType;
 
+        if (userType === 'customer') {
+          this.$router.push('/customerPage'); // Replace '/customerPage' with the actual path
+        } else {
+          this.$router.push('/homepage'); // Default redirection for other user types
+        }
       } catch (error) {
         console.error('Login failed', error);
       }
     },
-    navigateToRegister() {
+    navigateRegistrationPage() {
       this.$router.push('/RegistrationPage'); // Make sure the path matches your router configuration
     }
   }

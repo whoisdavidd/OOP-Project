@@ -9,21 +9,11 @@
       <!-- <router-view /> -->
 
       <!-- nav bar -->
-      <nav
-        class="navbar navbar-expand-lg mx-5 py-2 fixed-top z-3 position-fixed"
-      >
+      <nav class="navbar navbar-expand-lg mx-5 py-2 fixed-top z-3 position-fixed">
         <div class="container-fluid">
-          <router-link
-            to="/"
-            class="navbar-brand badge rounded-pill bg-dark fs-6"
-            >Ticket Mister</router-link
-          >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-          >
+          <router-link to="/" class="navbar-brand badge rounded-pill bg-dark fs-6">Ticket Mister</router-link>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
           </button>
 
@@ -31,28 +21,33 @@
             <div class="navbar-nav mx-auto my-3">
               <ul class="navbar-nav">
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/"
-                    style="text-decoration: none; color: teal;"
-                    class="fs-4"
-                    >Home</router-link
-                  >
+                  <router-link to="/" style="text-decoration: none; color: teal;" class="fs-4">Home</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/events"
-                    style="text-decoration: none;  color: teal;"
-                    class="fs-4"
-                    >Events</router-link
-                  >
+                  <router-link to="/events" style="text-decoration: none;  color: teal;"
+                    class="fs-4">Events</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/login"
-                    style="text-decoration: none;  color: teal;"
-                    class="fs-4"
-                    >Login</router-link
-                  >
+                  <router-link to="/BookingPage" style="text-decoration: none;  color: teal;" class="fs-4">Book Your
+                    Tickets</router-link>
+                </li>
+                <li class="nav-item px-5" v-if="!isLoggedIn">
+                  <router-link to="/login" style="text-decoration: none;  color: teal;" class="fs-4">Login</router-link>
+                </li>
+                <li class="nav-item px-5 dropdown" v-if="isLoggedIn">
+                  <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdown" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; color: teal;">
+                    Profile
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><router-link to="/Profile" class="dropdown-item">View Details</router-link></li>
+                    <li><router-link to="/BookingHistory" class="dropdown-item">View Booking History</router-link>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#" @click="signOut">Sign Out</a></li>
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -61,10 +56,7 @@
       </nav>
     </div>
     <!-- page content -->
-    <div
-      class="content"
-      style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto"
-    >
+    <div class="content" style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto">
       <router-view></router-view>
     </div>
     <!-- footer -->
@@ -108,12 +100,23 @@
 <script>
 export default {
   name: "App",
-  data() {},
+  data() { },
+    computed: {
+        isLoggedIn() {
+            return !!sessionStorage.getItem('username');
+        }
+    },
+    methods: {
+        signOut() {
+            sessionStorage.removeItem('username');
+            this.$router.push('/login');
+        }
+    }
+
 };
 </script>
 
 <style>
-
 nav {
   background: white;
   top: 0
