@@ -1,6 +1,6 @@
 <template>
-    <div class="eventsPage" style="margin-top:10vw; margin-bottom:10vw">
-        <h1>Events Page</h1>
+    <div class="eventsPage" style="background-color:white;margin-top:10vw; margin-bottom:10vw">
+        <h1 class="text-black">Events Page</h1>
         <div class="accordion mt-5" id="accordionEvents">
             <div class="accordion-item">
                 <h2 class="accordion-header">

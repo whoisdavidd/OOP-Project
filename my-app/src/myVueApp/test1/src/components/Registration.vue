@@ -1,5 +1,5 @@
 <template>
-    <div class="registration" style="margin-top:10vw; margin-bottom:10vw">
+    <div class="registration" style="background-color:white; color:black; margin-top:10vw; margin-bottom:10vw">
         <h1>Create a New Account</h1>
         <form @submit.prevent="register">
             <div class="d-inline-block mb-3">
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" data-bs-backdrop="static" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal fade text-black" data-bs-backdrop="static" id="registerModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
