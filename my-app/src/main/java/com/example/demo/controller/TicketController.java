@@ -120,7 +120,7 @@ public class TicketController {
     }
 
     @PostMapping("/onsiteSale/{numTickets}/{eventID}/{ticketingOptionID}/{email}")
-    public ResponseEntity<?> createTicketForSale(@PathVariable("numTickets") int numTickets, @PathVariable("eventID") long eventID, @PathVariable("ticketingOption") long ticketingOptionID, @PathVariable("email") String email) {
+    public ResponseEntity<?> createTicketForSale(@PathVariable("numTickets") int numTickets, @PathVariable("eventID") long eventID, @PathVariable("ticketingOptionID") long ticketingOptionID, @PathVariable("email") String email) {
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
         Optional<Event> eventOptional = eventRepository.findById(eventID);
         if (!eventOptional.isPresent()) {
