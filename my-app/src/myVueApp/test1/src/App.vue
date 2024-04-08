@@ -98,12 +98,16 @@ export default {
     },
     username() {
       return sessionStorage.getItem('username'); // Retrieve the username from session storage
+    },
+    isEventManager() {
+      return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
     }
   },
   methods: {
     logout() {
       sessionStorage.removeItem('username'); // Remove the username from session storage
     }
+    
   }
 };
 </script>
