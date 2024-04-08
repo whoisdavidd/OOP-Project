@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -334,6 +337,44 @@ public class TicketController {
             return new ResponseEntity<>("Event ID does not match", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("Ticket is valid", HttpStatus.OK);
+    }
+
+    @PutMapping("/markAttendance/{ticketID}")
+    public ResponseEntity<?> markAttendance(@PathVariable("ticketID") int ticketID) {
+        Optional<Ticket> ticketOptional = ticketRepository.findById(ticketID);
+        if (!ticketOptional.isPresent()) {
+            return new ResponseEntity<>("Ticket not found with id :" + ticketID, HttpStatus.NOT_FOUND);
+        }
+        Ticket ticket = ticketOptional.get();
+        ticket.setAttended(true);
+        ticketRepository.save(ticket);
+        return new ResponseEntity<>("Ticket attendance marked successfully " + ticketID, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAttendance/{eventID}")
+    public ResponseEntity<?> getAttendance(@PathVariable("eventID") long eventID) {
+        List<HashMap<String, Object>> attendanceInfo = new ArrayList<>();
+
+        Event event = eventRepository.findById(eventID).get();
+        if(event == null){
+            return new ResponseEntity<>("Event not found with id :" + eventID, HttpStatus.NOT_FOUND);
+        }
+        List<TicketingOption> ticketingOptions = event.getTicketingOptions();
+        for (TicketingOption ticketingOption : ticketingOptions) {
+            int numTicketsAttended = 0;
+            for (Ticket ticket : ticketRepository.findAll()) {
+                if (ticket.getEventID() == eventID && ticket.didAttend() && ticket.getTicketingOption().getTicketingOptionID() == ticketingOption.getTicketingOptionID()) {
+                    numTicketsAttended++;
+                }
+            }
+            HashMap<String, Object> ticketInfo = new HashMap<>();
+            ticketInfo.put("ticketOption", ticketingOption);
+            ticketInfo.put("sold", ticketingOption.getNumTicketsSold());
+            ticketInfo.put("attended", numTicketsAttended);
+            attendanceInfo.add(ticketInfo);
+            
+        }
+        return new ResponseEntity<>(attendanceInfo, HttpStatus.OK);
     }
 
 }

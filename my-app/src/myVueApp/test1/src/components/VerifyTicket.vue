@@ -24,6 +24,9 @@
                 <button type="submit" class="btn btn-light rounded-pill btn-outline-dark">
                   Verify
                 </button>
+                <button type="button" class="btn btn-light rounded-pill btn-outline-dark" @click="markAttendance" v-if="isTicketVerified">
+                  Mark Attendance
+                </button>
               </div>
             </form>
             <div v-if="verificationResult" class="mt-4 d-flex align-items-center">
@@ -48,6 +51,7 @@ export default {
       ticketCode: '',
       eventID: '',
       verificationResult: '',
+      isTicketVerified: false
     };
   },
   methods: {
@@ -56,11 +60,29 @@ export default {
         const response = await axios.get(`http://localhost:8080/ticket/checkTicket/${this.ticketCode}/${this.eventID}`);
         this.verificationResult = response.data;
         console.log(response.data);
+        if (response.data === 'Ticket is valid') {
+          this.isTicketVerified = true;
+        }
+        
       } catch (error) {
         this.verificationResult = 'Ticket is invalid';
       }
     },
-  },
+    markAttendance() {
+      axios.put(`http://localhost:8080/ticket/markAttendance/${this.ticketCode}`)
+        .then(response => {
+          console.log(response);
+          // Handle the response here
+          alert('Attendance marked successfully')
+        })
+        .catch(error => {
+          console.error(error);
+          // Handle the error here
+          alert('Error marking attendance, please try again!')
+        });
+    },
+  }    
+    
 };
 </script>
 

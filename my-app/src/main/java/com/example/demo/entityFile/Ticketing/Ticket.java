@@ -36,6 +36,8 @@ public class Ticket {
 
     private double price;
 
+    private boolean isAttended = false;
+
     @ManyToOne
     @JoinColumn(name="ticketingOptionId")
     private TicketingOption ticketingOption;
@@ -88,6 +90,14 @@ public class Ticket {
 
     public TicketingOption getTicketingOption() {
         return ticketingOption;
+    }
+
+    public boolean didAttend() {
+        return isAttended;
+    }
+
+    public void setAttended(boolean isAttended) {
+        this.isAttended = isAttended;
     }
 
 }
