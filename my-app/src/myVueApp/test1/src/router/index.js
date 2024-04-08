@@ -1,19 +1,19 @@
 // index.js
-import { createRouter, createWebHistory } from "vue-router";
-import HelloWorld from "../components/HelloWorld.vue";
-import CheckoutRedirect from "../components/CheckoutRedirect.vue"; // Import the component
-import StripePayment from "../components/StripePayment.vue"; // Import the component
-import PaymentSuccess from "../components/PaymentSuccess.vue"; // Import the new components
-import PaymentCancel from "../components/PaymentCancel.vue";
-import Login from "../components/Login.vue";
-import homepage from "../components/HomePage.vue";
-import Events from "../components/Events.vue";
-import CustomerHomepage from "@/components/CustomerHomepage.vue";
-import RegistrationPage from "@/components/Registration.vue";
-import VerifyTicket from "@/components/VerifyTicket.vue";
-import ManageEventPage from "@/components/ManageEventPage.vue";
-import BookingPage from "../components/BookingPage.vue";
-import Profile from "../components/Profile.vue";
+import { createRouter, createWebHistory } from 'vue-router'
+import HelloWorld from '../components/HelloWorld.vue'
+import CheckoutRedirect from '../components/CheckoutRedirect.vue' // Import the component
+import StripePayment from '../components/StripePayment.vue' // Import the component
+import PaymentSuccess from '../components/PaymentSuccess.vue' // Import the new components
+import PaymentCancel from '../components/PaymentCancel.vue'
+import Login from '../components/Login.vue'
+import homepage from '../components/HomePage.vue'
+import Events from '../components/Events.vue'
+import CustomerHomepage from '@/components/CustomerHomepage.vue'
+import RegistrationPage from '@/components/Registration.vue'
+import VerifyTicket from '@/components/VerifyTicket.vue'
+import BookingPage from '@/components/BookingPage.vue'
+import BookingHistory from '@/components/BookingHistory.vue'
+import Profile from '@/components/Profile.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,66 +30,68 @@ const router = createRouter({
     },
 
     {
-      path: "/checkout",
-      name: "checkout",
-      component: StripePayment,
+      path: '/checkoutPage',
+      name: 'checkoutPage',
+      component: StripePayment
     },
     {
-      path: "/payment-success",
-      name: "success",
-      component: PaymentSuccess,
+      path: '/payment-success',
+      name: 'success',
+      component: PaymentSuccess
     },
     {
-      path: "/payment-cancel",
-      name: "cancel",
-      component: PaymentCancel,
+      path: '/payment-cancel',
+      name: 'cancel',
+      component: PaymentCancel
     },
     {
-      path: "/login",
-      name: "login",
-      component: Login,
+      path: '/login',
+      name: 'login',
+      component: Login
     },
     {
-      path: "/homepage",
-      name: "HomePage",
-      component: homepage,
+      path: '/homepage',
+      name: 'HomePage',
+      component: homepage
     },
     {
-      path: "/events",
-      name: "Events",
-      component: Events,
+      path: '/events',
+      name: 'Events',
+      component: Events
     },
     {
-      path: "/CustomerHomepage",
-      name: "CustomerHomepage",
-      component: CustomerHomepage,
+      path: '/CustomerHomepage',
+      name: 'CustomerHomepage',
+      component: CustomerHomepage
     },
     {
-      path: "/RegistrationPage",
-      name: "RegistrationPage",
-      component: RegistrationPage,
+      path: '/RegistrationPage',
+      name: 'RegistrationPage',
+      component: RegistrationPage
     },
     {
-      path: "/ManageEvents",
-      name: "ManageEventPage",
-      component: ManageEventPage,
-    },
-    {
-      path: "/VerifyTicket",
-      name: "VerifyTicket",
-      component: VerifyTicket,
-    },
-    {
-      path: "/booking-page",
-      name: BookingPage,
-      component: BookingPage,
-    },
-    {
-      path: "/profile",
-      name: Profile,
-      component: Profile,
+      path: '/BookingPage',
+      name: 'BookingPage',
+      component: BookingPage
     }
-  ],
-});
+    ,
+    {
+      path: '/VerifyTicket',
+      name: 'VerifyTicket',
+      component: VerifyTicket
+    },
+    {
+      path: '/BookingHistory',
+      name: 'BookingHistory',
+      component: BookingHistory
+    },
+    {
+      path: '/Profile',
+      name: 'Profile',
+      component: Profile
+    }
+
+  ]
+})
 
 export default router;

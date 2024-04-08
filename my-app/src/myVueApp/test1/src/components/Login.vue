@@ -13,16 +13,9 @@
         <div class="col-6">
           <form @submit.prevent="loginUser">
             <div class="form-group">
-              <label for="username">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                name="username"
-                v-model="loginForm.username"
-                placeholder="Enter a valid username"
-                required="true"
-              />
+              <label for="email">Username</label>
+              <input type="username" class="form-control" id="email" name="email" v-model="loginForm.username"
+                placeholder="Enter username" required="true" />
             </div>
             <div class="form-group">
               <label for="pwd">Password</label>
@@ -48,10 +41,7 @@
           </form>
           <div class="mt-4 d-flex align-items-center">
             <span>Don't have an account? </span>
-            <button
-              @click="navigateToRegister"
-              class="btn btn-light rounded-pill btn-outline-dark ml-2"
-            >
+            <button @click="navigateRegistrationPage" class="btn btn-light rounded-pill btn-outline-dark ml-2">
               Register
             </button>
           </div>
@@ -80,29 +70,29 @@ export default {
   methods: {
     async loginUser() {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/api/user/login",
-          {
-            username: this.loginForm.username, // Replace with actual data from form
-            password: this.loginForm.password, // Replace with actual data from form
-          }
-        );
-        sessionStorage.setItem("user", this.loginForm.username);
+        const response = await axios.post('http://localhost:8080/api/user/login', {
+          username: this.loginForm.username, // Replace with actual data from form
+          password: this.loginForm.password  // Replace with actual data from form
+        });
+        console.log('Login successful', response.data);
+        sessionStorage.setItem('username', this.loginForm.username);
+        sessionStorage.setItem("userType", response.data.userType);
+        const userType = response.data.userType;
 
-        console.log("Login successful", response.data);
-        alert("Login successful.");
-        this.$router.push({
-          path: "/profile",
-        }); // Navigate to the homepage
+        if (userType === 'customer') {
+          this.$router.push('/customerPage'); // Replace '/customerPage' with the actual path
+        } else {
+          this.$router.push('/homepage'); // Default redirection for other user types
+        }
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Try again.");
       }
     },
-    navigateToRegister() {
-      this.$router.push("/RegistrationPage"); // Make sure the path matches your router configuration
-    },
-  },
+    navigateRegistrationPage() {
+      this.$router.push('/RegistrationPage'); // Make sure the path matches your router configuration
+    }
+  }
 };
 </script>
 

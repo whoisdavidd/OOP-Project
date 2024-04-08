@@ -27,10 +27,10 @@ public class UserController {
     // get user by username
     @GetMapping("/{username}")
     public ResponseEntity<?> getUserByUsername(@PathVariable(value = "username") String username) {
-        if (!this.userRepository.findById(username).isPresent()){
+        if (!this.userRepository.findByUsername(username).isPresent()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not found");
         }
-        User existingUser = this.userRepository.findById(username).get();
+        User existingUser = this.userRepository.findByUsername(username).get();
         return ResponseEntity.ok(existingUser);
     }
 
@@ -76,7 +76,7 @@ public class UserController {
             User existingUser = existingUserOptional.get();
             if (user.getPassword().equals(existingUser.getPassword())) {
                 // Login successful
-                return ResponseEntity.ok().body("Login successful");
+                return ResponseEntity.ok().body(existingUser);
             }
         }
 

@@ -6,17 +6,9 @@
         class="navbar navbar-expand-lg py-2 fixed-top position-fixed justify-content-between w-100" style="z-index:1000;"
       >
         <div class="container-fluid">
-          <router-link
-            to="/"
-            class="navbar-brand badge rounded-pill bg-dark fs-6"
-            >Ticket Mister</router-link
-          >
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-          >
+          <router-link to="/" class="navbar-brand badge rounded-pill bg-dark fs-6">Ticket Mister</router-link>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
           </button>
 
@@ -30,12 +22,13 @@
                     class="fs-5"
                     >Home</router-link
                   >
+                  <router-link to="/" style="text-decoration: none; color: teal;" class="fs-4">Home</router-link>
                 </li>
                 <li class="nav-item px-5">
                   <router-link
                     to="/events"
-                    style="text-decoration: none; color: black"
-                    class="fs-5"
+                    style="text-decoration: none;  color: teal;"
+                    class="fs-4"
                     >Events</router-link
                   >
                 </li>
@@ -69,8 +62,8 @@
     </div>
     <!-- page content -->
     <div
-      class="content overflow-hidden background"
-      style="margin-top: 50px; margin-bottom: 40px"
+      class="content"
+      style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto"
     >
       <router-view></router-view>
     </div>
@@ -80,9 +73,9 @@
         <div class="row">
           <div class="col-md-1"></div>
           <div class="col-md-5">
-            <h5>Contact Information</h5>
-            <p class="">Address: 123 Main Street, City, Country</p>
-            <p>Phone: +1-234-567-890</p>
+            <h4>Contact Information</h4>
+            <p class="">Address: 80 Flora Road</p>
+            <p>Phone: +65 93294821</p>
             <p>Email: ticketmister8888@gmail.com</p>
           </div>
           <!-- <div class="col-md-4">
@@ -106,9 +99,7 @@
         </div>
       </div>
       <div class="text-center text-primary">
-        <p>
-          &copy; 2022 Your Company Name. All Rights Reserved.
-        </p>
+        <p style="color: teal">&copy; 2022 Your Company Name. All Rights Reserved.</p>
       </div>
     </footer>
   </div>
@@ -117,19 +108,7 @@
 <script>
 export default {
   name: "App",
-  // computed: {
-  //   user() {
-  //     return sessionStorage.getItem("user") !== null;
-  //   },
-  // },
-  // created() {
-  //   window.addEventListener("storage", () => {
-  //     // if (sessionStorage.getItem("user") === null) {
-  //       // this.$router.push("/login");
-  //       this.$forceUpdate();
-  //     // }
-  //   });
-  // },
+  data() {},
 };
 </script>
 
