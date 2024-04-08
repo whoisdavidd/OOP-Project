@@ -7,6 +7,7 @@
                 <li><strong>Number of Tickets:</strong> {{ numTickets }}</li>
                 <li><strong>Ticket Option:</strong> {{ ticketingOptionName }}</li>
                 <li><strong>Username:</strong> {{ username }}</li>
+                <li><strong>Price:</strong>{{ price }}</li>
                 <!-- Add more details as needed -->
             </ul>
         </div>
@@ -26,6 +27,7 @@ export default {
             numTickets: 0,
             ticketingOptionName: '',
             username: '',
+            price:0,
             // Add other necessary data properties like eventId, price, etc.
         };
     },
@@ -33,6 +35,7 @@ export default {
        
         const bookingDetails = this.$route.query;
         console.log(bookingDetails)
+        this.price = bookingDetails.price;
         this.selectedEventName = bookingDetails.selectedEventName; // You need to pass this as a query param
         this.numTickets = bookingDetails.numTickets;
         this.ticketingOptionName = bookingDetails.ticketOptionName; // You need to pass this as a query param
@@ -42,7 +45,7 @@ export default {
         async handlePayment() {
             const order = {
                 eventName: this.selectedEventName,
-                // price: this.event.price,
+                price: parseInt(this.price,10)* parseInt(this.numTickets),
                 username: this.username,
                 // email: this.userEmail,
                 ticketingOptionId: this.ticketingOptionName,

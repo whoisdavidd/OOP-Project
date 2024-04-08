@@ -2,9 +2,8 @@
   <div class="App">
     <div class="header">
       <!-- nav bar -->
-      <nav
-        class="navbar navbar-expand-lg py-2 fixed-top position-fixed justify-content-between w-100" style="z-index:1000;"
-      >
+      <nav class="navbar navbar-expand-lg py-2 fixed-top position-fixed justify-content-between w-100"
+        style="z-index:1000;">
         <div class="container-fluid">
           <router-link to="/" class="navbar-brand badge rounded-pill bg-dark fs-6">Ticket Mister</router-link>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -16,43 +15,28 @@
             <div class="navbar-nav ms-auto my-3">
               <ul class="navbar-nav">
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/"
-                    style="text-decoration: none; color: black"
-                    class="fs-5"
-                    >Home</router-link
-                  >
                   <router-link to="/" style="text-decoration: none; color: teal;" class="fs-4">Home</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/events"
-                    style="text-decoration: none;  color: teal;"
-                    class="fs-4"
-                    >Events</router-link
-                  >
+                  <router-link to="/events" style="text-decoration: none;  color: teal;"
+                    class="fs-4">Events</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <!-- <router-link
-                  :to="user() ? '/profile' : '/login'"
-                    style="text-decoration: none; color: teal"
-                    class="fs-4"
-                    v-if="user()"
-                    >{{user() ? 'Profile' : "Login"}}</router-link
-                  > -->
-                  <router-link
-                    to="/login"
-                    style="text-decoration: none; color: black"
-                    class="fs-5"
-                    >Login</router-link
-                  >
-                  <!-- <router-link
-                    to="/login"
-                    style="text-decoration: none; color: teal"
-                    class="fs-4"
-                    v-else
-                    >Login</router-link
-                  > -->
+                  <div v-if="isLoggedIn">
+                    <div class="dropdown">
+                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Profile
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="Profile">View Details</a></li>
+                        <li><a class="dropdown-item" href="BookingHistory">Booking History</a></li>
+                        <li><a class="dropdown-item" href="Login" @click.prevent="logout" >Logout</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <router-link v-else to="/login" style="text-decoration: none; color: teal"
+                    class="fs-5">Login</router-link>
                 </li>
               </ul>
             </div>
@@ -61,10 +45,7 @@
       </nav>
     </div>
     <!-- page content -->
-    <div
-      class="content"
-      style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto"
-    >
+    <div class="content" style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto">
       <router-view></router-view>
     </div>
     <!-- footer -->
@@ -108,10 +89,21 @@
 <script>
 export default {
   name: "App",
-  data() {},
+  computed: {
+    isLoggedIn() {
+      return sessionStorage.getItem('username') !== null; // Check if username exists in session storage
+    },
+    username() {
+      return sessionStorage.getItem('username'); // Retrieve the username from session storage
+    }
+  },
+  methods: {
+    logout() {
+      sessionStorage.removeItem('username'); // Remove the username from session storage
+    }
+  }
 };
 </script>
-
 <style>
 nav {
   background: white;
@@ -125,11 +117,24 @@ footer {
 }
 
 .background {
-  background-image: url("img/background.jpg"); /* Path to your background image */
+  background-image: url("img/background.jpg");
+  /* Path to your background image */
   background-size: cover;
   background-position: center;
-  color: white; /* Set text color to white for better readability */
-  padding: 20px; /* Add padding to the container */
+  color: white;
+  /* Set text color to white for better readability */
+  padding: 20px;
+  /* Add padding to the container */
+}
+.btn-teal {
+  background-color: teal; /* Teal background */
+  color: white; /* White text */
+  border-color: teal; /* Teal border */
+}
+
+.btn-teal:hover {
+  background-color: darkcyan; 
+  border-color: darkcyan;
 }
 
 </style>
