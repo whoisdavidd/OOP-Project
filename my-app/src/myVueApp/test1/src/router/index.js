@@ -14,6 +14,7 @@ import VerifyTicket from '@/components/VerifyTicket.vue'
 import BookingPage from '@/components/BookingPage.vue'
 import BookingHistory from '@/components/BookingHistory.vue'
 import Profile from '@/components/Profile.vue'
+import EventReports from '@/components/EventReports.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -89,8 +90,14 @@ const router = createRouter({
       path: '/Profile',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/EventReports',
+      name: 'EventReports',
+      component: EventReports
     }
-
+    
+    
   ]
 })
 
