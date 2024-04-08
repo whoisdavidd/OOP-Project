@@ -97,21 +97,6 @@
 <script>
 export default {
   name: "App",
-<<<<<<< HEAD
-  computed: {
-    isLoggedIn() {
-      return sessionStorage.getItem('username') !== null; // Check if username exists in session storage
-    },
-    username() {
-      return sessionStorage.getItem('username'); // Retrieve the username from session storage
-    }
-  },
-  methods: {
-    logout() {
-      sessionStorage.removeItem('username'); // Remove the username from session storage
-    }
-  }
-=======
   data() {
     // Your data properties
   },
@@ -120,7 +105,6 @@ export default {
       return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
     }
   },
->>>>>>> a9ce2007 (report generator)
 };
 </script>
 <style>
