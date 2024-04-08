@@ -1,7 +1,9 @@
 <template>
-    <div class="reports-page">
-      <h1>Event Reports</h1>
-      <button @click="downloadReport">Download CSV Report</button>
+    <div class="reports-page" style="margin-top:50px; margin-bottom: 50px">
+      <h1 class="text-center" style="color: palegoldenrod">Event Reports</h1>
+      <div class="d-flex justify-content-center">
+      <button @click="downloadReport" class="btn btn-outline-dark rounded-pill btn-light">Download CSV Report</button>
+    </div>
     </div>
   </template>
   

@@ -1,6 +1,6 @@
 <template>
-    <div class="registration" style="background-color:white; color:black; margin-top:10vw; margin-bottom:10vw">
-        <h1>Create a New Account</h1>
+    <div class="registration rounded-4" style="background-color: rgba(128, 128, 128, 0.8); margin-top:10vw; margin-bottom:10vw">
+        <h1 class="text-center" style="color:palegoldenrod;">Create a New Account</h1>
         <form @submit.prevent="register">
             <div class="d-inline-block mb-3">
                 User type:
@@ -26,8 +26,8 @@
             <div>
                 <input type="password" name="password" class="form-control" v-model="password" placeholder="Password" required>
             </div>
-            <div class="mt-3">
-                <button type="submit" @click="registerUser" class="btn btn-primary">Register</button>
+            <div class="mt-3 d-flex justify-content-end">
+                <button type="submit" @click="registerUser" class="btn btn-light rounded-pill btn-outline-dark">Register</button>
             </div>
         </form>
         <div class="modal fade" data-bs-backdrop="static" id="eventManagerModal" tabindex="-1" aria-hidden="true">
@@ -146,7 +146,6 @@ export default {
     max-width: 600px;
     margin: auto;
     padding: 20px;
-    box-shadow: 2px 2px 4px 2px gray;
 }
 
 input{

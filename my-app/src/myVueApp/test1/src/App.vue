@@ -16,19 +16,19 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav ms-auto my-3">
-              <ul class="navbar-nav">
+              <ul class="navbar-nav align-items-center">
                 <li class="nav-item px-5">
-                  <router-link to="/" style="text-decoration: none; color: teal;" class="fs-4">Home</router-link>
+                  <router-link to="/" style="text-decoration: none; color: teal;" class="fs-5">Home</router-link>
                 </li>
                 <li class="nav-item px-5">
                   <router-link to="/events" style="text-decoration: none;  color: teal;"
-                    class="fs-4">Events</router-link>
+                    class="fs-5">Events</router-link>
                 </li>
-                <li class="nav-item px-5">
+                <li class="nav-item px-4">
                   <div v-if="isLoggedIn">
                     <div class="dropdown">
-                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn dropdown-toggle fs-5" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false" style="color: teal">
                         Profile
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -48,35 +48,34 @@
       </nav>
     </div>
     <!-- page content -->
-    <div class="content" style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto">
+    <div class="content background" style="margin-top: 90px; margin-bottom: 40px;">
       <router-view></router-view>
     </div>
     <!-- footer -->
-    <footer class="footer mt-auto py-2">
+    <footer class="footer py-2">
       <div class="container">
         <div class="row">
           <div class="col-md-1"></div>
-          <div class="col-md-5">
-            <h4>Contact Information</h4>
+          <div class="col-md-4 d-flex flex-column align-items-start ">
+            <h5 style="color: teal;">Contact Information</h5>
             <p class="">Address: 80 Flora Road</p>
             <p>Phone: +65 93294821</p>
             <p>Email: ticketmister8888@gmail.com</p>
           </div>
-          <!-- <div class="col-md-4">
-            <h5>Social Media</h5>
+          <div class="col-md-3 d-flex flex-column align-items-start">
+            <h5 style="color:teal;">Social Media</h5>
             <ul>
-              <li>Facebook</li>
-              <li>Twitter</li>
-              <li>Instagram</li>
-              <li>LinkedIn</li>
+              <li><a href="https://www.facebook.com/TicketmasterSG/">Facebook</a></li>
+              <li><a href="https://www.instagram.com/ticketmastersg/">Instagram</a></li>
+              <li><a href="https://twitter.com/Ticketmaster?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor">Twitter</a></li>
+              <li><a href="https://www.linkedin.com/company/ticketmaster-singapore/?originalSubdomain=sg">LinkedIn</a></li>
             </ul>
-          </div> -->
-          <div class="col-md-5">
-            <h5>Quick Links</h5>
-            <ul>
-              <li>Home</li>
-              <li>Events</li>
-              <li>Contact Us</li>
+          </div>
+          <div class="col-md-3  d-flex flex-column align-items-start">
+            <h5 style="color:teal" class="text-center">Quick Links</h5>
+            <ul class="">
+              <li style=""><router-link to="/">Home</router-link></li>
+              <li style=""><router-link to="/events">Events</router-link></li>
             </ul>
           </div>
           <div class="col-md-1"></div>
@@ -132,16 +131,6 @@ footer {
   /* Set text color to white for better readability */
   padding: 20px;
   /* Add padding to the container */
-}
-.btn-teal {
-  background-color: teal; /* Teal background */
-  color: white; /* White text */
-  border-color: teal; /* Teal border */
-}
-
-.btn-teal:hover {
-  background-color: darkcyan; 
-  border-color: darkcyan;
 }
 
 </style>

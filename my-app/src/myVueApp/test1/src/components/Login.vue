@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-3"></div>
         <div class="col-6">
-          <h2 class="text-center">Login</h2>
+          <h2 class="text-center" style="color: palegoldenrod">Login</h2>
         </div>
         <div class="col-3"></div>
       </div>
@@ -13,12 +13,12 @@
         <div class="col-6">
           <form @submit.prevent="loginUser">
             <div class="form-group">
-              <label for="email">Username</label>
+              <label for="email" class="p-1">Username</label>
               <input type="username" class="form-control" id="email" name="email" v-model="loginForm.username"
                 placeholder="Enter username" required="true" />
             </div>
             <div class="form-group">
-              <label for="pwd">Password</label>
+              <label for="pwd" class="p-1">Password</label>
               <input
                 type="password"
                 class="form-control"
@@ -30,7 +30,7 @@
               />
             </div>
 
-            <div class="text-left mt-3">
+            <div class="text-left mt-3 d-flex justify-content-end">
               <button
                 type="submit"
                 class="btn btn-light rounded-pill btn-outline-dark"
@@ -39,11 +39,13 @@
               </button>
             </div>
           </form>
-          <div class="mt-4 d-flex align-items-center">
-            <span>Don't have an account? </span>
+          <div class="mt-4 d-flex align-items-center justify-content-center">
+            <span class="px-1">Don't have an account? </span>
+            <div class="justify-content-end d-flex">
             <button @click="navigateRegistrationPage" class="btn btn-light rounded-pill btn-outline-dark ml-2">
               Register
             </button>
+          </div>
           </div>
         </div>
         <div class="col-3"></div>
@@ -95,13 +97,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.container-fluid {
-  background-image: url("../img/background.jpg"); /* Path to your background image */
-  background-size: cover;
-  background-position: center;
-  color: white; /* Set text color to white for better readability */
-  padding: 30px; /* Add padding to the container */
-}
-</style>

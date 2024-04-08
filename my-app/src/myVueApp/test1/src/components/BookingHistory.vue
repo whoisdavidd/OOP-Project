@@ -1,7 +1,10 @@
 <template>
-    <div class="BookingHistory">
-        <h1>Your Booking History</h1>
-        <div v-for="eventInfo in tickets" :key="eventInfo.eventName" class="event-info">
+    <div class="BookingHistory" style="margin-top: 40px; margin-bottom: 40px; color:palegoldenrod">
+        <h1 class="text-center">Your Booking History</h1>
+        <div v-if="!tickets" style="color:teal">
+            You do not have any current bookings.
+        </div>
+        <div v-for="eventInfo in tickets" :key="eventInfo.eventName" class="event-info" style="background-color: rgba(128, 128, 128, 0.7);">
             <h2>{{ eventInfo.eventName }} - Total Tickets: {{ eventInfo.totalTickets }}</h2>
             <div v-for="(count, tierName) in eventInfo.tiers" :key="tierName" class="tier-info">
                 <strong>Tier Name:</strong> {{ tierName }} - <strong>Tickets:</strong> {{ count }}
