@@ -38,6 +38,9 @@ public class TicketingOption {
     @Column(name = "tierRevenue")
     private Double tierRevenue;
 
+    @Column(name = "Paid")
+    private String paid;
+
     public TicketingOption(){
         this.numTicketsSold = 0;
         this.tierRevenue = 0.0;

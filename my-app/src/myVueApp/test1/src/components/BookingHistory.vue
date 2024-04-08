@@ -35,7 +35,8 @@ export default {
     methods: {
         async fetchTickets() {
             try {
-                const response = await axios.get('http://localhost:8080/ticket/getTicketsByCustomer/adminuser');
+                const Username = sessionStorage.getItem('username');
+                const response = await axios.get(`http://localhost:8080/ticket/getTicketsByCustomer/${Username}`);
                 console.log(response.data);
                 this.tickets = response.data;
 

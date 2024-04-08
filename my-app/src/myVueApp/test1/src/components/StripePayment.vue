@@ -63,6 +63,8 @@ export default {
                     body: JSON.stringify(order),
                 }
             );
+            console.log(JSON.stringify(order)); // Log the order object to debug its structure
+
 
             if (!response.ok) {
                 console.error("Checkout request failed with status", response.status);

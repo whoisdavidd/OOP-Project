@@ -1,3 +1,6 @@
+
+
+
 <template>
   <div class="App">
     <div class="header">
@@ -22,30 +25,22 @@
                     class="fs-4">Events</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <!-- <router-link
-                  :to="user() ? '/profile' : '/login'"
-                    style="text-decoration: none; color: teal"
-                    class="fs-4"
-                    v-if="user()"
-                    >{{user() ? 'Profile' : "Login"}}</router-link
-                  > -->
-                  <router-link
-                    to="/login"
-                    style="text-decoration: none; color: black"
-                    class="fs-5"
-                    >Login</router-link
-                  >
-                  <!-- <router-link
-                    to="/login"
-                    style="text-decoration: none; color: teal"
-                    class="fs-4"
-                    v-else
-                    >Login</router-link
-                  > -->
+                  <div v-if="isLoggedIn">
+                    <div class="dropdown">
+                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Profile
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="Profile">View Details</a></li>
+                        <li><a class="dropdown-item" href="BookingHistory">Booking History</a></li>
+                        <li><a class="dropdown-item" href="Login" @click.prevent="logout" >Logout</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <router-link v-else to="/login" style="text-decoration: none; color: teal"
+                    class="fs-5">Login</router-link>
                 </li>
-                <li class="nav-item px-5" v-if="isEventManager">
-            <router-link to="/EventReports" style="text-decoration: none; color: teal;" class="fs-4">Event Reports</router-link>
-          </li>
               </ul>
             </div>
           </div>
@@ -88,7 +83,7 @@
         </div>
       </div>
       <div class="text-center text-primary">
-        <p style="color: teal">&copy; 2022 Your Company Name. All Rights Reserved.</p>
+        <p style="color: teal">&copy; 2022  Ticket Mister. All Rights Reserved.</p>
       </div>
     </footer>
   </div>
@@ -97,7 +92,6 @@
 <script>
 export default {
   name: "App",
-<<<<<<< HEAD
   computed: {
     isLoggedIn() {
       return sessionStorage.getItem('username') !== null; // Check if username exists in session storage
@@ -111,16 +105,6 @@ export default {
       sessionStorage.removeItem('username'); // Remove the username from session storage
     }
   }
-=======
-  data() {
-    // Your data properties
-  },
-  computed: {
-    isEventManager() {
-      return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
-    }
-  },
->>>>>>> a9ce2007 (report generator)
 };
 </script>
 <style>
@@ -157,3 +141,5 @@ footer {
 }
 
 </style>
+
+
