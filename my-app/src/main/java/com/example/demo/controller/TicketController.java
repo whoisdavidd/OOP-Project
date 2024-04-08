@@ -1,22 +1,37 @@
 package com.example.demo.controller;
-import com.example.demo.entityFile.Events.Event;
-import com.example.demo.entityFile.Ticketing.Ticket;
-import com.example.demo.entityFile.Ticketing.TicketingOption;
-import com.example.demo.entityFile.Users.Customer;
-import com.example.demo.repository.*;
-import org.springframework.http.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.MediaType;
 
-
+import com.example.demo.entityFile.Events.Event;
+import com.example.demo.entityFile.Ticketing.Ticket;
+import com.example.demo.entityFile.Ticketing.TicketingOption;
+import com.example.demo.entityFile.Users.Customer;
+import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.EventRepository;
+import com.example.demo.repository.TicketRepository;
+import com.example.demo.repository.TicketingOptionRepository;
 
 
 @RestController
@@ -85,18 +100,24 @@ public class TicketController {
         currentOption.sellTickets(numTickets);
         ticketingOptionRepository.save(currentOption);
         eventRepository.save(event);
-
+        StringBuilder emailText = new StringBuilder("Dear customer,\n\nThank you for your purchase. Here are your e-ticket details:\n\n");
         for (int i = 0; i < numTickets; i++) {
             Ticket ticket = new Ticket(event, customer, currentOption.getTierPrice(), currentOption);
             ticketRepository.save(ticket);
             tickets.add(ticket);
+
+            emailText.append("Ticket ID: ").append(ticket.getTicketID()).append("\n")
+            .append("Event: ").append(event.getEventName()).append("\n")
+            .append("Price: ").append(currentOption.getTierPrice()).append("\n")
+            .append("Ticketing Option: ").append(currentOption.getTierName()).append("\n\n");
         }
-        sendEmail(customer.getEmailAddress(), "Ticket Confirmation", "Your tickets have been successfully booked.");
+        emailText.append("Please present these e-tickets at the event entrance.\n\nBest regards,\n Ticket Mister Team");
+        sendEmail(customer.getEmailAddress(), "Ticket Mister: Booking Confirmation", emailText.toString());
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
-    @PostMapping("/onsiteSale/{numTickets}/{eventID}/{ticketingOptionID}")
-    public ResponseEntity<?> createTicketForSale(@PathVariable("numTickets") int numTickets, @PathVariable("eventID") long eventID, @PathVariable("ticketingOption") long ticketingOptionID) {
+    @PostMapping("/onsiteSale/{numTickets}/{eventID}/{ticketingOptionID}/{email}")
+    public ResponseEntity<?> createTicketForSale(@PathVariable("numTickets") int numTickets, @PathVariable("eventID") long eventID, @PathVariable("ticketingOption") long ticketingOptionID, @PathVariable("email") String email) {
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();
         Optional<Event> eventOptional = eventRepository.findById(eventID);
         if (!eventOptional.isPresent()) {
@@ -119,15 +140,58 @@ public class TicketController {
             return new ResponseEntity<>("Not enough tickets available", HttpStatus.BAD_REQUEST);
         }
 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        LocalDate date = LocalDate.parse(event.getEventDate(), dateFormatter);
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+        LocalTime time = LocalTime.parse(event.getEventTime(), timeFormatter);
+
+        LocalDateTime eventDateTime = LocalDateTime.of(date, time);
+        if (eventDateTime.isBefore(LocalDateTime.now().plusDays(1))) {
+            return new ResponseEntity<>("Cannot book less than 24 hours before show", HttpStatus.BAD_REQUEST);
+        }
+        if (eventDateTime.isAfter(LocalDateTime.now().plusMonths(6))) {
+            return new ResponseEntity<>("Cannot book more than 6 months in advance", HttpStatus.BAD_REQUEST);
+        }
+
+        //Creating a dummy customer to store this booking
+        String username = UUID.randomUUID().toString();
+        String password = UUID.randomUUID().toString();
+        String url = "http://localhost:8080/api/customer";
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String requestJson = "{ \"username\": \"" + username + "\", \"password\": \"" + password + "\", \"emailAddress\": \"" + email + "\" }";
+        HttpEntity<String> entity = new HttpEntity<>(requestJson, headers);
+
+        try {
+            restTemplate.postForEntity(url, entity, String.class);
+        } catch (Exception e) {
+            // Handle error
+        }
+
+        Optional<Customer> customerOptional = customerRepository.findById(username);
+        Customer customer = customerOptional.get();
+
         currentOption.sellTickets(numTickets);
         ticketingOptionRepository.save(currentOption);
         eventRepository.save(event);
 
+        StringBuilder emailText = new StringBuilder("Dear customer,\n\nThank you for your purchase. Here are your e-ticket details:\n\n");
         for (int i = 0; i < numTickets; i++) {
-            Ticket ticket = new Ticket(event, null, currentOption.getTierPrice(), currentOption);
+            Ticket ticket = new Ticket(event, customer, currentOption.getTierPrice(), currentOption);
             ticketRepository.save(ticket);
             tickets.add(ticket);
+
+            emailText.append("Ticket ID: ").append(ticket.getTicketID()).append("\n")
+            .append("Event: ").append(event.getEventName()).append("\n")
+            .append("Price: ").append(currentOption.getTierPrice()).append("\n")
+            .append("Ticketing Option: ").append(currentOption.getTierName()).append("\n\n");
         }
+        emailText.append("Please present these e-tickets at the event entrance.\n\nBest regards,\n Ticket Mister Team");
+        sendEmail(customer.getEmailAddress(), "Ticket Mister: Booking Confirmation", emailText.toString());
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
     void sendEmail(String to, String subject, String text) {
@@ -135,7 +199,7 @@ public class TicketController {
         msg.setTo(to);
         msg.setSubject(subject);
         msg.setText(text);
-    
+
         javaMailSender.send(msg);
     }
 
@@ -199,11 +263,24 @@ public class TicketController {
         for (Ticket ticket : tickets) {
             //Refund
             Customer customer = ticket.getCustomer();
-            customer.setAccountBalance((float)(customer.getAccountBalance() + ticket.getPrice() - ticket.getEvent().getCancellationFee()));
+            customer.setAccountBalance((float)(customer.getAccountBalance() + ticket.getPrice()));
             customerRepository.save(customer);
             ticketRepository.delete(ticket);
+            sendCancellationEmail(customer.getEmailAddress(), ticket.getEvent().getEventName(), ticket.getTicketID());
         }
         return new ResponseEntity<>("Tickets deleted successfully for event " + eventID, HttpStatus.OK);
+    }
+    private void sendCancellationEmail(String email, String eventName, long ticketId) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Event Cancellation");
+        message.setText("Dear customer,\n\n" +
+        "We regret to inform you that the event '" + eventName + "' has been cancelled. Your ticket with ID " + ticketId + " has been fully refunded.\n\n" +
+        "If you do not have an account and purchased the tickets onsite, please reach out to our customer service to process the refund.\n\n" +
+        "We apologize for any inconvenience caused.\n\n" +
+        "Best regards,\n" +
+        "Ticket Mister Team");
+        javaMailSender.send(message);
     }
 
     @GetMapping("/getTicket/{ticketID}")

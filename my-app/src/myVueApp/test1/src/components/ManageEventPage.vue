@@ -178,7 +178,10 @@
                                         <strong>Sport:</strong> {{ event.sport }} <br>
                                     </span>
                                 </p>
-                                <div><button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button></div>
+                                <div><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelEventModal" @click="setEventToCancel(event)">
+                                    Cancel Event
+                                </button><button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button></div>
+                                
                             </div>
                         </div>
                     </div>
@@ -293,6 +296,23 @@
                     </div>
                 </div>
         </div>
+        <div class="modal fade" id="cancelEventModal" tabindex="-1" aria-labelledby="cancelEventModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-black" id="cancelEventModalLabel">Cancel Event</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-black">
+                        Are you sure you want to cancel this event? This action cannot be reversed.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" @click="cancelEvent">Confirm Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
     </div>
 </template>
@@ -337,6 +357,7 @@ export default {
             },
             selectedEvent: {},
             originalEvent: {},
+            eventToCancel: null,
             untouchedTicketingOptions: 0,
         }
     },
@@ -741,6 +762,28 @@ export default {
                 body.innerText = "The editing of event has failed unexpectedly:" + error.response.data.message
                 modal2.show()
             });
+        },
+        async cancelEvent() {
+            // Call the first API endpoint
+            axios.delete(`http://localhost:8080/ticket/CancellationByEvent/${this.eventToCancel.eventID}`)
+            .then((response) =>{
+                    console.log(response.data)
+                })
+
+            // Call the second API endpoint
+            axios.delete(`http://localhost:8080/api/event/${this.eventToCancel.eventID}`)
+            .then((response) =>{
+                    console.log(response.data)
+                })
+
+            // Close the modal
+            var myModal = new bootstrap.Modal(document.getElementById('cancelEventModal'));
+            myModal.hide();
+            alert('Event has been cancelled!');
+        },
+        setEventToCancel(event) {  // renamed from setCancelEvent
+            console.log(event);
+            this.eventToCancel = event;
         },
     }
 }
