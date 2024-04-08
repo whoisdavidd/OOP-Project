@@ -66,9 +66,9 @@
           <div class="col-md-1"></div>
           <div class="col-md-5">
             <h4>Contact Information</h4>
-            <p class="">Address: 123 Main Street, City, Country</p>
-            <p>Phone: +1-234-567-890</p>
-            <p>Email: info@example.com</p>
+            <p class="">Address: 80 Flora Road</p>
+            <p>Phone: +65 93294821</p>
+            <p>Email: ticketmister8888@gmail.com</p>
           </div>
           <!-- <div class="col-md-4">
             <h5>Social Media</h5>
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="text-center text-primary">
-        <p style="color: teal">&copy; 2022 Your Company Name. All Rights Reserved.</p>
+        <p style="color: teal">&copy; 2022 Ticket Mister. All Rights Reserved.</p>
       </div>
     </footer>
   </div>

@@ -22,7 +22,8 @@
                 <label for="ticketOption">Ticket Option:</label>
                 <select id="ticketOption" v-model="ticketingOptionID">
                     <option disabled value="">Select Ticket Option</option>
-                    <option v-for="option in ticketOptions" :key="option.ticketingOptionID" :value="option.ticketingOptionID">
+                    <option v-for="option in ticketOptions" :key="option.ticketingOptionID"
+                        :value="option.ticketingOptionID">
                         {{ option.tierName }} - {{ option.tierPrice }}
                     </option>
                 </select>
@@ -53,6 +54,11 @@
             policy. Collections are between 14:00-18:00 and returns between 08:30-11:00. Early access/late departure can
             be arranged after booking.
         </p>
+        <div v-if="formErrors.length" class="form-errors">
+            <ul>
+                <li v-for="error in formErrors" :key="error">{{ error }}</li>
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -71,7 +77,8 @@ export default {
             pickupDate: '',
             returnDate: '',
             ticketOptions: [],
-            ticketingOptionID:"",
+            ticketingOptionID: "",
+            formErrors: [],
         };
     },
     mounted() {
@@ -81,14 +88,14 @@ export default {
         this.getAllSportsEvent();
     },
     watch: {
-            async selectedEvent(selectedEvent) {
-                if (selectedEvent) {
-                    console.log(selectedEvent);
-                    await this.getTicketOptions(selectedEvent);
-                } else {
-                    this.ticketOptions = [];
-                }
-            },
+        async selectedEvent(selectedEvent) {
+            if (selectedEvent) {
+                console.log(selectedEvent);
+                await this.getTicketOptions(selectedEvent);
+            } else {
+                this.ticketOptions = [];
+            }
+        },
     },
     methods: {
         async getEvents() {
@@ -123,20 +130,51 @@ export default {
                 console.error('Error fetching sports events', error);
             }
         },
+        validateForm() {
+            this.formErrors = []; // Reset errors
+
+            if (!this.selectedEvent) {
+                this.formErrors.push('Please select an event.');
+            }
+            if (!this.ticketingOptionID) {
+                this.formErrors.push('Please select a ticketing option.');
+            }
+            if (!this.username) {
+                this.formErrors.push('Please enter a username.');
+            }
+            console.log(this.formErrors)
+            return this.formErrors.length == 0; // Form is valid if no errors
+        },
         submitForm() {
             // Ensure all required fields are selected
             if (!this.selectedEvent || !this.ticketingOptionID || !this.username) {
-                console.log(this.ticketingOptionID)
-                alert('Please fill in all fields.');
+                // If the form is invalid, stop here
                 return;
             }
+            const selectedEventObj = this.events.find(event => event.eventID === this.selectedEvent);
+            const selectedTicketOptionObj = this.ticketOptions.find(option => option.ticketingOptionID === this.ticketingOptionID);
+
 
             const url = `http://localhost:8080/ticket/createTicket/${this.numTickets}/${this.selectedEvent}/${this.ticketingOptionID}/${this.username}`;
 
+            const bookingDetails = {
+                numTickets: this.numTickets,
+                selectedEvent: this.selectedEvent, // Keeping the event ID if needed for the backend
+                selectedEventName: selectedEventObj.eventName, // The event name for display purposes
+                ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
+                ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
+                username: this.username,
+            };
+            this.$router.push({
+
+                name: 'checkoutPage',
+                query: bookingDetails
+            });
             axios.post(url, {
                 // Assuming you need to send additional data in the request body, adjust accordingly.
                 // If not, you can make the POST request without a body or with other required fields.
             }).then(response => {
+
                 console.log('Form submitted successfully', response);
                 // Further actions upon success
             }).catch(error => {
@@ -148,7 +186,7 @@ export default {
                 const response = await axios.get(`http://localhost:8080/api/event/${eventID}`);
                 console.log(response);
                 this.ticketOptions = response.data.ticketingOptions;
-                
+
             } catch (error) {
                 console.error('Error fetching ticket options:', error);
                 this.ticketOptions = [];

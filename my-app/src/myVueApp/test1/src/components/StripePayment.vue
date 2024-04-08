@@ -1,32 +1,52 @@
 <template>
-    <button @click="handlePayment">Pay</button>
+    <div class="booking-page">
+        <div class="booking-details">
+            <h2>Booking Details</h2>
+            <ul>
+                <li><strong>Event:</strong> {{ selectedEventName }}</li>
+                <li><strong>Number of Tickets:</strong> {{ numTickets }}</li>
+                <li><strong>Ticket Option:</strong> {{ ticketingOptionName }}</li>
+                <li><strong>Username:</strong> {{ username }}</li>
+                <!-- Add more details as needed -->
+            </ul>
+        </div>
+        <div class="payment-button">
+            <button @click="handlePayment">Pay</button>
+        </div>
+    </div>
 </template>
-
 <script>
 import { loadStripe } from '@stripe/stripe-js'
 
 export default {
-    data() {
+    name: 'checkoutPage',
+    data(){
         return {
-            event: {
-                eventName: 'Event Name',
-                _id: 'event_id',
-                price: 100,
-            },
-            userId: 'user_id',
-            userEmail: 'customer@example.com', // Replace with the user's email
-        }
+            selectedEventName: '',
+            numTickets: 0,
+            ticketingOptionName: '',
+            username: '',
+            // Add other necessary data properties like eventId, price, etc.
+        };
+    },
+    mounted() {
+       
+        const bookingDetails = this.$route.query;
+        console.log(bookingDetails)
+        this.selectedEventName = bookingDetails.selectedEventName; // You need to pass this as a query param
+        this.numTickets = bookingDetails.numTickets;
+        this.ticketingOptionName = bookingDetails.ticketOptionName; // You need to pass this as a query param
+        this.username = bookingDetails.username;// Contains { numTickets, selectedEvent, ticketingOptionID, username }
     },
     methods: {
         async handlePayment() {
             const order = {
-                eventName: this.event.eventName,
-                eventId: this.event._id,
-                price: this.event.price,
-                buyerId: this.userId,
-                email: this.userEmail,
-                ticketingOptionId: this.ticketingOptionId,
-                
+                eventName: this.selectedEventName,
+                // price: this.event.price,
+                username: this.username,
+                // email: this.userEmail,
+                ticketingOptionId: this.ticketingOptionName,
+
             };
 
             // Make a POST request to your Spring Boot server via ngrok

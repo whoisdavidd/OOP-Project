@@ -28,10 +28,10 @@ const router = createRouter({
       name: 'checkoutRedirect', // Give the route a name
       component: CheckoutRedirect // Associate the component with this route
     },
-    
+
     {
-      path: '/checkout',
-      name: 'checkout',
+      path: '/checkoutPage',
+      name: 'checkoutPage',
       component: StripePayment
     },
     {
@@ -90,7 +90,7 @@ const router = createRouter({
       name: 'Profile',
       component: Profile
     }
-    
+
   ]
 })
 
