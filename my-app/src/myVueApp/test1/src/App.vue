@@ -2,9 +2,8 @@
   <div class="App">
     <div class="header">
       <!-- nav bar -->
-      <nav
-        class="navbar navbar-expand-lg py-2 fixed-top position-fixed justify-content-between w-100" style="z-index:1000;"
-      >
+      <nav class="navbar navbar-expand-lg py-2 fixed-top position-fixed justify-content-between w-100"
+        style="z-index:1000;">
         <div class="container-fluid">
           <router-link to="/" class="navbar-brand badge rounded-pill bg-dark fs-6">Ticket Mister</router-link>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -16,21 +15,11 @@
             <div class="navbar-nav ms-auto my-3">
               <ul class="navbar-nav">
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/"
-                    style="text-decoration: none; color: black"
-                    class="fs-5"
-                    >Home</router-link
-                  >
                   <router-link to="/" style="text-decoration: none; color: teal;" class="fs-4">Home</router-link>
                 </li>
                 <li class="nav-item px-5">
-                  <router-link
-                    to="/events"
-                    style="text-decoration: none;  color: teal;"
-                    class="fs-4"
-                    >Events</router-link
-                  >
+                  <router-link to="/events" style="text-decoration: none;  color: teal;"
+                    class="fs-4">Events</router-link>
                 </li>
                 <li class="nav-item px-5">
                   <!-- <router-link
@@ -54,6 +43,9 @@
                     >Login</router-link
                   > -->
                 </li>
+                <li class="nav-item px-5" v-if="isEventManager">
+            <router-link to="/EventReports" style="text-decoration: none; color: teal;" class="fs-4">Event Reports</router-link>
+          </li>
               </ul>
             </div>
           </div>
@@ -61,10 +53,7 @@
       </nav>
     </div>
     <!-- page content -->
-    <div
-      class="content"
-      style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto"
-    >
+    <div class="content" style="margin-top: 56px; margin-bottom: 100px; overflow-y: auto">
       <router-view></router-view>
     </div>
     <!-- footer -->
@@ -108,10 +97,16 @@
 <script>
 export default {
   name: "App",
-  data() {},
+  data() {
+    // Your data properties
+  },
+  computed: {
+    isEventManager() {
+      return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
+    }
+  },
 };
 </script>
-
 <style>
 nav {
   background: white;
@@ -125,11 +120,24 @@ footer {
 }
 
 .background {
-  background-image: url("img/background.jpg"); /* Path to your background image */
+  background-image: url("img/background.jpg");
+  /* Path to your background image */
   background-size: cover;
   background-position: center;
-  color: white; /* Set text color to white for better readability */
-  padding: 20px; /* Add padding to the container */
+  color: white;
+  /* Set text color to white for better readability */
+  padding: 20px;
+  /* Add padding to the container */
+}
+.btn-teal {
+  background-color: teal; /* Teal background */
+  color: white; /* White text */
+  border-color: teal; /* Teal border */
+}
+
+.btn-teal:hover {
+  background-color: darkcyan; 
+  border-color: darkcyan;
 }
 
 </style>

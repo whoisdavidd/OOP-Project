@@ -69,6 +69,7 @@ export default {
     data() {
         return {
             selectedEvent: '',
+            price:0,
             events: [],
             numTickets: 1, // Default to 1 ticket
             concerts: [],
@@ -153,6 +154,9 @@ export default {
             }
             const selectedEventObj = this.events.find(event => event.eventID === this.selectedEvent);
             const selectedTicketOptionObj = this.ticketOptions.find(option => option.ticketingOptionID === this.ticketingOptionID);
+            
+            // const selectedTicketPrice = this.ticketOptions.find(option => option.ticketingOptionID === this.ticketingOptionID);
+            
 
 
             const url = `http://localhost:8080/ticket/createTicket/${this.numTickets}/${this.selectedEvent}/${this.ticketingOptionID}/${this.username}`;
@@ -164,6 +168,7 @@ export default {
                 ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
                 ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
                 username: this.username,
+                price: selectedTicketOptionObj.tierPrice,
             };
             this.$router.push({
 
@@ -230,3 +235,4 @@ export default {
     /* This is to remove default styling, may need additional styling */
 }
 </style>
+r

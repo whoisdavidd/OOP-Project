@@ -3,10 +3,15 @@ package com.example.demo.entityFile.Services;
 import com.example.demo.entityFile.Events.Event;
 import com.example.demo.entityFile.Ticketing.TicketingOption;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class ReportGeneratorService {
     
     public void generateTicketSalesReport(List<Event> events) {
@@ -39,36 +44,30 @@ public class ReportGeneratorService {
         System.out.println("Total Revenue: $" + totalRevenue);
     }
 
-    public void exportToCSV(List<Event> events, String filePath) {
-        try (FileWriter writer = new FileWriter(filePath)) {
+    public byte[] exportToCSV(List<Event> events) {
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             // Writing header
-            writer.append("Event Name, Tickets Sold, Revenue");
-            writer.append("\n");
+            bos.write("Event Name, Tickets Sold, Revenue\n".getBytes(StandardCharsets.UTF_8));
 
             // Writing data
             for (Event event : events) {
                 List<TicketingOption> ticketingOptionsList = event.getTicketingOptions();
                 int ticketsSold = 0;
-                for (TicketingOption to : ticketingOptionsList){
-                    ticketsSold += to.getNumTicketsSold();
-                }
                 double eventRevenue = 0.0;
                 for (TicketingOption to : ticketingOptionsList){
+                    ticketsSold += to.getNumTicketsSold();
                     eventRevenue += to.getTierRevenue();
                 }
 
-                writer.append(event.getEventName());
-                writer.append(",");
-                writer.append(String.valueOf(ticketsSold));
-                writer.append(",");
-                writer.append(String.valueOf(eventRevenue));
-                writer.append("\n");
+                String line = event.getEventName() + "," + ticketsSold + "," + eventRevenue + "\n";
+                bos.write(line.getBytes(StandardCharsets.UTF_8));
             }
 
-            System.out.println("Data exported to csv successfully!");
+            return bos.toByteArray();
 
         } catch (IOException e) {
-            System.err.println("Error exporting data to csv: " + e.getMessage());
+            System.err.println("Error generating CSV data: " + e.getMessage());
+            return new byte[0];
         }
     }
 }
