@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.entityFile.Events.PaymentRecord;
+import com.example.demo.repository.PaymentRecordRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,9 @@ public class StripeController {
     @Value("${stripe.webhookKey}")
     private String STRIPE_WEBHOOK_KEY;
 
+    @Autowired
+    private PaymentRecordRepository paymentRecordRepository;
+
     @PostMapping("/checkout")
     public ResponseEntity<String> createCheckoutSession(@RequestBody Map<String, Object> data) {
         System.out.println("new checkout");
@@ -38,6 +45,7 @@ public class StripeController {
                     .setMode(SessionCreateParams.Mode.PAYMENT)
                     .setSuccessUrl("http://localhost:8081/payment-success") // Update with your ngrok URL
                     .setCancelUrl("http://localhost:8081/payment-cancel") // Update with your ngrok URL
+                    .putMetadata("eventId", (String) data.get("eventId")) // Add this line
                     .build();
 
             Session session = Session.create(params);
@@ -103,30 +111,29 @@ public class StripeController {
         // Handle the event
         switch (event.getType()) {
             case "checkout.session.completed":
-                Session session = (Session) event.getData().getObject();
-                System.out.println("Payment received for checkout " + session.getId());
-                System.out.println(session);
-                String customerId = session.getCustomer();
-                // Retrieve the customer object from stripe
-                String customerEmail = null;
-                try {
-                    Customer customer = Customer.retrieve(customerId);
-                    // Get the customer's email
-                    customerEmail = customer.getEmail();
-                    System.out.println("Customer email: " + customerEmail);
-                    // TODO: Handle successful checkout, save order, send confirmation email
-                } catch (StripeException e) {
-                    e.printStackTrace();
-                    // TODO: Handle the error
-                }
-       
-                
+            Session session = (Session) event.getData().getObject();
+            System.out.println("Payment received for checkout " + session.getId());
+
+            BigDecimal amountPaid = BigDecimal.valueOf(session.getAmountTotal()).divide(BigDecimal.valueOf(100));
+            String customerId = session.getCustomer();
             
-              
-                // TODO: Handle successful checkout,
-                // save order, send confirmation email
-                break;
-            // Add more cases for other event types as needed
+            // Optionally, retrieve the customer's email
+            String customerEmail = null;
+            try {
+                Customer customer = Customer.retrieve(customerId);
+                customerEmail = customer.getEmail();
+            } catch (StripeException e) {
+                e.printStackTrace();
+            }
+
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setChargeId(session.getId());
+            paymentRecord.setAmount(amountPaid);
+            paymentRecord.setCustomerId(customerId);
+            paymentRecord.setPaymentDate(java.time.LocalDateTime.now());
+            paymentRecordRepository.save(paymentRecord);
+
+            System.out.println("Payment record saved for checkout " + session.getId());
         }
 
         return ResponseEntity.ok("Received");
