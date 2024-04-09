@@ -84,8 +84,15 @@ export default {
         if (userType === 'CUSTOMER') {
           this.$router.push('/events'); // Replace '/customerPage' with the actual path
         } else {
-          this.$router.push('/homepage'); // Default redirection for other user types
+          this.$router.push('/'); // Default redirection for other user types
         }
+        if(userType === "TICKETING_OFFICER"){
+          this.$router.push('/events');
+        }
+        if(userType === "EVENT_MANAGER"){
+          this.$router.push('/')
+        }
+
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Try again.");

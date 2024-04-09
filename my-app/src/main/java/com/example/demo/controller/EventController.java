@@ -94,4 +94,5 @@ public class EventController {
         return ResponseEntity.ok("Event has been deleted");
 
     }
+    
 }

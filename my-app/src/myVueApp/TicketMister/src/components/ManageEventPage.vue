@@ -1,8 +1,8 @@
 <template>
-    <div class="eventsPage" style="background-color:white;margin-top:10vw; margin-bottom:10vw">
-        <h1 class="text-black">Events Page</h1>
+    <div class="eventsPage" style="margin-top:10vw; margin-bottom:10vw">
+        <h1 class="text-center" style="color:palegoldenrod">Events Page</h1>
         <div class="accordion mt-5" id="accordionEvents">
-            <div class="accordion-item">
+            <div class="accordion-item" style="background-color:rgba(128,128, 128, 0.8); color:white">
                 <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     Adding a new event
@@ -47,7 +47,7 @@
                             <input type="number" name="cancellationFee" class="form-control" v-model.lazy="cancellationFee">
                         </div>
                         <hr style="border-width:3px; color:blue">
-                        <strong>Ticketing Options: <button class="ms-3 btn btn-warning btn-sm" @click="addTicketingOption">Add ticketing option</button></strong> 
+                        <strong>Ticketing Options: <button class="ms-3 btn btn-light btn-outline-dark rounded-pill btn-sm" @click="addTicketingOption">Add ticketing option</button></strong> 
                         <div v-for="(to,index) in ticketingOptions" :key="to.tierName">
                             <div class="mt-3">Tier {{index+1}} Name:</div>
                             <input type="text" :name="'tier'+ (index+1) + 'Name'" v-model.lazy="to.tierName" placeholder="CAT 1" class="form-control">
@@ -59,7 +59,7 @@
                         </div>
                         <hr style="border-width:3px; color:blue">
                         <div v-if="eventType == 'concert'">
-                            <strong>Performers: <button class="ms-3 btn btn-warning btn-sm" @click="addPerformer">Add performer</button></strong>
+                            <strong>Performers: <button class="ms-3 btn btn-light btn-outline-dark rounded-pill btn-sm" @click="addPerformer">Add performer</button></strong>
                             <div v-for="(p,index) in performers" :key="p.performerName">
                                 <div class="mt-3">Performer {{index+1}} Name:</div>
                                 <input type="text" :name="'performer'+ (index+1) + 'Name'" v-model.lazy="p.performerName" placeholder="Taylor Swift" class="form-control">
@@ -96,8 +96,8 @@
                                 <input type="text" name="sport" class="form-control" v-model.lazy="sport" placeholder="Football" required>
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <button type="submit" @click="addEvent" class="btn btn-primary">Add Event</button>
+                        <div class="mt-3 d-flex justify-content-end">
+                            <button type="submit" @click="addEvent" class="btn btn-light btn-outline-dark rounded-pill">Add Event</button>
                         </div>
                     </form>
                 </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
         </div>
-        <div class="accordion-item">
+        <div class="accordion-item" style="background-color:rgba(128,128, 128, 0.8); color:white">
             <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                 Manage events
@@ -178,7 +178,7 @@
                                         <strong>Sport:</strong> {{ event.sport }} <br>
                                     </span>
                                 </p>
-                                <div><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelEventModal" @click="setEventToCancel(event)">
+                                <div><button type="button" class="btn btn-light btn-outline-dark rounded-pill" data-bs-toggle="modal" data-bs-target="#cancelEventModal" @click="setEventToCancel(event)">
                                     Cancel Event
                                 </button><button class="btn btn-link float-end" @click="selectEvent(event)">Edit</button></div>
                                 

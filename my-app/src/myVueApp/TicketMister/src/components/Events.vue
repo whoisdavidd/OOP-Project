@@ -60,7 +60,7 @@
           v-for="event in filteredEvents"
           :key="event.id"
         >
-          <div class="card mx-3 my-3" style="height: 30rem;">
+          <div class="card mx-3 my-3 rounded-4" style="height: 30rem; background-color: rgba(255, 255, 255, 0.7);">
             <div></div>
             <img
               :src="require(`../img/events/${event.eventName}.jpeg`)"
