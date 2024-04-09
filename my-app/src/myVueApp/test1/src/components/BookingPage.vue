@@ -80,6 +80,7 @@ export default {
             ticketOptions: [],
             ticketingOptionID: "",
             formErrors: [],
+            
         };
     },
     mounted() {
@@ -163,12 +164,13 @@ export default {
 
             const bookingDetails = {
                 numTickets: this.numTickets,
-                selectedEvent: this.selectedEvent, // Keeping the event ID if needed for the backend
+                selectedEvent: this.selectedEvent, // EventID
                 selectedEventName: selectedEventObj.eventName, // The event name for display purposes
                 ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
                 ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
                 username: this.username,
                 price: selectedTicketOptionObj.tierPrice,
+                
             };
             this.$router.push({
 
