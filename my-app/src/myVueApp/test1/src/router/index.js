@@ -16,6 +16,7 @@ import BookingHistory from '@/components/BookingHistory.vue'
 import Profile from '@/components/Profile.vue'
 import OnsiteSale from '@/components/OnsiteSale.vue'
 import EventReports from '@/components/EventReports.vue'
+import TicketingOfficer from '@/components/TicketingOfficer.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -101,6 +102,11 @@ const router = createRouter({
       path: '/EventReports',
       name: 'EventReports',
       component: EventReports
+    },
+    {
+      path: '/ticketingOfficer',
+      name: 'TicketingOfficer',
+      component: TicketingOfficer
     },
     
   

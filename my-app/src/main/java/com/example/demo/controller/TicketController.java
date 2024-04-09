@@ -200,14 +200,15 @@ public class TicketController {
             return new ResponseEntity<>("Ticket not found with id :" + ticketID, HttpStatus.NOT_FOUND);
         }
         Ticket ticket = ticketOptional.get();
+        Event event = ticket.getEvent();
 
         // Check if allowed to cancel
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        LocalDate date = LocalDate.parse(event.getEventDate(), dateFormatter);
 
-        LocalDateTime date = LocalDateTime.parse(ticket.getEvent().getEventDate(), dateFormatter);
-        LocalDateTime time = LocalDateTime.parse(ticket.getEvent().getEventTime(), timeFormatter);
-        LocalDateTime eventDateTime = LocalDateTime.of(date.toLocalDate(), time.toLocalTime());
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
+        LocalTime time = LocalTime.parse(event.getEventTime(), timeFormatter);
+        LocalDateTime eventDateTime = LocalDateTime.of(date, time);
         if (eventDateTime.isBefore(LocalDateTime.now().plusDays(1))) {
             return new ResponseEntity<>("Cannot cancel less than 24 hours before show", HttpStatus.BAD_REQUEST);
         }
@@ -218,7 +219,6 @@ public class TicketController {
         customerRepository.save(customer);
 
         // Update values
-        Event event = ticket.getEvent();
         List<TicketingOption> ticketingOptions = event.getTicketingOptions();
         TicketingOption currentOption = null;
         for (TicketingOption ticketingOption : ticketingOptions) {

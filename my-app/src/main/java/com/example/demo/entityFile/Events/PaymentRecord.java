@@ -13,8 +13,10 @@ public class PaymentRecord {
     
     private String chargeId; // For storing Charge ID or PaymentIntent ID
     private BigDecimal amount;
-    private String customerId; // Optional, for reference
+    private String CustomerId; // Optional, for reference
     private LocalDateTime paymentDate;
+    private String eventID;
+    private int numTickets;
 
     // Getters and setters
 
@@ -43,11 +45,11 @@ public class PaymentRecord {
     }
 
     public String getCustomerId() {
-        return this.customerId;
+        return this.CustomerId;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(String CustomerId) {
+        this.CustomerId = CustomerId;
     }
 
     public LocalDateTime getPaymentDate() {
@@ -56,6 +58,18 @@ public class PaymentRecord {
 
     public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
+    }
+    public String getEventID() {
+        return this.eventID;
+    }
+    public void setEventID(String eventID){
+        this.eventID = eventID;
+    }
+    public int getNumTickets(){
+        return this.numTickets;
+    }
+    public void setNumTickets(int numTickets){
+        this.numTickets = numTickets;
     }
 }
 
