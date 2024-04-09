@@ -13,7 +13,6 @@
             data-bs-target="#navbarSupportedContent">
             <span class="navbar-toggler-icon"></span>
           </button>
-
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav ms-auto my-3">
               <ul class="navbar-nav">
@@ -24,6 +23,12 @@
                   <router-link to="/events" style="text-decoration: none;  color: teal;"
                     class="fs-4">Events</router-link>
                 </li>
+                <li class="nav-item px-5" v-if="isEventManager">
+  <router-link to="/EventReports" style="text-decoration: none; color: teal;" class="fs-4">Reports</router-link>
+</li>
+<li class="nav-item px-5" v-if="isEventManager">
+  <router-link to="/TicketingOfficer" style="text-decoration: none; color: teal;" class="fs-4">Add TO</router-link>
+</li>
                 <li class="nav-item px-5">
                   <div v-if="isLoggedIn">
                     <div class="dropdown">
@@ -92,23 +97,44 @@
 <script>
 export default {
   name: "App",
-  computed: {
-    isLoggedIn() {
-      return sessionStorage.getItem('username') !== null; // Check if username exists in session storage
+  data() {
+    return {
+      isLoggedIn: sessionStorage.getItem('username') !== null,
+      username: sessionStorage.getItem('username'),
+      isEventManager: sessionStorage.getItem('userType') === 'EVENT_MANAGER',
+    };
+  },
+  watch: {
+    isLoggedIn: {
+      handler(newValue) {
+        this.isLoggedIn = newValue;
+      },
+      immediate: true,
     },
-    username() {
-      return sessionStorage.getItem('username'); // Retrieve the username from session storage
+    username(newUsername) {
+    sessionStorage.setItem('username', newUsername);
+  },
+    isEventManager: {
+      handler(newValue) {
+        this.isEventManager = newValue;
+      },
+      immediate: true,
     },
-    isEventManager() {
-      return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
-    }
   },
   methods: {
     logout() {
-      sessionStorage.removeItem('username'); // Remove the username from session storage
-    }
-    
-  }
+      sessionStorage.removeItem('username');
+      this.isLoggedIn = false;
+      this.username = null;
+      this.isEventManager = false;
+    },
+    login() {
+      // After successful login
+      this.isLoggedIn = true;
+      this.username = sessionStorage.getItem('username');
+      this.isEventManager = sessionStorage.getItem('userType') === 'EVENT_MANAGER';
+    },
+  },
 };
 </script>
 <style>
