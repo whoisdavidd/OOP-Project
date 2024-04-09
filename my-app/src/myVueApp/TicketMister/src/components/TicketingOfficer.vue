@@ -10,10 +10,6 @@
           <label for="password">Password:</label>
           <input type="password" id="password" v-model="ticketingOfficer.password" required class="form-control">
         </div>
-        <div style="margin-bottom: 10px;">
-          <label for="email">Email Address:</label>
-          <input type="email" id="email" v-model="ticketingOfficer.email_address" required class="form-control">
-        </div>
         <div class="d-flex justify-content-end">
         <button class="btn btn-light btn-outline-dark rounded-pill" type="submit">Add Officer</button>
       </div>
@@ -45,9 +41,7 @@
             alert('Ticketing Officer added successfully!');
             // Reset form
             this.ticketingOfficer.username = '';
-            this.ticketingOfficer.password = '';
-            this.ticketingOfficer.email_address = '';
-       
+            this.ticketingOfficer.password = '';       
           })
           .catch(error => {
             console.error('There was an error adding the Ticketing Officer:', error);

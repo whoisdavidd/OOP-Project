@@ -20,9 +20,29 @@
                 <li class="nav-item px-5">
                   <router-link to="/" style="text-decoration: none; color: teal;" class="fs-5">Home</router-link>
                 </li>
-                <li class="nav-item px-5">
+                <li v-if="isCustomer || (!isEventManager && !isTicketingOfficer)" class="nav-item px-5">
                   <router-link to="/events" style="text-decoration: none;  color: teal;"
                     class="fs-5">Events</router-link>
+                </li>
+                <li v-if="isTicketingOfficer" class="nav-item px-5">
+                  <router-link to="/OnsiteSale" style="text-decoration: none;  color: teal;"
+                    class="fs-5">Events</router-link>
+                </li>
+                <li v-if="isTicketingOfficer" class="nav-item px-5">
+                  <router-link to="/VerifyTicket" style="text-decoration: none;  color: teal;"
+                    class="fs-5">Verify Tickets</router-link>
+                </li>
+                <li v-if="isEventManager" class="nav-item px-5">
+                  <router-link to="/ManageEventPage" style="text-decoration: none;  color: teal;"
+                    class="fs-5">Manage Events</router-link>
+                </li>
+                <li v-if="isEventManager" class="nav-item px-5">
+                  <router-link to="/EventReports" style="text-decoration: none;  color: teal;"
+                    class="fs-5">Event Reports</router-link>
+                </li>
+                <li v-if="isEventManager" class="nav-item px-5">
+                  <router-link to="/ticketingOfficer" style="text-decoration: none;  color: teal;"
+                    class="fs-5">Add Ticketing Officer</router-link>
                 </li>
                 <li class="nav-item px-4">
                   <div v-if="isLoggedIn">
@@ -99,6 +119,12 @@ export default {
     ...mapState(['isLoggedIn']),
     isCustomer() {
       return this.$store.state.userType === 'CUSTOMER';
+    },
+    isTicketingOfficer() {
+      return this.$store.state.userType === 'TICKETING_OFFICER';
+    },
+    isEventManager() {
+      return this.$store.state.userType === 'EVENT_MANAGER';
     }
   },
   methods: {
