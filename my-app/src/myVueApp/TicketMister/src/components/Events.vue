@@ -1,10 +1,10 @@
 <template>
-  <div style="margin-top: 56px">
-    <h2 class="text-center p-3">Events</h2>
+  <div style="margin-top: 50px; margin-bottom: 56px;">
+    <h2 class="text-center p-3" style="color: palegoldenrod">Events</h2>
     <!-- filter -->
-    <div class="dropdown">
+    <div class="dropdown justify-content-center d-flex">
       <button
-        class="btn dropdown-toggle"
+        class="btn dropdown-toggle text-light text-bg-dark"
         type="button"
         id="filterEvents"
         data-bs-toggle="dropdown"
@@ -60,10 +60,10 @@
           v-for="event in filteredEvents"
           :key="event.id"
         >
-          <div class="card mx-3 my-3" style="height: 30rem">
+          <div class="card mx-3 my-3" style="height: 30rem;">
             <div></div>
             <img
-              :src="require(`../img/events/Spring Music Festival.jpeg`)"
+              :src="require(`../img/events/${event.eventName}.jpeg`)"
               class="card-img-top img-fluid overflow-hidden"
               alt="..."
               style="object-fit: contain; height: 300rem; width: 200rem"
@@ -82,9 +82,11 @@
                 <span v-if="event.rating">Rating: {{ event.rating }}</span>
               </p>
               <!-- link to a book now page -->
-              <button class="btn btn-dark" @click="bookTicket(event)">
+              <div class="d-flex justify-content-center">
+              <button class="btn btn-light btn-outline-dark rounded-pill px-3" @click="bookTicket(event)">
                 Book now!
               </button>
+            </div>
             </div>
           </div>
         </div>
@@ -153,9 +155,8 @@ export default {
       }
     },
     bookTicket(bookEvent) {
-      const username = sessionStorage.getItem("username");
-      console.log(username+"username");
-      if (!username) { //changed this null check cus it was throwing issues
+      const username = sessionStorage.getItem("user");
+      if (!username || username === null) {
         alert("Please log into your account first");
         this.$router.push("/login");
       } else {

@@ -308,7 +308,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" @click="cancelEvent" data-bs-dismiss="modal">Confirm Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="cancelEvent">Confirm Cancel</button>
                     </div>
                 </div>
             </div>
@@ -726,7 +726,6 @@ export default {
                         console.log("Ticketing option" + parseFloat(i+1) + "updated")
                     })
                     .catch( (error) => {
-                        console.log(error)
                         console.log("Ticketing option" + parseFloat(i+1) + "update failed")
                     })
                 }
@@ -735,7 +734,6 @@ export default {
                 console.log(oldTicketingOptions[i].ticketingOptionID)
                 axios.delete('http://localhost:8080/api/ticketingOption/' + oldTicketingOptions[i].ticketingOptionID)
                 .then( (response) =>{
-                    console.log(response)
                     console.log("Ticketing option" + parseFloat(i+1) + "deleted")
                 })
                 .catch( (error) => {
@@ -767,23 +765,20 @@ export default {
         },
         async cancelEvent() {
             // Call the first API endpoint
-            var myModal = new bootstrap.Modal(document.getElementById('cancelEventModal'));
-            myModal.hide();
-            
+            axios.delete(`http://localhost:8080/ticket/CancellationByEvent/${this.eventToCancel.eventID}`)
+            .then((response) =>{
+                    console.log(response.data)
+                })
 
-            try{
-                await axios.delete(`http://localhost:8080/ticket/CancellationByEvent/${this.eventToCancel.eventID}`)
-            } catch (error) {
-                console.log(error)
-            }
             // Call the second API endpoint
             axios.delete(`http://localhost:8080/api/event/${this.eventToCancel.eventID}`)
             .then((response) =>{
                     console.log(response.data)
                 })
-                
-            this.eventToCancel = null;
+
             // Close the modal
+            var myModal = new bootstrap.Modal(document.getElementById('cancelEventModal'));
+            myModal.hide();
             alert('Event has been cancelled!');
         },
         setEventToCancel(event) {  // renamed from setCancelEvent
