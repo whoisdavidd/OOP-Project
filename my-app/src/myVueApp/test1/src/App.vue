@@ -108,12 +108,9 @@ export default {
       },
       immediate: true,
     },
-    username: {
-      handler(newValue) {
-        this.username = newValue;
-      },
-      immediate: true,
-    },
+    username(newUsername) {
+    sessionStorage.setItem('username', newUsername);
+  },
     isEventManager: {
       handler(newValue) {
         this.isEventManager = newValue;
