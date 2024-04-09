@@ -80,11 +80,13 @@ export default {
         sessionStorage.setItem('username', this.loginForm.username);
         sessionStorage.setItem("userType", response.data.userType);
         const userType = response.data.userType;
-
+        this.$store.commit('login', { username: this.loginForm.username, userType });
         if (userType === 'CUSTOMER') {
           this.$router.push('/events'); // Replace '/customerPage' with the actual path
-        } else {
-          this.$router.push('/homepage'); // Default redirection for other user types
+        } else if (userType === 'TICKETING_OFFICER') {
+          this.$router.push('/OnsiteSale'); // Default redirection for other user types
+        }else if(userType === 'EVENT_MANAGER'){
+          this.$router.push('/ManageEventPage'); // Default redirection for other user types
         }
       } catch (error) {
         console.error("Login failed", error);

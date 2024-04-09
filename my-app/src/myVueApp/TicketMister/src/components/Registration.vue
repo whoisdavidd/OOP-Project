@@ -34,10 +34,10 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">Event Manager verification</h1>
+                    <h1 class="modal-title fs-5 text-black">Event Manager verification</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-black">
                     You've requested to register as an event manager. As such, please provide the necessary admin password to authorise this action.
                     <input type="password" v-model="adminPassword" placeholder="Password" class="mt-3 form-control"> <button class="mt-1 btn btn-primary" @click="verifyEventManager">Verify</button>
                 </div>

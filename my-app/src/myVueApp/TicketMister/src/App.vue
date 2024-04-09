@@ -33,7 +33,9 @@
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" href="Profile">View Details</a></li>
-                        <li><a class="dropdown-item" href="BookingHistory">Booking History</a></li>
+                        <li v-if="isCustomer">
+                          <a class="dropdown-item" href="BookingHistory">Booking History</a>
+                        </li>
                         <li><a class="dropdown-item" href="Login" @click.prevent="logout" >Logout</a></li>
                       </ul>
                     </div>
@@ -89,22 +91,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   name: "App",
   computed: {
-    isLoggedIn() {
-      return sessionStorage.getItem('username') !== null; // Check if username exists in session storage
-    },
-    username() {
-      return sessionStorage.getItem('username'); // Retrieve the username from session storage
-    },
-    isEventManager() {
-      return sessionStorage.getItem('userType') === 'EVENT_MANAGER'; // Make sure the userType in session matches exactly as it is stored.
+    ...mapState(['isLoggedIn']),
+    isCustomer() {
+      return this.$store.state.userType === 'CUSTOMER';
     }
   },
   methods: {
     logout() {
-      sessionStorage.removeItem('username'); // Remove the username from session storage
+      this.$store.commit('logout');
+      this.$router.push('/login');
     }
     
   }
