@@ -112,7 +112,7 @@ public class StripeController {
             case "checkout.session.completed":
             Session session = (Session) event.getData().getObject();
             System.out.println("Payment received for checkout " + session.getId());
-            String eventID = session.getEventID();
+            String eventID = session.getMetadata().get("eventID");
             BigDecimal amountPaid = BigDecimal.valueOf(session.getAmountTotal()).divide(BigDecimal.valueOf(100));
             String customerId = session.getCustomer();
             
