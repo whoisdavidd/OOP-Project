@@ -91,7 +91,7 @@
 							<goal>exec</goal>
 						</goals>
 						<configuration>
-							<workingDirectory>src/myVueApp/test1</workingDirectory>
+							<workingDirectory>src/myVueApp/TicketMister</workingDirectory>
 							<executable>npm</executable>
 							<arguments>
 								<argument>run</argument>
@@ -117,7 +117,7 @@
 							<outputDirectory>target/classes/static</outputDirectory>
 							<resources>
 								<resource>
-									<directory>src/myVueApp/test1/dist</directory>
+									<directory>src/myVueApp/TicketMister/dist</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
