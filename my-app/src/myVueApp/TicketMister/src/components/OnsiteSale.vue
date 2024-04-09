@@ -63,7 +63,7 @@
           <div class="card mx-3 my-3" style="height: 30rem">
             <div></div>
             <img
-              :src="require(`../img/events/Spring Music Festival.jpeg`)"
+              :src="require(`../img/events/Spring Music Festival.jpg`)"
               class="card-img-top img-fluid overflow-hidden"
               alt="..."
               style="object-fit: contain; height: 300rem; width: 200rem"

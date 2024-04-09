@@ -51,13 +51,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.container-fluid {
-  background-image: url("../img/background.jpg"); /* Path to your background image */
-  background-size: cover;
-  background-position: center;
-  color: white; /* Set text color to white for better readability */
-  padding: 20px; /* Add padding to the container */
-}
 
 input,
 button,

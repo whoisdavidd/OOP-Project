@@ -1,10 +1,10 @@
 <template>
     <div class="VerifyTicket">
-      <div class="container" style="margin-top: 56px">
+      <div class="container" style="margin-top: 56px; margin-bottom:50px">
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
-            <h2 class="text-center">Verify Ticket</h2>
+            <h2 class="text-center" style="color:palegoldenrod">Verify Ticket</h2>
           </div>
           <div class="col-3"></div>
         </div>
@@ -20,7 +20,7 @@
                 <label for="eventID">Event ID:</label>
                 <input type="text" class="form-control" id="eventID" v-model="eventID" required>
               </div>
-              <div class="text-left mt-3">
+              <div class="text-left mt-3 d-flex justify-content-end">
                 <button type="submit" class="btn btn-light rounded-pill btn-outline-dark">
                   Verify
                 </button>
