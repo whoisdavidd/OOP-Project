@@ -153,8 +153,9 @@ export default {
       }
     },
     bookTicket(bookEvent) {
-      const username = sessionStorage.getItem("user");
-      if (!username || username == null) {
+      const username = sessionStorage.getItem("username");
+      console.log(username+"username");
+      if (!username) { //changed this null check cus it was throwing issues
         alert("Please log into your account first");
         this.$router.push("/login");
       } else {
