@@ -26,6 +26,9 @@
                 <li class="nav-item px-5" v-if="isEventManager">
   <router-link to="/EventReports" style="text-decoration: none; color: teal;" class="fs-4">Reports</router-link>
 </li>
+<li class="nav-item px-5" v-if="isEventManager">
+  <router-link to="/TicketingOfficer" style="text-decoration: none; color: teal;" class="fs-4">Add TO</router-link>
+</li>
                 <li class="nav-item px-5">
                   <div v-if="isLoggedIn">
                     <div class="dropdown">
