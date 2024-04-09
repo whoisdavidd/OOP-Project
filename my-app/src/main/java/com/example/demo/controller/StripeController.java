@@ -45,6 +45,7 @@ public class StripeController {
                     .setSuccessUrl("http://localhost:8081/payment-success") // Update with your ngrok URL
                     .setCancelUrl("http://localhost:8081/payment-cancel") // Update with your ngrok URL
                     .putMetadata("eventID", (String) data.get("eventID")) // Add this line
+                    .putMetadata("numTickets",(String) data.get("numTickets"))
                     .build();
 
             Session session = Session.create(params);
@@ -113,6 +114,7 @@ public class StripeController {
             Session session = (Session) event.getData().getObject();
             System.out.println("Payment received for checkout " + session.getId());
             String eventID = session.getMetadata().get("eventID");
+            String numTickets = session.getMetadata().get("numTickets");
             BigDecimal amountPaid = BigDecimal.valueOf(session.getAmountTotal()).divide(BigDecimal.valueOf(100));
             String customerId = session.getCustomer();
             
@@ -128,6 +130,7 @@ public class StripeController {
             PaymentRecord paymentRecord = new PaymentRecord();
             paymentRecord.setChargeId(session.getId());
             paymentRecord.setAmount(amountPaid);
+            paymentRecord.setNumTickets(Integer.parseInt(numTickets));
             paymentRecord.setEventID(eventID);
             paymentRecord.setCustomerId(customerId);
             paymentRecord.setPaymentDate(java.time.LocalDateTime.now());

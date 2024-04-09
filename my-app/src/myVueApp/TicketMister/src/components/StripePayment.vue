@@ -51,6 +51,7 @@ export default {
                 username: this.username,
                 eventID: this.eventID,
                 ticketingOptionId: this.ticketingOptionName,
+                numTickets: this.numTickets
                 
             };
 
