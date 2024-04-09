@@ -321,7 +321,6 @@
 /* eslint-disable */
 import * as bootstrap from 'bootstrap';
 import axios from 'axios';
-import $ from 'jquery';
 export default {
     name: 'ManageEventPage',
     data(){
