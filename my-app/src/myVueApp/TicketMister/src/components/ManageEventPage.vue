@@ -727,6 +727,7 @@ export default {
                         console.log("Ticketing option" + parseFloat(i+1) + "updated")
                     })
                     .catch( (error) => {
+                        console.log(error)
                         console.log("Ticketing option" + parseFloat(i+1) + "update failed")
                     })
                 }
@@ -735,6 +736,7 @@ export default {
                 console.log(oldTicketingOptions[i].ticketingOptionID)
                 axios.delete('http://localhost:8080/api/ticketingOption/' + oldTicketingOptions[i].ticketingOptionID)
                 .then( (response) =>{
+                    console.log(response)
                     console.log("Ticketing option" + parseFloat(i+1) + "deleted")
                 })
                 .catch( (error) => {

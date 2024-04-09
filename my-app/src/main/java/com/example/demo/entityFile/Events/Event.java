@@ -36,7 +36,7 @@ public class Event {
     private String eventTime; // In the form of 24h e.g. HHMM (2359)
 
     @NotNull(message = "Event must have ticketing options!")
-    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY, mappedBy = "event",  orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "event",  orphanRemoval = true)
     @Column(name = "ticketingOptions")
     private List<TicketingOption> ticketingOptions;
 
