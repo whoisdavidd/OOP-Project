@@ -155,8 +155,7 @@ export default {
       }
     },
     bookTicket(bookEvent) {
-      const username = sessionStorage.getItem("user");
-      if (!username || username === null) {
+      if (!this.$store.state.isLoggedIn) {
         alert("Please log into your account first");
         this.$router.push("/login");
       } else {
