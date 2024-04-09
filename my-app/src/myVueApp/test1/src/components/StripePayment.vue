@@ -1,18 +1,18 @@
 <template>
-    <div class="booking-page">
+    <div class="booking-page p-3 rounded-4" style="background-color: rgba(128, 128, 128, 0.6); margin-right: 300px; margin-left: 300px">
         <div class="booking-details">
-            <h2>Booking Details</h2>
-            <ul>
+            <h2 class="text-center" style="color:palegoldenrod">Booking Details</h2>
+            <ul class="flex-column d-flex justify-content-center align-items-center list-unstyled lis">
                 <li><strong>Event:</strong> {{ selectedEventName }}</li>
                 <li><strong>Number of Tickets:</strong> {{ numTickets }}</li>
                 <li><strong>Ticket Option:</strong> {{ ticketingOptionName }}</li>
                 <li><strong>Username:</strong> {{ username }}</li>
-                <li><strong>Price:</strong>{{ price }}</li>
+                <li><strong>Price: </strong>{{ price }}</li>
                 <!-- Add more details as needed -->
             </ul>
         </div>
-        <div class="payment-button">
-            <button @click="handlePayment">Pay</button>
+        <div class="payment-button d-flex justify-content-center">
+            <button @click="handlePayment" class="btn btn-outline-dark btn-light rounded-pill">Pay</button>
         </div>
     </div>
 </template>

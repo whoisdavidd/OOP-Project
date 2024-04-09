@@ -81,8 +81,8 @@ export default {
         sessionStorage.setItem("userType", response.data.userType);
         const userType = response.data.userType;
 
-        if (userType === 'customer') {
-          this.$router.push('/customerPage'); // Replace '/customerPage' with the actual path
+        if (userType === 'CUSTOMER') {
+          this.$router.push('/events'); // Replace '/customerPage' with the actual path
         } else {
           this.$router.push('/homepage'); // Default redirection for other user types
         }

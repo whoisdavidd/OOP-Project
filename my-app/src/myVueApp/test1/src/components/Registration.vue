@@ -1,5 +1,5 @@
 <template>
-    <div class="registration rounded-4" style="background-color: rgba(128, 128, 128, 0.8); margin-top:10vw; margin-bottom:10vw">
+    <div class="registration rounded-4" style="background-color: rgba(128, 128, 128, 0.7); margin-top:4vw; margin-bottom:4vw">
         <h1 class="text-center" style="color:palegoldenrod;">Create a New Account</h1>
         <form @submit.prevent="register">
             <div class="d-inline-block mb-3">
