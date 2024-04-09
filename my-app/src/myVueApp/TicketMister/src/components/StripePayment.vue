@@ -49,7 +49,8 @@ export default {
                 username: this.username,
                 // email: this.userEmail,
                 ticketingOptionId: this.ticketingOptionName,
-
+                numTickets: this.numTickets
+                
             };
 
             // Make a POST request to your Spring Boot server via ngrok

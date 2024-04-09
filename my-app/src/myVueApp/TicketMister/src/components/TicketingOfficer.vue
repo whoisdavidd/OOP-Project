@@ -1,20 +1,22 @@
 <template>
-    <div class="ticketing-officer">
-      <h1>Add Ticketing Officer</h1>
+    <div class="ticketing-officer" style="margin-top:56px;margin-bottom:56px">
+      <h1 class="text-center" style="color:palegoldenrod">Add Ticketing Officer</h1>
       <form @submit.prevent="addTicketingOfficer">
         <div>
           <label for="username">Username:</label>
-          <input type="text" id="username" v-model="ticketingOfficer.username" required>
+          <input type="text" id="username" v-model="ticketingOfficer.username" required class="form-control">
         </div>
         <div>
           <label for="password">Password:</label>
-          <input type="password" id="password" v-model="ticketingOfficer.password" required>
+          <input type="password" id="password" v-model="ticketingOfficer.password" required class="form-control">
         </div>
-        <div>
+        <div style="margin-bottom: 10px;">
           <label for="email">Email Address:</label>
-          <input type="email" id="email" v-model="ticketingOfficer.email_address" required>
+          <input type="email" id="email" v-model="ticketingOfficer.email_address" required class="form-control">
         </div>
-        <button type="submit">Add Officer</button>
+        <div class="d-flex justify-content-end">
+        <button class="btn btn-light btn-outline-dark rounded-pill" type="submit">Add Officer</button>
+      </div>
       </form>
     </div>
   </template>
@@ -73,20 +75,6 @@
     padding: 8px;
     margin-top: 5px;
   }
-  
-  button {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    background-color: #5cb85c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #4cae4c;
-  }
+
   </style>
   

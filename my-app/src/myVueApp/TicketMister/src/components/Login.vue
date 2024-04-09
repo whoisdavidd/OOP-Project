@@ -88,6 +88,13 @@ export default {
         }else if(userType === 'EVENT_MANAGER'){
           this.$router.push('/ManageEventPage'); // Default redirection for other user types
         }
+        if(userType === "TICKETING_OFFICER"){
+          this.$router.push('/events');
+        }
+        if(userType === "EVENT_MANAGER"){
+          this.$router.push('/')
+        }
+
       } catch (error) {
         console.error("Login failed", error);
         alert("Login failed. Try again.");

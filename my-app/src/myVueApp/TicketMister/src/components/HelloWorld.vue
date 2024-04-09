@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="hello" style="margin-top:56px; margin-bottom:56px">
     <div>
       <div class="container-fluid">
         <div class="d-flex p-5 ms-5 row mx-5">
@@ -17,21 +17,7 @@
               events has never been easier.
             </p>
             <!-- search -->
-            <form class="py-3">
-              <div class="input-group input-group-md mb-2 mt-4">
-                <input
-                  class="form-control w-75 me-2 rounded-pill"
-                  type="search"
-                  placeholder="Search for upcoming events..."
-                />
-                <button
-                  class="btn btn-light rounded-pill btn-outline-dark"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </div>
-            </form>
+          
           </div>
         </div>
       </div>
@@ -41,17 +27,10 @@
 
 <script>
 
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
-  },
-};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 input,
 button,
 img {
