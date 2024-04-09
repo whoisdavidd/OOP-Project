@@ -3,6 +3,13 @@
     <h1 class="text-center" style="color: palegoldenrod">
       Your Booking History
     </h1>
+    <div v-if="tickets.length==0">
+      <h2 class="text-center">No tickets booked yet</h2>
+    <div class="d-flex justify-content-center p-2">
+      <button class="btn btn-light btn-outline-dark rounded-pill " ><router-link to="/events" class="text-decoration-none" style="color:black">Browse events</router-link></button>
+      <button class="btn btn-light btn-outline-dark rounded-pill"><router-link to="/BookingPage" class="text-decoration-none" style="color:black">Book here!</router-link></button>
+    </div>
+    </div>
     <div
       v-for="eventInfo in tickets"
       :key="eventInfo.eventName"

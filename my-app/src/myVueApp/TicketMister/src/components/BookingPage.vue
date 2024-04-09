@@ -16,7 +16,7 @@
     </div>
     <!-- Form for registration -->
     <form @submit.prevent="submitForm">
-      <div class="form-group py-2 d-flex align-items-center">
+      <!-- <div class="form-group py-2 d-flex align-items-center">
         <label for="username" class="me-2">Username:</label>
         <input
           type="text"
@@ -25,7 +25,7 @@
           placeholder="Enter username"
           class="form-control"
         />
-      </div>
+      </div> -->
       <!-- Additional inputs -->
       <div>
         <div class="form-group d-flex align-items-center py-2">
@@ -129,6 +129,7 @@ export default {
       ticketOptions: [],
       ticketingOptionID: "",
       formErrors: [],
+      username: sessionStorage.getItem("username"),
     };
   },
   mounted() {
@@ -191,15 +192,15 @@ export default {
       if (!this.ticketingOptionID) {
         this.formErrors.push("Please select a ticketing option.");
       }
-      if (!this.username) {
-        this.formErrors.push("Please enter a username.");
-      }
+      // if (!this.username) {
+      //   this.formErrors.push("Please enter a username.");
+      // }
       console.log(this.formErrors);
       return this.formErrors.length == 0; // Form is valid if no errors
     },
     submitForm() {
       // Ensure all required fields are selected
-      if (!this.selectedEvent || !this.ticketingOptionID || !this.username) {
+      if (!this.selectedEvent || !this.ticketingOptionID) {
         // If the form is invalid, stop here
         return;
       }
@@ -220,7 +221,7 @@ export default {
         selectedEventName: selectedEventObj.eventName, // The event name for display purposes
         ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
         ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
-        username: this.username,
+        username: sessionStorage.getItem("username") || this.username,
         price: selectedTicketOptionObj.tierPrice,
       };
       this.$router.push({
