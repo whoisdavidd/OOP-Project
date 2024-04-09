@@ -28,6 +28,7 @@ export default {
             ticketingOptionName: '',
             username: '',
             price:0,
+            eventID:'',
             // Add other necessary data properties like eventId, price, etc.
         };
     },
@@ -38,6 +39,7 @@ export default {
         this.price = bookingDetails.price;
         this.selectedEventName = bookingDetails.selectedEventName; // You need to pass this as a query param
         this.numTickets = bookingDetails.numTickets;
+        this.eventID = bookingDetails.selectedEvent;
         this.ticketingOptionName = bookingDetails.ticketOptionName; // You need to pass this as a query param
         this.username = bookingDetails.username;// Contains { numTickets, selectedEvent, ticketingOptionID, username }
     },
@@ -47,9 +49,9 @@ export default {
                 eventName: this.selectedEventName,
                 price: parseInt(this.price,10)* parseInt(this.numTickets),
                 username: this.username,
-                // email: this.userEmail,
+                eventID: this.eventID,
                 ticketingOptionId: this.ticketingOptionName,
-
+                
             };
 
             // Make a POST request to your Spring Boot server via ngrok

@@ -8,9 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.entityFile.Services.UserService;
 import com.example.demo.entityFile.Users.Customer;
-import com.example.demo.services.UserService;
-
 import com.example.demo.repository.*;
 
 @RestController

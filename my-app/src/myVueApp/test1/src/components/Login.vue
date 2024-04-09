@@ -77,6 +77,7 @@ export default {
           password: this.loginForm.password  // Replace with actual data from form
         });
         console.log('Login successful', response.data);
+        this.username = this.loginForm.username;
         sessionStorage.setItem('username', this.loginForm.username);
         sessionStorage.setItem("userType", response.data.userType);
         const userType = response.data.userType;

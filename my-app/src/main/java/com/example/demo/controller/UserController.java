@@ -33,30 +33,7 @@ public class UserController {
         User existingUser = this.userRepository.findByUsername(username).get();
         return ResponseEntity.ok(existingUser);
     }
-
-    // create user
-    // @PostMapping
-    // public User createUser(@RequestBody User user) {
-    //     boolean existingUser = this.userRepository.existsById(user.getUsername());
-    //     if (existingUser){
-    //         throw new IllegalArgumentException("The user already exists.");
-    //     }else{
-    //         User savedUser = this.userRepository.save(user);
-    //         return savedUser;
-    //     }
-        
-    // }
-
-    // update user
-    // @PutMapping("/{username}")
-    // public User updateUser(@RequestBody User user, @PathVariable("username") String username) {
-    //     User existingUser = this.userRepository.findById(username)
-    //             .orElseThrow(() -> new ResourceNotFoundException("User not found with username :" + username));
-    //     existingUser.setPassword(user.getPassword());
-
-    //     return this.userRepository.save(existingUser);
-    // }
-
+    
     @DeleteMapping("/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable("username") String username) {
         if (!this.userRepository.findById(username).isPresent()){

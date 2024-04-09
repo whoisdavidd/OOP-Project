@@ -114,76 +114,75 @@
 import axios from "axios";
 
 export default {
-  name: "BookingPage",
-  data() {
-    return {
-      selectedEvent: "",
-      price: 0,
-      events: [],
-      numTickets: 1, // Default to 1 ticket
-      concerts: [],
-      movies: [],
-      sportsEvents: [],
-      pickupDate: "",
-      returnDate: "",
-      ticketOptions: [],
-      ticketingOptionID: "",
-      formErrors: [],
-    };
-  },
-  mounted() {
-    this.getEvents();
-    this.getAllConcerts();
-    this.getAllMovies();
-    this.getAllSportsEvent();
-  },
-  watch: {
-    async selectedEvent(selectedEvent) {
-      if (selectedEvent) {
-        console.log(selectedEvent);
-        await this.getTicketOptions(selectedEvent);
-      } else {
-        this.ticketOptions = [];
-      }
+    name: "BookingPage",
+    data() {
+        return {
+            selectedEvent: '',
+            price:0,
+            events: [],
+            numTickets: 1, // Default to 1 ticket
+            concerts: [],
+            movies: [],
+            sportsEvents: [],
+            pickupDate: '',
+            returnDate: '',
+            ticketOptions: [],
+            ticketingOptionID: "",
+            formErrors: [],
+            
+        };
     },
-  },
-  methods: {
-    async getEvents() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/event");
-        this.events = response.data;
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
+    mounted() {
+        this.getEvents();
+        this.getAllConcerts();
+        this.getAllMovies();
+        this.getAllSportsEvent();
     },
-    async getAllConcerts() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/concert");
-        this.concerts = response.data;
-      } catch (error) {
-        console.error("Error fetching concerts", error);
-      }
+    watch: {
+        async selectedEvent(selectedEvent) {
+            if (selectedEvent) {
+                console.log(selectedEvent);
+                await this.getTicketOptions(selectedEvent);
+            } else {
+                this.ticketOptions = [];
+            }
+        },
     },
-    async getAllMovies() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/movie");
-        this.movies = response.data;
-      } catch (error) {
-        console.error("Error fetching movies", error);
-      }
-    },
-    async getAllSportsEvent() {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/SportsEvent"
-        );
-        this.sportsEvents = response.data;
-      } catch (error) {
-        console.error("Error fetching sports events", error);
-      }
-    },
-    validateForm() {
-      this.formErrors = []; // Reset errors
+    methods: {
+        async getEvents() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/event');
+                this.events = response.data;
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        },
+        async getAllConcerts() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/concert');
+                this.concerts = response.data;
+            } catch (error) {
+                console.error('Error fetching concerts', error);
+            }
+        },
+        async getAllMovies() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/movie');
+                this.movies = response.data;
+            } catch (error) {
+                console.error('Error fetching movies', error);
+            }
+        },
+        async getAllSportsEvent() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/SportsEvent');
+                this.sportsEvents = response.data;
+            } catch (error) {
+                console.error('Error fetching sports events', error);
+            }
+        },
+        validateForm() {
+            this.formErrors = []; // Reset errors
 
       if (!this.selectedEvent) {
         this.formErrors.push("Please select an event.");
@@ -214,45 +213,47 @@ export default {
 
       const url = `http://localhost:8080/ticket/createTicket/${this.numTickets}/${this.selectedEvent}/${this.ticketingOptionID}/${this.username}`;
 
-      const bookingDetails = {
-        numTickets: this.numTickets,
-        selectedEvent: this.selectedEvent, // Keeping the event ID if needed for the backend
-        selectedEventName: selectedEventObj.eventName, // The event name for display purposes
-        ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
-        ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
-        username: this.username,
-        price: selectedTicketOptionObj.tierPrice,
-      };
-      this.$router.push({
-        name: "checkoutPage",
-        query: bookingDetails,
-      });
-      axios
-        .post(url, {
-          // Assuming you need to send additional data in the request body, adjust accordingly.
-          // If not, you can make the POST request without a body or with other required fields.
-        })
-        .then((response) => {
-          console.log("Form submitted successfully", response);
-          // Further actions upon success
-        })
-        .catch((error) => {
-          console.error("Error submitting form", error);
-        });
+            const bookingDetails = {
+                numTickets: this.numTickets,
+                selectedEvent: this.selectedEvent, // EventID
+                selectedEventName: selectedEventObj.eventName, // The event name for display purposes
+                ticketingOptionID: this.ticketingOptionID, // Keeping the ticket option ID if needed for the backend
+                ticketOptionName: selectedTicketOptionObj.tierName, // The ticket option name for display purposes
+                username: this.username,
+                price: selectedTicketOptionObj.tierPrice,
+                
+            };
+            this.$router.push({
+
+                name: 'checkoutPage',
+                query: bookingDetails
+            });
+            axios.post(url, {
+                // Assuming you need to send additional data in the request body, adjust accordingly.
+                // If not, you can make the POST request without a body or with other required fields.
+            }).then(response => {
+
+                console.log('Form submitted successfully', response);
+                // Further actions upon success
+            }).catch(error => {
+                console.error('Error submitting form', error);
+            });
+        },
+        async getTicketOptions(eventID) {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/event/${eventID}`);
+                console.log(response);
+                this.ticketOptions = response.data.ticketingOptions;
+
+            } catch (error) {
+                console.error('Error fetching ticket options:', error);
+                this.ticketOptions = [];
+            }
+        },
     },
-    async getTicketOptions(eventID) {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/event/${eventID}`
-        );
-        console.log(response);
-        this.ticketOptions = response.data.ticketingOptions;
-      } catch (error) {
-        console.error("Error fetching ticket options:", error);
-        this.ticketOptions = [];
-      }
-    },
-  },
+
+
+
 };
 </script>
 

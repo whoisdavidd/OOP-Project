@@ -18,8 +18,7 @@ public class TicketingOption {
     @Column(name = "tierName")
     private String tierName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @NotNull(message = "Ticketing option must be associated with an event!")
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "eventID")
     private Event event;
@@ -76,6 +75,10 @@ public class TicketingOption {
 
     public void setEvent(Event newEvent){
         this.event = newEvent;
+    }
+
+    public void setTierName(String newTierName){
+        this.tierName = newTierName;
     }
 
     public void setTierPrice(double newTierPrice){
