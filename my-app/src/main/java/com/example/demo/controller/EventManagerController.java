@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.entityFile.Services.UserService;
 import com.example.demo.entityFile.Users.EventManager;
 import com.example.demo.repository.*;
-import com.example.demo.services.UserService;
 
 @RestController
 @RequestMapping("/api/eventManager")

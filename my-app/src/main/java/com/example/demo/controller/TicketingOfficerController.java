@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.*;
 
+import com.example.demo.entityFile.Services.UserService;
 import com.example.demo.entityFile.Users.TicketingOfficer;
 import com.example.demo.repository.*;
-import com.example.demo.services.UserService;
 
 @RestController
 @RequestMapping("/api/ticketingOfficer")

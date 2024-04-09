@@ -78,6 +78,10 @@ public class TicketingOption {
         this.event = newEvent;
     }
 
+    public void setTierName(String newTierName){
+        this.tierName = newTierName;
+    }
+
     public void setTierPrice(double newTierPrice){
         this.tierPrice = newTierPrice;
     }

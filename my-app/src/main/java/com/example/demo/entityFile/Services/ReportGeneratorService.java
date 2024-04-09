@@ -5,10 +5,8 @@ import com.example.demo.entityFile.Ticketing.Ticket;
 import com.example.demo.entityFile.Ticketing.TicketingOption;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

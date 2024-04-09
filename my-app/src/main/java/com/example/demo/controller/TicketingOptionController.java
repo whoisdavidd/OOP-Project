@@ -35,6 +35,7 @@ public class TicketingOptionController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticketing option not found");
         }
         TicketingOption existingTicketingOption = this.ticketingOptionRepository.findById(toID).get();
+        existingTicketingOption.setTierName(TicketingOption.getTierName());
         existingTicketingOption.setTierPrice(TicketingOption.getTierPrice());
         existingTicketingOption.setEvent(TicketingOption.getEvent());
         existingTicketingOption.setTierQuantity(TicketingOption.getTierQuantity());
