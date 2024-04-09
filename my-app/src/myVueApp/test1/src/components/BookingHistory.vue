@@ -4,14 +4,24 @@
         <div v-for="eventInfo in tickets" :key="eventInfo.eventName" class="event-info">
             <h2>{{ eventInfo.eventName }} - Total Tickets: {{ eventInfo.totalTickets }}</h2>
             <div v-for="(count, tierName) in eventInfo.tiers" :key="tierName" class="tier-info">
-                <strong>Tier Name:</strong> {{ tierName }} - <strong>Tickets:</strong> {{ count }}
+                <strong>Tier Name:</strong> {{ tierName }} - <strong>Tickets:</strong> {{ count.count }}
+                <ul>
+                    <li v-for="ticketID in count.ticketid" :key="ticketID">
+                        Ticket ID: {{ ticketID }}
+                        <button @click="cancelTicket(ticketID)">Cancel Booking</button>
+                    </li>
+                </ul>
             </div>
             <div>
                 <strong>Booking Dates:</strong>
                 <ul>
                     <li v-for="date in eventInfo.bookingDates" :key="date">{{ date }}</li>
                 </ul>
+
+
             </div>
+            <!-- Cancel Button -->
+
         </div>
     </div>
 </template>
@@ -47,6 +57,7 @@ export default {
                     const eventName = ticket.event.eventName;
                     const tierName = ticket.ticketingOption.tierName;
                     const BookingDate = ticket.event.eventDate;
+                    const ticketID = ticket.ticketID;
 
 
                     // Initialize event in the accumulator if not present
@@ -54,10 +65,11 @@ export default {
                         eventTicketCounts[eventName] = {
                             count: 0,
                             tiers: {},
-                            bookingDates: new Set() // Use a Set to automatically handle unique values
+                            bookingDates: new Set(), // Use a Set to automatically handle unique values
+                            ticketid: [],
                         };
                     }
-
+                    eventTicketCounts[eventName].ticketid.push(ticketID);
                     // Add the booking date to the Set of dates for the event
                     eventTicketCounts[eventName].bookingDates.add(BookingDate);
 
@@ -66,10 +78,15 @@ export default {
 
                     // Increment the count for the tier within the event
                     if (!eventTicketCounts[eventName].tiers[tierName]) {
-                        eventTicketCounts[eventName].tiers[tierName] = 1;
+                        eventTicketCounts[eventName].tiers[tierName] = { count: 1, ticketid: [ticketID] };
                     } else {
-                        eventTicketCounts[eventName].tiers[tierName]++;
+                        eventTicketCounts[eventName].tiers[tierName].count++;
+                        if (!eventTicketCounts[eventName].tiers[tierName].ticketid) {
+                            eventTicketCounts[eventName].tiers[tierName].ticketid = []; // Ensure initialization
+                        }
+                        eventTicketCounts[eventName].tiers[tierName].ticketid.push(ticketID); // Correctly pushing to tier's ticketid
                     }
+
                 });
 
                 // Convert the accumulated data into an array format for display
@@ -79,6 +96,7 @@ export default {
                     totalTickets: data.count,
                     tiers: data.tiers,
                     bookingDates: [...data.bookingDates], // Convert Set to Array
+                    ticketIDs: data.ticketid,
                 }));
                 // You can assign it to a data property to use in your template
                 console.log(formattedTicketsData);
@@ -89,8 +107,12 @@ export default {
         },
         async cancelTicket(ticketId) {
             try {
+                console.log(ticketId)
+                ticketId = parseInt(ticketId, 10);
                 await axios.delete(`http://localhost:8080/ticket/Cancellation/${ticketId}`);
-                this.tickets = this.tickets.filter((ticket) => ticket.id !== ticketId);
+                this.tickets = this.tickets.filter(ticket => {
+                    return !ticket.ticketIDs.includes(ticketId);
+                });
                 alert('Ticket canceled successfully');
             } catch (error) {
                 console.error('Failed to cancel ticket:', error);

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -45,7 +44,7 @@ public class StripeController {
                     .setMode(SessionCreateParams.Mode.PAYMENT)
                     .setSuccessUrl("http://localhost:8081/payment-success") // Update with your ngrok URL
                     .setCancelUrl("http://localhost:8081/payment-cancel") // Update with your ngrok URL
-                    .putMetadata("eventId", (String) data.get("eventId")) // Add this line
+                    .putMetadata("eventID", (String) data.get("eventID")) // Add this line
                     .build();
 
             Session session = Session.create(params);
@@ -113,7 +112,7 @@ public class StripeController {
             case "checkout.session.completed":
             Session session = (Session) event.getData().getObject();
             System.out.println("Payment received for checkout " + session.getId());
-
+            String eventID = session.getEventID();
             BigDecimal amountPaid = BigDecimal.valueOf(session.getAmountTotal()).divide(BigDecimal.valueOf(100));
             String customerId = session.getCustomer();
             
@@ -129,6 +128,7 @@ public class StripeController {
             PaymentRecord paymentRecord = new PaymentRecord();
             paymentRecord.setChargeId(session.getId());
             paymentRecord.setAmount(amountPaid);
+            paymentRecord.setEventID(eventID);
             paymentRecord.setCustomerId(customerId);
             paymentRecord.setPaymentDate(java.time.LocalDateTime.now());
             paymentRecordRepository.save(paymentRecord);
