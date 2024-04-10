@@ -215,9 +215,9 @@ export default {
         .catch((error) => {
           console.error('Error submitting form', error);
           // Check for insufficient balance error message
-          if (error.response && error.response.data === "Not enough balance") {
+          if (error.response) {
             // Alert the user about insufficient balance
-            alert("You do not have enough balance to complete this transaction.");
+            alert(error.response.data);
           }
         });
     },

@@ -5,7 +5,7 @@
         <h2 class="text-center p-3" style="color: palegoldenrod">My Account</h2>
         <div class="form-group">
           <label class="p-1">Balance</label>
-          <div class="input-group">
+          <div v-if="isCustomer" class="input-group">
             <input type="text" v-model="profile.accountBalance" disabled class="form-control" />
             <button type="button" class="btn btn-light btn-outline-dark p-1">
               Top Up
@@ -65,9 +65,16 @@
 
 <script>
 import axios from "axios";
+import { mapState } from 'vuex';
 
 export default {
   name: "ProfileDetails",
+  computed: {
+    ...mapState(['isLoggedIn']),
+    isCustomer() {
+      return this.$store.state.userType === 'CUSTOMER';
+    },
+  },
   data() {
     return {
       profile: {

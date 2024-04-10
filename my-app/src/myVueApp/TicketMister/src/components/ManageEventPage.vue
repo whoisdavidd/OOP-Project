@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="modal fade" data-bs-backdrop="static" id="addEventFailureModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog text-black">
                         <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5">Adding/editing event result</h1>
@@ -189,7 +189,7 @@
             </div>
             </div>
             <div class="modal modal-lg fade" data-bs-backdrop="static" id="editEventModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog text-black">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Edit event</h1>
@@ -588,8 +588,13 @@ export default {
                 let todayMonth = new Date().getMonth()
                 let todayYear = new Date().getFullYear()
                 if (parseInt(day) > 0 && parseInt(day) < 32 && parseInt(month) > 0 && parseInt(month) < 13 && parseInt(year) > 2023){
-                    if (parseInt(year) >= todayYear && parseInt(month) >= todayMonth && parseInt(day) >= todayDay){
-                        return true
+                    let eventDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                    let today = new Date();
+
+                    today.setHours(0, 0, 0, 0); // to ignore time part of today's date
+
+                    if (eventDate >= today) {
+                        return true;
                     }
                 }
             }
