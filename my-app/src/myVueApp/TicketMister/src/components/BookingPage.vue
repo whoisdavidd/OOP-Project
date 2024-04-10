@@ -38,11 +38,18 @@
             </select>
           </div>
 
-          <div class="form-group d-flex align-items-center py-2">
-            <label for="numTickets">Number of Tickets:</label>
-            <input type="number" id="numTickets" v-model.number="numTickets" min="1" placeholder="1"
-              class="form-control" />
-          </div>
+        <div class="form-group d-flex align-items-center py-2">
+          <label for="numTickets">Number of Tickets:</label>
+          <input
+            type="number"
+            id="numTickets"
+            v-model.number="numTickets"
+            min="1"
+            max="5"
+            placeholder="1"
+            class="form-control"
+          />
+        </div>
 
           <div class="form-group py-2 d-flex align-items-center">
             <label for="personName" class="me-2">Name:</label>
@@ -64,7 +71,10 @@
     </div>
     <div class="py-4 mt-5 px-3 rounded-4" style="background-color: rgba(128, 128, 128, 0.7);">
       <p>
-        Customers can book tickets as far in advance as 6 months and must do so no later than 24 hours before the event start time. This policy ensures adequate preparation and scheduling for both the organizers and participants, allowing for a smoother and enjoyable experience for all.
+        Add and remove tickets or options as you please. Checkout when you are ready and we'll be in touch.
+      </p>
+      <p>
+        Customers can book tickets up to 6 months in advance and no later than 24 hours before the event start time. Customers can cancel their booking up to 48 hours before the event.
       </p>
     </div>
     <div v-if="formErrors.length" class="form-errors">
@@ -178,7 +188,7 @@ export default {
       // const selectedTicketPrice = this.ticketOptions.find(option => option.ticketingOptionID === this.ticketingOptionID);
 
       const url = `http://localhost:8080/ticket/createTicket/${this.numTickets}/${this.selectedEvent}/${this.ticketingOptionID}/${this.username}`;
-
+      
       const bookingDetails = {
         numTickets: this.numTickets,
         selectedEvent: this.selectedEvent, // Keeping the event ID if needed for the backend

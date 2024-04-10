@@ -103,7 +103,7 @@
                 </div>
                 </div>
                 <div class="modal fade" data-bs-backdrop="static" id="addEventSuccessModal" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog text-black">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Adding/editing event result</h1>
