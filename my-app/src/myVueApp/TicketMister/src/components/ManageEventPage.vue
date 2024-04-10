@@ -308,7 +308,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger" @click="cancelEvent">Confirm Cancel</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="cancelEvent">Confirm Cancel</button>
                     </div>
                 </div>
             </div>
@@ -770,16 +770,20 @@ export default {
         },
         async cancelEvent() {
             // Call the first API endpoint
-            axios.delete(`http://localhost:8080/ticket/CancellationByEvent/${this.eventToCancel.eventID}`)
-            .then((response) =>{
-                    console.log(response.data)
-                })
+            try {
+                await axios.delete(`http://localhost:8080/ticket/CancellationByEvent/${this.eventToCancel.eventID}`);
+            } catch (error) {
+                console.error(error);
+            }
 
             // Call the second API endpoint
             axios.delete(`http://localhost:8080/api/event/${this.eventToCancel.eventID}`)
             .then((response) =>{
                     console.log(response.data)
                 })
+            
+            // Remove the event from the events array
+            this.eventToCancel = null;
 
             // Close the modal
             var myModal = new bootstrap.Modal(document.getElementById('cancelEventModal'));
