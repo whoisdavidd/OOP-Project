@@ -63,7 +63,7 @@
           <div class="card mx-3 my-3" style="height: 30rem">
             <div></div>
             <img
-              :src="require(`../img/events/Spring Music Festival.jpeg`)"
+              :src="getImage(event.eventName)"
               class="card-img-top img-fluid overflow-hidden"
               alt="..."
               style="object-fit: contain; height: 300rem; width: 200rem"
@@ -249,6 +249,13 @@ export default {
           .catch(error => {
             console.error(error);
           });
+      }
+    },
+    getImage(eventName) {
+      try {
+        return require(`../img/events/${eventName}.jpeg`);
+      } catch (e) {
+        return require(`../img/events/noimage.jpeg`); // path to your default image
       }
     },
   },
