@@ -63,7 +63,7 @@
           <div class="card mx-3 my-3 rounded-4" style="height: 30rem; background-color: rgba(255, 255, 255, 0.7);">
             <div></div>
             <img
-              :src="require(`../img/events/${event.eventName}.jpeg`)"
+              :src="getImage(event.eventName)"
               class="card-img-top img-fluid overflow-hidden"
               alt="..."
               style="object-fit: contain; height: 300rem; width: 200rem"
@@ -166,6 +166,13 @@ export default {
         } catch (err) {
           console.log("An error occurred: " + err);
         }
+      }
+    },
+    getImage(eventName) {
+      try {
+        return require(`../img/events/${eventName}.jpeg`);
+      } catch (e) {
+        return require(`../img/events/noimage.jpeg`); // path to your default image
       }
     },
   },
