@@ -53,6 +53,7 @@
             id="numTickets"
             v-model.number="numTickets"
             min="1"
+            max="5"
             placeholder="1"
             class="form-control"
           />
@@ -92,15 +93,10 @@
 </div>
     <div class="py-4 mt-5 px-3 rounded-4" style="background-color: rgba(128, 128, 128, 0.7);">
       <p>
-        Your <span style="color: palegoldenrod">shopping cart </span>is shown in the bottom right of the screen. Add and
-        remove tickets or options as you please - you can also change dates in
-        the cart. Checkout when you are ready and we'll be in touch.
+        Add and remove tickets or options as you please. Checkout when you are ready and we'll be in touch.
       </p>
       <p>
-        The minimum booking period is 3 days. During peak months (July and
-        August) we have a 7 day minimum booking policy. Collections are between
-        14:00-18:00 and returns between 08:30-11:00. Early access/late departure
-        can be arranged after booking.
+        Customers can book tickets up to 6 months in advance and no later than 24 hours before the event start time. Customers can cancel their booking up to 48 hours before the event.
       </p>
     </div>
     <div v-if="formErrors.length" class="form-errors">
@@ -214,7 +210,7 @@ export default {
       // const selectedTicketPrice = this.ticketOptions.find(option => option.ticketingOptionID === this.ticketingOptionID);
 
       const url = `http://localhost:8080/ticket/createTicket/${this.numTickets}/${this.selectedEvent}/${this.ticketingOptionID}/${this.username}`;
-
+      
       const bookingDetails = {
         numTickets: this.numTickets,
         selectedEvent: this.selectedEvent, // Keeping the event ID if needed for the backend

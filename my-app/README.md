@@ -18,7 +18,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### How to run the application
 
-### Step 1: Run the Springboot server needs to go to the my-app directory
+### Step 1: Run the Springboot server needs to go to the my-app directory()
 
 ```
 mvn spring-boot:run
@@ -26,7 +26,7 @@ mvn spring-boot:run
 
 ### Step 2: Initialize database with sql scripts inside src/main/resources (configure your application.properties correctly as well eg. correct sql port)
 
-### Step 3: Run the frontend application, go to my Ticket Mister directory
+### Step 3: Run the frontend application, go to my Ticket Mister directory (my-app/myVueApp/TicketMister)
 
 ```
 npm run serve 
