@@ -1,22 +1,22 @@
 <template>
-  <div class="BookingPage" >
-    <div >
-    <h1 style="color:palegoldenrod">Book Your Event</h1>
-    <p style="color: teal">
-      Select an event from the dropdown and choose your dates.
-    </p>
-    <div class="event-selection form-group d-flex align-items-center">
-      <label for="eventDropdown" class="me-2">Event:</label>
-      <select id="eventDropdown" v-model="selectedEvent" class="form-control">
-        <option disabled selected value="">Please select one</option>
-        <option v-for="event in events" :key="event.id" :value="event.eventID">
-          {{ event.eventName }}
-        </option>
-      </select>
-    </div>
-    <!-- Form for registration -->
-    <form @submit.prevent="submitForm">
-      <!-- <div class="form-group py-2 d-flex align-items-center">
+  <div class="BookingPage">
+    <div>
+      <h1 style="color:palegoldenrod">Book Your Event</h1>
+      <p style="color: teal">
+        Select an event from the dropdown and choose your dates.
+      </p>
+      <div class="event-selection form-group d-flex align-items-center">
+        <label for="eventDropdown" class="me-2">Event:</label>
+        <select id="eventDropdown" v-model="selectedEvent" class="form-control">
+          <option disabled selected value="">Please select one</option>
+          <option v-for="event in events" :key="event.id" :value="event.eventID">
+            {{ event.eventName }}
+          </option>
+        </select>
+      </div>
+      <!-- Form for registration -->
+      <form @submit.prevent="submitForm">
+        <!-- <div class="form-group py-2 d-flex align-items-center">
         <label for="username" class="me-2">Username:</label>
         <input
           type="text"
@@ -26,81 +26,45 @@
           class="form-control"
         />
       </div> -->
-      <!-- Additional inputs -->
-      <div>
-        <div class="form-group d-flex align-items-center py-2">
-          <label for="ticketOption" class="me-2">Ticket Option:</label>
-          <select
-            id="ticketOption"
-            v-model="ticketingOptionID"
-            class="form-control"
-          >
-            <option disabled selected value="">Select Ticket Option</option>
-            <option
-              v-for="option in ticketOptions"
-              :key="option.ticketingOptionID"
-              :value="option.ticketingOptionID"
-            >
-              {{ option.tierName }} - {{ option.tierPrice }}
-            </option>
-          </select>
-        </div>
+        <!-- Additional inputs -->
+        <div>
+          <div class="form-group d-flex align-items-center py-2">
+            <label for="ticketOption" class="me-2">Ticket Option:</label>
+            <select id="ticketOption" v-model="ticketingOptionID" class="form-control">
+              <option disabled selected value="">Select Ticket Option</option>
+              <option v-for="option in ticketOptions" :key="option.ticketingOptionID" :value="option.ticketingOptionID">
+                {{ option.tierName }} - {{ option.tierPrice }}
+              </option>
+            </select>
+          </div>
 
-        <div class="form-group d-flex align-items-center py-2">
-          <label for="numTickets">Number of Tickets:</label>
-          <input
-            type="number"
-            id="numTickets"
-            v-model.number="numTickets"
-            min="1"
-            placeholder="1"
-            class="form-control"
-          />
-        </div>
+          <div class="form-group d-flex align-items-center py-2">
+            <label for="numTickets">Number of Tickets:</label>
+            <input type="number" id="numTickets" v-model.number="numTickets" min="1" placeholder="1"
+              class="form-control" />
+          </div>
 
-        <div class="form-group py-2 d-flex align-items-center">
-          <label for="personName" class="me-2">Name:</label>
-          <input
-            type="text"
-            id="personName"
-            v-model="personName"
-            placeholder="Your name"
-            class="form-control"
-          />
+          <div class="form-group py-2 d-flex align-items-center">
+            <label for="personName" class="me-2">Name:</label>
+            <input type="text" id="personName" v-model="personName" placeholder="Your name" class="form-control" />
+          </div>
+          <div class="form-group d-flex align-items-center py-2">
+            <label for="phoneNumber" class="me-2">Phone Number:</label>
+            <input type="tel" id="phoneNumber" v-model="phoneNumber" placeholder="Your phone number"
+              class="form-control" />
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-light btn-outline-dark rounded-pill">
+              Book Tickets
+            </button>
+          </div>
         </div>
-        <div class="form-group d-flex align-items-center py-2">
-          <label for="phoneNumber" class="me-2">Phone Number:</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            v-model="phoneNumber"
-            placeholder="Your phone number"
-            class="form-control"
-          />
-        </div>
-        <div class="d-flex justify-content-end">
-          <button
-            type="submit"
-            class="btn btn-light btn-outline-dark rounded-pill"
-          >
-            Book Tickets
-          </button>
-        </div>
-      </div>
-      <!-- Submit button and other parts remain unchanged -->
-    </form>
-</div>
+        <!-- Submit button and other parts remain unchanged -->
+      </form>
+    </div>
     <div class="py-4 mt-5 px-3 rounded-4" style="background-color: rgba(128, 128, 128, 0.7);">
       <p>
-        Your <span style="color: palegoldenrod">shopping cart </span>is shown in the bottom right of the screen. Add and
-        remove tickets or options as you please - you can also change dates in
-        the cart. Checkout when you are ready and we'll be in touch.
-      </p>
-      <p>
-        The minimum booking period is 3 days. During peak months (July and
-        August) we have a 7 day minimum booking policy. Collections are between
-        14:00-18:00 and returns between 08:30-11:00. Early access/late departure
-        can be arranged after booking.
+        Customers can book tickets as far in advance as 6 months and must do so no later than 24 hours before the event start time. This policy ensures adequate preparation and scheduling for both the organizers and participants, allowing for a smoother and enjoyable experience for all.
       </p>
     </div>
     <div v-if="formErrors.length" class="form-errors">
@@ -224,10 +188,7 @@ export default {
         username: sessionStorage.getItem("username") || this.username,
         price: selectedTicketOptionObj.tierPrice,
       };
-      this.$router.push({
-        name: "checkoutPage",
-        query: bookingDetails,
-      });
+
       axios
         .post(url, {
           // Assuming you need to send additional data in the request body, adjust accordingly.
@@ -236,9 +197,18 @@ export default {
         .then((response) => {
           console.log("Form submitted successfully", response);
           // Further actions upon success
+          this.$router.push({
+            name: "checkoutPage",
+            query: bookingDetails,
+          });
         })
         .catch((error) => {
-          console.error("Error submitting form", error);
+          console.error('Error submitting form', error);
+          // Check for insufficient balance error message
+          if (error.response && error.response.data === "Not enough balance") {
+            // Alert the user about insufficient balance
+            alert("You do not have enough balance to complete this transaction.");
+          }
         });
     },
     async getTicketOptions(eventID) {
@@ -249,6 +219,7 @@ export default {
         console.log(response);
         this.ticketOptions = response.data.ticketingOptions;
       } catch (error) {
+
         console.error("Error fetching ticket options:", error);
         this.ticketOptions = [];
       }
