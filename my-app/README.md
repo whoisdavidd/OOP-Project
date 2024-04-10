@@ -18,6 +18,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### How to run the application
 
+### Pre Requisite: Setting up database
+
+Follow the steps in the sql folder to run the script to create and insert the database
+
+
 ### Step 1: Run the Springboot server needs to go to the my-app directory()
 
 ```
